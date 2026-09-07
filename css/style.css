@@ -854,3 +854,8 @@ body.page-studio.past-hero .header__logo img { filter: invert(1); }
 }
 .slide.is-active .slide__caption > .slide__more { transition-delay: .24s; }
 @media (max-width: 720px) { .slide__more { margin-left: 0; } }
+
+/* Studio pages: opaque header once past the hero so sticky tabs don't show through */
+body.page-studio.past-hero .header { background: var(--white); }
+.sparts { top: var(--header-h); }
+.part, .floormap { scroll-margin-top: calc(var(--header-h) + 56px); }
