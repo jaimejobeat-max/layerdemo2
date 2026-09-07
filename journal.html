@@ -1,0 +1,156 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Journal — Layer Studios</title>
+  <meta name="description" content="Layer Studios의 전시, 이벤트, 공간 소식을 담은 저널.">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/static/pretendard.min.css">
+  <link rel="stylesheet" href="css/style.css">
+</head>
+<body class="page-light">
+
+  <!-- ===== Header ===== -->
+  <header class="header" id="header">
+    <a class="header__logo header__logo--stack" href="index.html" aria-label="Layer Studios 홈">
+      <img src="assets/logo-white.png" alt="Layer Studios">
+      <span class="header__page">Journal</span>
+    </a>
+    <nav class="header__nav" aria-label="유틸리티 메뉴">
+      <a href="#" class="header__link">Guide</a>
+      <a href="#" class="header__link">About</a>
+      <a href="journal.html" class="header__link">Journal</a>
+      <a href="#" class="header__link">Q&amp;A</a>
+      <a href="#" class="header__link header__link--ko">로그인</a>
+      <a href="#" class="header__link header__link--ko">고객 서비스</a>
+      <button class="header__icon" type="button" aria-label="검색">
+        <svg width="16" height="16" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.4"><circle cx="7" cy="7" r="5.2"/><path d="M11 11l3.8 3.8"/></svg>
+      </button>
+      <button class="header__icon header__menu-btn" type="button" aria-label="메뉴 열기" aria-expanded="false" data-menu-toggle>
+        <svg width="18" height="14" viewBox="0 0 18 14" fill="none" stroke="currentColor" stroke-width="1.4"><path d="M0 1h18M0 7h18M0 13h18"/></svg>
+      </button>
+    </nav>
+  </header>
+
+  <!-- ===== Full-screen menu ===== -->
+  <div class="menu" id="menu" hidden>
+    <div class="menu__inner">
+      <button class="menu__close" type="button" aria-label="메뉴 닫기" data-menu-toggle>Close</button>
+      <ul class="menu__list">
+        <li><a href="#">Reservation</a></li>
+        <li><a href="archives.html">Archives</a></li>
+        <li class="menu__gap"><a href="#">Layer 41</a></li>
+        <li><a href="#">Layer 20</a></li>
+        <li><a href="#">Layer 11</a></li>
+        <li><a href="#">Layer 26</a></li>
+        <li><a href="#">Layer 27</a></li>
+        <li><a href="#">Layer 7</a></li>
+        <li><a href="#">Layer 10</a></li>
+        <li><a href="#">Layer Hannam</a></li>
+        <li><a href="#">Hongdae</a></li>
+        <li><a href="#">Faust</a></li>
+        <li><a href="#">Layer 57</a></li>
+        <li class="menu__gap"><a href="journal.html">Journal</a></li>
+        <li><a href="#">Q&amp;A</a></li>
+        <li><a href="#">Guide</a></li>
+        <li><a href="#">About</a></li>
+      </ul>
+    </div>
+  </div>
+
+  <main class="archive journal" id="journal">
+
+    <!-- ===== Page head: section tabs / title / year filter ===== -->
+    <div class="archive__head">
+      <nav class="archive__tabs" aria-label="구분" id="kindTabs">
+        <button type="button" class="archive__tab is-active" data-kind="">All</button>
+        <button type="button" class="archive__tab" data-kind="journal">Journal</button>
+        <button type="button" class="archive__tab" data-kind="event">Layer Events</button>
+      </nav>
+
+      <h1 class="archive__title">Journal</h1>
+
+      <div class="archive__filter">
+        <button type="button" class="archive__filter-btn" id="yearBtn" aria-expanded="false" aria-controls="yearMenu">
+          <span id="yearLabel">All Years</span>
+          <svg width="10" height="6" viewBox="0 0 10 6" fill="none" stroke="currentColor" stroke-width="1.2"><path d="M1 1l4 4 4-4"/></svg>
+        </button>
+        <ul class="archive__filter-menu" id="yearMenu" hidden></ul>
+      </div>
+    </div>
+
+    <p class="archive__count" id="count" aria-live="polite"></p>
+
+    <!-- ===== Feature grid (2 columns, editorial) ===== -->
+    <ul class="journal__grid" id="grid"></ul>
+
+    <div class="archive__more">
+      <p class="archive__empty" id="empty" hidden>No results.</p>
+    </div>
+  </main>
+
+  <!-- ===== Detail overlay ===== -->
+  <div class="detail" id="detail" hidden role="dialog" aria-modal="true" aria-labelledby="detailTitle">
+    <div class="detail__bar">
+      <button type="button" class="detail__nav" id="detailPrev" aria-label="이전 글">← Prev</button>
+      <span class="detail__index" id="detailIndex"></span>
+      <button type="button" class="detail__nav" id="detailNext" aria-label="다음 글">Next →</button>
+      <button type="button" class="detail__close" id="detailClose" aria-label="닫기">Close</button>
+    </div>
+    <div class="detail__scroll" id="detailScroll">
+      <header class="detail__head">
+        <p class="detail__meta" id="detailMeta"></p>
+        <h2 class="detail__title" id="detailTitle"></h2>
+        <p class="detail__studio" id="detailStudio"></p>
+      </header>
+      <figure class="detail__cover" id="detailCover"></figure>
+      <div class="detail__body" id="detailBody"></div>
+      <div class="detail__images" id="detailImages"></div>
+    </div>
+  </div>
+
+  <!-- ===== Footer ===== -->
+  <footer class="footer">
+    <div class="footer__cols">
+      <div class="footer__col">
+        <h3 class="footer__h">Location</h3>
+        <p>743-27, Hannam-dong<br>Yongsan-gu, Seoul</p>
+        <a href="index.html#studios" class="footer__arrow-link">Find Studios</a>
+      </div>
+      <div class="footer__col">
+        <h3 class="footer__h">Contact</h3>
+        <p><a href="tel:0233567750">02.336.7750</a><br><a href="mailto:contact@plusjun.com">contact@plusjun.com</a></p>
+        <a href="#" class="footer__arrow-link">Reservation</a>
+      </div>
+      <div class="footer__col">
+        <h3 class="footer__h">Legal</h3>
+        <ul class="footer__links">
+          <li><a href="#">Terms</a></li>
+          <li><a href="#">Privacy</a></li>
+          <li><a href="#">Guide</a></li>
+          <li><a href="#">Careers</a></li>
+        </ul>
+      </div>
+      <div class="footer__col">
+        <h3 class="footer__h">Newsletter</h3>
+        <form class="footer__form" onsubmit="return false">
+          <label for="nl" class="visually-hidden">이메일</label>
+          <input id="nl" type="email" placeholder="Email" autocomplete="off">
+          <button type="submit" aria-label="구독">→</button>
+        </form>
+      </div>
+    </div>
+    <div class="footer__bottom">
+      <div class="footer__social">
+        <a href="#" aria-label="Instagram"><svg width="16" height="16" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.3"><rect x="1.5" y="1.5" width="13" height="13" rx="3.5"/><circle cx="8" cy="8" r="3"/><circle cx="11.8" cy="4.2" r=".6" fill="currentColor"/></svg></a>
+        <a href="#" aria-label="YouTube"><svg width="16" height="16" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.3"><rect x="1" y="3.5" width="14" height="9" rx="2.5"/><path d="M6.5 6v4l3.5-2z" fill="currentColor" stroke="none"/></svg></a>
+      </div>
+      <p class="footer__legal">Layer Studios · Founder Heo Jun-sung · Business No. 837-87-01038 · Mail-order License 2018-서울성동-0310</p>
+      <p class="footer__copy">© 2009 — 2026 Layer Studios</p>
+    </div>
+  </footer>
+
+  <script src="js/journal-data.js"></script>
+  <script src="js/journal.js"></script>
+</body>
+</html>

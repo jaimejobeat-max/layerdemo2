@@ -1,0 +1,225 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Layer Studios</title>
+  <meta name="description" content="Layer Studios — 서울의 렌탈 포토 스튜디오. Layer 41, 20, 11, 26, 27, 7, 10, Hannam, Hongdae, Faust, Layer 57.">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/static/pretendard.min.css">
+  <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+
+  <!-- ===== Header (transparent, fixed) ===== -->
+  <header class="header" id="header">
+    <a class="header__logo" href="#" aria-label="Layer Studios 홈">
+      <img src="assets/logo-white.png" alt="Layer Studios">
+    </a>
+    <nav class="header__nav" aria-label="유틸리티 메뉴">
+      <a href="#" class="header__link">Guide</a>
+      <a href="#" class="header__link">About</a>
+      <a href="journal.html" class="header__link">Journal</a>
+      <a href="#" class="header__link">Q&amp;A</a>
+      <a href="#" class="header__link header__link--ko">로그인</a>
+      <a href="#" class="header__link header__link--ko">고객 서비스</a>
+      <button class="header__icon" type="button" aria-label="검색">
+        <svg width="16" height="16" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.4"><circle cx="7" cy="7" r="5.2"/><path d="M11 11l3.8 3.8"/></svg>
+      </button>
+      <button class="header__icon header__menu-btn" type="button" aria-label="메뉴 열기" aria-expanded="false" data-menu-toggle>
+        <svg width="18" height="14" viewBox="0 0 18 14" fill="none" stroke="currentColor" stroke-width="1.4"><path d="M0 1h18M0 7h18M0 13h18"/></svg>
+      </button>
+    </nav>
+  </header>
+
+  <!-- ===== Side navigation (desktop) ===== -->
+  <aside class="sidenav" id="sidenav" aria-label="주요 메뉴">
+    <ul class="sidenav__list">
+      <li><a href="#" class="sidenav__link" data-nav="reservation">Reservation</a></li>
+      <li class="sidenav__gap"><a href="archives.html" class="sidenav__link" data-nav="archives">Archives</a></li>
+      <li><a href="#" class="sidenav__link" data-nav="41">Layer 41</a></li>
+      <li><a href="#" class="sidenav__link" data-nav="20">Layer 20</a></li>
+      <li><a href="#" class="sidenav__link" data-nav="11">Layer 11</a></li>
+      <li><a href="#" class="sidenav__link" data-nav="26">Layer 26</a></li>
+      <li><a href="#" class="sidenav__link" data-nav="27">Layer 27</a></li>
+      <li><a href="#" class="sidenav__link" data-nav="7">Layer 7</a></li>
+      <li><a href="#" class="sidenav__link" data-nav="10">Layer 10</a></li>
+      <li><a href="#" class="sidenav__link" data-nav="hannam">Layer Hannam</a></li>
+      <li><a href="#" class="sidenav__link" data-nav="hongdae">Hongdae</a></li>
+      <li><a href="#" class="sidenav__link" data-nav="faust">Faust</a></li>
+      <li><a href="#" class="sidenav__link" data-nav="57">Layer 57</a></li>
+    </ul>
+  </aside>
+
+  <!-- ===== Full-screen menu (mobile / when sidenav hidden) ===== -->
+  <div class="menu" id="menu" hidden>
+    <div class="menu__inner">
+      <button class="menu__close" type="button" aria-label="메뉴 닫기" data-menu-toggle>Close</button>
+      <ul class="menu__list">
+        <li><a href="#">Reservation</a></li>
+        <li><a href="archives.html">Archives</a></li>
+        <li class="menu__gap"><a href="#">Layer 41</a></li>
+        <li><a href="#">Layer 20</a></li>
+        <li><a href="#">Layer 11</a></li>
+        <li><a href="#">Layer 26</a></li>
+        <li><a href="#">Layer 27</a></li>
+        <li><a href="#">Layer 7</a></li>
+        <li><a href="#">Layer 10</a></li>
+        <li><a href="#">Layer Hannam</a></li>
+        <li><a href="#">Hongdae</a></li>
+        <li><a href="#">Faust</a></li>
+        <li><a href="#">Layer 57</a></li>
+        <li class="menu__gap"><a href="journal.html">Journal</a></li>
+        <li><a href="#">Q&amp;A</a></li>
+        <li><a href="#">Guide</a></li>
+        <li><a href="#">About</a></li>
+      </ul>
+    </div>
+  </div>
+
+  <main>
+    <!-- ===== Hero: full-screen snap slides ===== -->
+    <section class="hero" id="hero" aria-label="스튜디오 하이라이트">
+
+      <article class="slide is-active" data-nav="41">
+        <img class="slide__img" src="https://plusjun1.cafe24.com/images/mainslide/main_41_06-2.jpg" alt="Layer 41 스튜디오 내부" loading="eager">
+        <div class="slide__overlay"></div>
+        <div class="slide__caption">
+          <p class="slide__eyebrow">Seongsu-dong · Seoul</p>
+          <h2 class="slide__title">Layer 41</h2>
+          <p class="slide__type">Former Steel Factory · 9m Ceiling</p>
+        </div>
+      </article>
+
+      <article class="slide" data-nav="7">
+        <img class="slide__img" src="https://plusjun1.cafe24.com/images/mainslide/main_ys_01.jpg" alt="Layer 7 스튜디오 내부" loading="lazy">
+        <div class="slide__overlay"></div>
+        <div class="slide__caption">
+          <p class="slide__eyebrow">Galwol-dong · Yongsan</p>
+          <h2 class="slide__title">Layer 7</h2>
+          <p class="slide__type">60-Year-Old Church · 8m Ceiling</p>
+        </div>
+      </article>
+
+      <article class="slide" data-nav="11">
+        <img class="slide__img" src="https://plusjun1.cafe24.com/images/layer%2011/1115_B8.jpg" alt="Layer 11 스튜디오 내부" loading="lazy">
+        <div class="slide__overlay"></div>
+        <div class="slide__caption">
+          <p class="slide__eyebrow">Sinsu-dong · Mapo</p>
+          <h2 class="slide__title">Layer 11</h2>
+          <p class="slide__type">Steel Truss Hall · 8m Ceiling</p>
+        </div>
+      </article>
+
+      <article class="slide" data-nav="26">
+        <img class="slide__img" src="https://plusjun1.cafe24.com/images/mainslide/main_26_01.jpg" alt="Layer 26 스튜디오 내부" loading="lazy">
+        <div class="slide__overlay"></div>
+        <div class="slide__caption">
+          <p class="slide__eyebrow">Seongsu-dong · Seoul</p>
+          <h2 class="slide__title">Layer 26</h2>
+          <p class="slide__type">Steel Factory · Daylight Horizon</p>
+        </div>
+      </article>
+
+      <article class="slide" data-nav="hannam">
+        <img class="slide__img" src="https://plusjun1.cafe24.com/Hannam/1114_e1.jpg" alt="Layer Hannam 스튜디오 내부" loading="lazy">
+        <div class="slide__overlay"></div>
+        <div class="slide__caption">
+          <p class="slide__eyebrow">Hannam-dong · Yongsan</p>
+          <h2 class="slide__title">Layer Hannam</h2>
+          <p class="slide__type">Two-Storey House · Next to Leeum</p>
+        </div>
+      </article>
+
+      <article class="slide" data-nav="faust">
+        <img class="slide__img" src="https://plusjun1.cafe24.com/images/mainslide/main_ft_01-3.jpg" alt="Faust 스튜디오 내부" loading="lazy">
+        <div class="slide__overlay"></div>
+        <div class="slide__caption">
+          <p class="slide__eyebrow">Itaewon · Yongsan</p>
+          <h2 class="slide__title">Faust</h2>
+          <p class="slide__type">Techno Club · Spatial Sound</p>
+        </div>
+      </article>
+
+      <article class="slide slide--cta" data-nav="reservation">
+        <img class="slide__img" src="https://plusjun1.cafe24.com/images/mainslide/main_10_23.jpg" alt="Layer 10 스튜디오 내부" loading="lazy">
+        <div class="slide__overlay"></div>
+        <div class="slide__caption">
+          <h2 class="slide__title">Reservation</h2>
+          <a href="#" class="slide__cta">Book a Studio</a>
+        </div>
+      </article>
+
+      <div class="hero__ui">
+        <span class="hero__counter" id="counter" aria-live="polite">01 / 07</span>
+        <button class="hero__arrow" id="arrow" type="button" aria-label="다음 슬라이드">
+          <svg width="12" height="8" viewBox="0 0 12 8" fill="none" stroke="currentColor" stroke-width="1.4"><path d="M1 1l5 5 5-5"/></svg>
+        </button>
+      </div>
+    </section>
+
+    <!-- ===== Studios grid ===== -->
+    <section class="studios" id="studios" aria-labelledby="studios-title">
+      <div class="studios__head">
+        <h2 class="studios__title" id="studios-title">Our Studios</h2>
+        <p class="studios__count">11 Studios · Seoul</p>
+      </div>
+      <ul class="studios__grid">
+        <li class="studio"><a href="#" class="studio__link"><img src="https://plusjun.com/images/studios/layer41/41_pre_02.jpg" alt="Layer 41" loading="lazy"><span class="studio__meta"><span class="studio__num">01</span><span class="studio__name">Layer 41</span><span class="studio__view">View Studio</span></span></a></li>
+        <li class="studio"><a href="#" class="studio__link"><img src="https://plusjun1.cafe24.com/web/LAYER%2020%20%E1%84%92%E1%85%A7%E1%86%AB%E1%84%89%E1%85%AE%E1%84%86%E1%85%A1%E1%86%A8.jpg" alt="Layer 20" loading="lazy"><span class="studio__meta"><span class="studio__num">02</span><span class="studio__name">Layer 20</span><span class="studio__view">View Studio</span></span></a></li>
+        <li class="studio"><a href="#" class="studio__link"><img src="https://plusjun1.cafe24.com/images/layer%2011/240812_11_ex.jpg" alt="Layer 11" loading="lazy"><span class="studio__meta"><span class="studio__num">03</span><span class="studio__name">Layer 11</span><span class="studio__view">View Studio</span></span></a></li>
+        <li class="studio"><a href="#" class="studio__link"><img src="https://plusjun.com/images/studios/layer26/26_a_01.jpg" alt="Layer 26" loading="lazy"><span class="studio__meta"><span class="studio__num">04</span><span class="studio__name">Layer 26</span><span class="studio__view">View Studio</span></span></a></li>
+        <li class="studio"><a href="#" class="studio__link"><img src="https://plusjun1.cafe24.com/images/layer27/27_R_3.JPG" alt="Layer 27" loading="lazy"><span class="studio__meta"><span class="studio__num">05</span><span class="studio__name">Layer 27</span><span class="studio__view">View Studio</span></span></a></li>
+        <li class="studio"><a href="#" class="studio__link"><img src="https://plusjun.com/images/studios/yongsan/ys_ex_detail_01.jpg" alt="Layer 7" loading="lazy"><span class="studio__meta"><span class="studio__num">06</span><span class="studio__name">Layer 7</span><span class="studio__view">View Studio</span></span></a></li>
+        <li class="studio"><a href="#" class="studio__link"><img src="https://plusjun.com/images/studios/layer10/10_ex_detail_11.jpg" alt="Layer 10" loading="lazy"><span class="studio__meta"><span class="studio__num">07</span><span class="studio__name">Layer 10</span><span class="studio__view">View Studio</span></span></a></li>
+        <li class="studio"><a href="#" class="studio__link"><img src="https://plusjun1.cafe24.com/Hannam/1114_e1.jpg" alt="Layer Hannam" loading="lazy"><span class="studio__meta"><span class="studio__num">08</span><span class="studio__name">Layer Hannam</span><span class="studio__view">View Studio</span></span></a></li>
+        <li class="studio"><a href="#" class="studio__link"><img src="https://plusjun1.cafe24.com/BG01.jpeg" alt="Hongdae" loading="lazy"><span class="studio__meta"><span class="studio__num">09</span><span class="studio__name">Hongdae</span><span class="studio__view">View Studio</span></span></a></li>
+        <li class="studio"><a href="#" class="studio__link"><img src="https://plusjun.com/images/studios/faust/ft_preview_06-1.jpg" alt="Faust" loading="lazy"><span class="studio__meta"><span class="studio__num">10</span><span class="studio__name">Faust</span><span class="studio__view">View Studio</span></span></a></li>
+        <li class="studio"><a href="#" class="studio__link"><img src="https://plusjun.com/images/studios/horizon/h21.jpg" alt="Horizon" loading="lazy"><span class="studio__meta"><span class="studio__num">11</span><span class="studio__name">Horizon</span><span class="studio__view">View Studio</span></span></a></li>
+      </ul>
+    </section>
+  </main>
+
+  <!-- ===== Footer ===== -->
+  <footer class="footer">
+    <div class="footer__cols">
+      <div class="footer__col">
+        <h3 class="footer__h">Location</h3>
+        <p>743-27, Hannam-dong<br>Yongsan-gu, Seoul</p>
+        <a href="#" class="footer__arrow-link">Find Studios</a>
+      </div>
+      <div class="footer__col">
+        <h3 class="footer__h">Contact</h3>
+        <p><a href="tel:0233567750">02.336.7750</a><br><a href="mailto:contact@plusjun.com">contact@plusjun.com</a></p>
+        <a href="#" class="footer__arrow-link">Reservation</a>
+      </div>
+      <div class="footer__col">
+        <h3 class="footer__h">Legal</h3>
+        <ul class="footer__links">
+          <li><a href="#">Terms</a></li>
+          <li><a href="#">Privacy</a></li>
+          <li><a href="#">Guide</a></li>
+          <li><a href="#">Careers</a></li>
+        </ul>
+      </div>
+      <div class="footer__col">
+        <h3 class="footer__h">Newsletter</h3>
+        <form class="footer__form" onsubmit="return false">
+          <label for="nl" class="visually-hidden">이메일</label>
+          <input id="nl" type="email" placeholder="Email" autocomplete="off">
+          <button type="submit" aria-label="구독">→</button>
+        </form>
+      </div>
+    </div>
+    <div class="footer__bottom">
+      <div class="footer__social">
+        <a href="#" aria-label="Instagram"><svg width="16" height="16" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.3"><rect x="1.5" y="1.5" width="13" height="13" rx="3.5"/><circle cx="8" cy="8" r="3"/><circle cx="11.8" cy="4.2" r=".6" fill="currentColor"/></svg></a>
+        <a href="#" aria-label="YouTube"><svg width="16" height="16" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.3"><rect x="1" y="3.5" width="14" height="9" rx="2.5"/><path d="M6.5 6v4l3.5-2z" fill="currentColor" stroke="none"/></svg></a>
+      </div>
+      <p class="footer__legal">Layer Studios · Founder Heo Jun-sung · Business No. 837-87-01038 · Mail-order License 2018-서울성동-0310</p>
+      <p class="footer__copy">© 2009 — 2026 Layer Studios</p>
+    </div>
+  </footer>
+
+  <script src="js/main.js"></script>
+</body>
+</html>
