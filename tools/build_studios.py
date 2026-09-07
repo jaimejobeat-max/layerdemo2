@@ -73,6 +73,7 @@ def page(o, prev, nxt):
   <title>{e(o['title'])} — Layer Studios</title>
   <meta name="description" content="{e(o['desc'][:150])}">
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/static/pretendard.min.css">
+  <link rel="icon" type="image/svg+xml" href="../assets/favicon.svg">
   <link rel="stylesheet" href="../css/style.css">
 </head>
 <body class="page-studio">

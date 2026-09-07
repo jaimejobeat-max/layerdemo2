@@ -21,13 +21,15 @@
     var total = items.length;
     var current = 0;
 
+    function padLeft() { return parseFloat(getComputedStyle(gal).paddingLeft) || 0; }
+    function itemLeft(i) { return items[i].offsetLeft - gal.offsetLeft - padLeft(); }
     function updateCounter() {
-      var left = gal.scrollLeft + 2;
-      var idx = 0;
+      var x = gal.scrollLeft, best = 0, bestDist = Infinity;
       for (var i = 0; i < total; i++) {
-        if (items[i].offsetLeft - gal.offsetLeft + items[i].offsetWidth > left) { idx = i; break; }
+        var d = Math.abs(itemLeft(i) - x);
+        if (d < bestDist) { bestDist = d; best = i; }
       }
-      current = idx;
+      current = best;
       counter.textContent = pad(current + 1) + ' / ' + pad(total);
     }
     var ticking = false;
@@ -40,7 +42,7 @@
 
     function go(i) {
       i = Math.max(0, Math.min(total - 1, i));
-      gal.scrollTo({ left: items[i].offsetLeft - gal.offsetLeft, behavior: 'smooth' });
+      gal.scrollTo({ left: itemLeft(i), behavior: 'smooth' });
     }
     part.querySelector('[data-prev]').addEventListener('click', function () { go(current - 1); });
     part.querySelector('[data-next]').addEventListener('click', function () { go(current + 1); });
