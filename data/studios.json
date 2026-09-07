@@ -1,0 +1,968 @@
+[
+ {
+  "key": "layer-41",
+  "title": "Layer 41",
+  "area": "Seongsu-dong · Seoul",
+  "tag": "Former Steel Factory · 9m Ceiling",
+  "hero": "https://plusjun1.cafe24.com/images/mainslide/main_41_06-2.jpg",
+  "desc": "레이어41은 성수동의 450평 규모 철강 공장을 리모델링한 대형 복합 스튜디오입니다. 공장 건축 특유의 높은 층고와 구조미를 살린 공간으로, A·B·C 세 개의 파트로 구성되어 있습니다. 메인 공간인 A파트는 층고 9m, 약 250평 규모 이며, 복층 구조의 B파트와 입체적으로 연결됩니다. 3층의 C파트는 층고 4m, 약 150평 규모의 독립적인 공간으로 옥상까지 연계해 활용할 수 있습니다. 모든 공간은 내부 계단을 통해 유기적으로 이어지며, 촬영은 물론 전시, 팝업, 공연 및 다양한 형태의 이벤트에 맞춰 폭넓게 구성할 수 있습니다.",
+  "location_kr": "서울 성동구 성수동2가 277-4 (아차산로9길 41)",
+  "location_en": "41, Achasan-ro 9-gil, Seongdong-gu, Seoul",
+  "map": "http://naver.me/xhHVxnku",
+  "links": [
+   {
+    "label": "Rental Fee",
+    "href": "https://rentalfee.cargo.site/fortyone"
+   },
+   {
+    "label": "Main Information (PDF)",
+    "href": "https://drive.google.com/file/d/1T4C38E1e2JJD7oLHgj_PlI38gS9noQns/view?usp=sharing"
+   },
+   {
+    "label": "Parking & More Information",
+    "href": "https://rentalfee.cargo.site/41_info1"
+   }
+  ],
+  "floormaps": [],
+  "parts": [
+   {
+    "name": "A",
+    "floormap": [
+     "https://plusjun.com/web/upload/category/editor/2023/02/24/70095906b58420fcec831bb5187149be.jpg"
+    ],
+    "images": [
+     "https://plusjun.com/images/studios/layer41/layer41_a_01.jpg",
+     "https://plusjun.com/images/studios/layer41/41_pre_01.jpg",
+     "https://plusjun.com/images/studios/layer41/41_pre_05-1.jpg",
+     "https://plusjun.com/images/studios/layer41/240812_41_1.jpg",
+     "https://plusjun1.cafe24.com/%EC%A0%80%EC%9A%A9%EB%9F%89/41/241023_41_1.jpeg",
+     "https://plusjun.com/images/studios/layer41/41_pre_03.jpg",
+     "https://plusjun1.cafe24.com/%EC%A0%80%EC%9A%A9%EB%9F%89/41/240812_41_1.jpeg",
+     "https://plusjun.com/images/studios/layer41/41_pre_04.jpg",
+     "https://plusjun.com/images/studios/layer41/layer41_a_02.jpg",
+     "https://plusjun.com/images/studios/layer41/41_pre_08.jpg",
+     "https://plusjun.com/images/studios/layer41/41_1.jpg",
+     "https://plusjun.com/images/studios/layer41/41_2.jpg"
+    ]
+   },
+   {
+    "name": "B",
+    "floormap": [
+     "https://plusjun.com/images/studios/layer41/layer41_floormaps_b_20211029-2.jpg"
+    ],
+    "images": [
+     "https://plusjun.com/images/studios/layer41/layer41_2f_02-2.jpg",
+     "https://plusjun.com/images/studios/layer41/layer41_2f_01.jpg",
+     "https://plusjun.com/images/studios/layer41/layer41_2f_03.jpg",
+     "https://plusjun.com/images/studios/layer41/layer41_2f_06.jpg",
+     "https://plusjun.com/images/studios/layer41/layer41_2f_04.jpg",
+     "https://plusjun.com/images/studios/layer41/layer41_2f_05.jpg"
+    ]
+   },
+   {
+    "name": "C",
+    "floormap": [
+     "https://plusjun.com/images/studios/layer41/layer41_floormaps_c_20211029-1.jpg"
+    ],
+    "images": [
+     "https://plusjun.com/images/studios/layer41/layer41_3f_01.jpg",
+     "https://plusjun.com/images/studios/layer41/layer41_3f_02.jpg",
+     "https://plusjun.com/images/studios/layer41/layer41_3f_03.jpg",
+     "https://plusjun.com/images/studios/layer41/layer41_3f_04.jpg",
+     "https://plusjun.com/images/studios/layer41/layer41_3f_05.jpg",
+     "https://plusjun.com/images/studios/layer41/layer41_3f_12.jpg",
+     "https://plusjun.com/images/studios/layer41/layer41_3f_07.jpg",
+     "https://plusjun.com/images/studios/layer41/layer41_3f_10.jpg",
+     "https://plusjun.com/images/studios/layer41/layer41_3f_08.jpg",
+     "https://plusjun.com/images/studios/layer41/layer41_3f_09.jpg",
+     "https://plusjun1.cafe24.com/%EC%A0%80%EC%9A%A9%EB%9F%89/41/25_41_3_2-2.jpg",
+     "https://plusjun1.cafe24.com/%EC%A0%80%EC%9A%A9%EB%9F%89/41/25_41_3_1.jpeg"
+    ]
+   }
+  ],
+  "source": "https://plusjun.com/product/studio-41.html"
+ },
+ {
+  "key": "layer-20",
+  "title": "Layer 20",
+  "area": "Wonhyo-ro · Yongsan",
+  "tag": "Three-Storey Building · Caravan",
+  "hero": "https://plusjun1.cafe24.com/web/LAYER%2020%20%E1%84%92%E1%85%A7%E1%86%AB%E1%84%89%E1%85%AE%E1%84%86%E1%85%A1%E1%86%A8.jpg",
+  "desc": "레이어20은 1939년 준공되어 변전소로 사용되었던 용산구 원효로의 산업건축물을 재해석한 복합 스튜디오입니다. 연면적 약 400평, 총 4개 층으로 구성되어 있으며, 오래된 콘크리트와 견고한 기둥 구조가 공간 특유의 분위기를 만들어냅니다. 1·2층은 층고 6.2m의 개방적인 공간이며, 층고 4m의 3층은 자연광이 유입되는 야외 테라스와 연결됩니다. 촬영을 비롯해 브랜드 행사, 전시, 팝업 등 다양한 형태로 활용할 수 있습니다.",
+  "location_kr": "서울 용산구 원효로1가 129-20 (원효로 236)",
+  "location_en": "129-20, Wonhyo-ro 1-ga, Youngsan-gu, Seoul",
+  "map": "https://naver.me/GeUXgfXR",
+  "links": [
+   {
+    "label": "Rental Fee",
+    "href": "https://rentalfee.cargo.site/twenty"
+   },
+   {
+    "label": "Main Information (PDF)",
+    "href": "https://drive.google.com/file/d/15iO3Jm5s0MaLqR4gUo3mwdL-jn_XgVqt/view?usp=sharing"
+   },
+   {
+    "label": "Parking & More Information",
+    "href": "https://rentalfee.cargo.site/20_info1"
+   }
+  ],
+  "floormaps": [
+   "https://plusjun1.cafe24.com/images/layer%2011/layer20/230807_%E1%84%85%E1%85%A6%E1%84%8B%E1%85%B5%E1%84%8B%E1%85%A520%E1%84%83%E1%85%A9%E1%84%86%E1%85%A7%E1%86%AB3.png",
+   "https://plusjun1.cafe24.com/images/layer%2011/layer20/230807_%E1%84%85%E1%85%A6%E1%84%8B%E1%85%B5%E1%84%8B%E1%85%A520%E1%84%83%E1%85%A9%E1%84%86%E1%85%A7%E1%86%AB4.png"
+  ],
+  "parts": [
+   {
+    "name": "1F",
+    "floormap": [],
+    "images": [
+     "https://plusjun1.cafe24.com/images/layer%2011/layer20/250317_20_1F.jpg",
+     "https://plusjun1.cafe24.com/%EC%A0%80%EC%9A%A9%EB%9F%89/20/250317_20_1F_7.jpeg",
+     "https://plusjun1.cafe24.com/%EC%A0%80%EC%9A%A9%EB%9F%89/20/250317_20_1F_3.jpeg",
+     "https://plusjun1.cafe24.com/%EC%A0%80%EC%9A%A9%EB%9F%89/20/250224_20_1F_2.jpeg",
+     "https://plusjun1.cafe24.com/%EC%A0%80%EC%9A%A9%EB%9F%89/20/0724_1%EC%B8%B52.jpeg",
+     "https://plusjun1.cafe24.com/%EC%A0%80%EC%9A%A9%EB%9F%89/20/0724_1%EC%B8%B53.jpeg",
+     "https://plusjun1.cafe24.com/%EC%A0%80%EC%9A%A9%EB%9F%89/20/0724_1%EC%B8%B54.jpeg",
+     "https://plusjun1.cafe24.com/%EC%A0%80%EC%9A%A9%EB%9F%89/20/0724_1%EC%B8%B56.jpeg"
+    ]
+   },
+   {
+    "name": "2F",
+    "floormap": [],
+    "images": [
+     "https://plusjun1.cafe24.com/%EC%A0%80%EC%9A%A9%EB%9F%89/20/20-%EC%9B%B9%EC%82%AC%EC%9D%B4%ED%8A%B8-%EC%97%85%EB%A1%9C%EB%93%9C-1_2.jpg",
+     "https://plusjun1.cafe24.com/%EC%A0%80%EC%9A%A9%EB%9F%89/20/20-%EC%9B%B9%EC%82%AC%EC%9D%B4%ED%8A%B8-%EC%97%85%EB%A1%9C%EB%93%9C-2_2.jpg",
+     "https://plusjun1.cafe24.com/%EC%A0%80%EC%9A%A9%EB%9F%89/20/20-%EC%9B%B9%EC%82%AC%EC%9D%B4%ED%8A%B8-%EC%97%85%EB%A1%9C%EB%93%9C-3_2.jpg",
+     "https://plusjun1.cafe24.com/%EC%A0%80%EC%9A%A9%EB%9F%89/20/20-%EC%9B%B9%EC%82%AC%EC%9D%B4%ED%8A%B8-%EC%97%85%EB%A1%9C%EB%93%9C-4_2.jpg",
+     "https://plusjun1.cafe24.com/%EC%A0%80%EC%9A%A9%EB%9F%89/20/20-%EC%9B%B9%EC%82%AC%EC%9D%B4%ED%8A%B8-%EC%97%85%EB%A1%9C%EB%93%9C_2.jpg"
+    ]
+   },
+   {
+    "name": "3F",
+    "floormap": [],
+    "images": [
+     "https://plusjun1.cafe24.com/%EC%A0%80%EC%9A%A9%EB%9F%89/20/240528_20_3F_3.jpeg",
+     "https://plusjun1.cafe24.com/%EC%A0%80%EC%9A%A9%EB%9F%89/20/0724_3%EC%B8%B52.jpeg",
+     "https://plusjun1.cafe24.com/images/studios/layer57/240528_20_3F_2.jpg",
+     "https://plusjun1.cafe24.com/%EC%A0%80%EC%9A%A9%EB%9F%89/20/0724_3%EC%B8%B53.jpeg",
+     "https://plusjun1.cafe24.com/%EC%A0%80%EC%9A%A9%EB%9F%89/20/240528_20_3F_1.jpeg",
+     "https://plusjun1.cafe24.com/%EC%A0%80%EC%9A%A9%EB%9F%89/20/0724_3%EC%B8%B54.jpeg",
+     "https://plusjun1.cafe24.com/images/layer%2011/layer20/0724_3F%E1%84%8B%E1%85%A9%E1%86%A8%E1%84%89%E1%85%A1%E1%86%BC1.jpg"
+    ]
+   },
+   {
+    "name": "Stairs",
+    "floormap": [],
+    "images": [
+     "https://plusjun1.cafe24.com/%EC%A0%80%EC%9A%A9%EB%9F%89/20/240528_20_1F_3.jpeg",
+     "https://plusjun1.cafe24.com/%EC%A0%80%EC%9A%A9%EB%9F%89/20/0724_%EA%B3%84%EB%8B%A81.jpeg",
+     "https://plusjun1.cafe24.com/images/layer%2011/layer20/0724_%E1%84%80%E1%85%A8%E1%84%83%E1%85%A1%E1%86%AB2.jpg",
+     "https://plusjun1.cafe24.com/%EC%A0%80%EC%9A%A9%EB%9F%89/20/0724_%EA%B3%84%EB%8B%A83.jpeg",
+     "https://plusjun1.cafe24.com/%EC%A0%80%EC%9A%A9%EB%9F%89/20/250317_20_s_3.jpg"
+    ]
+   },
+   {
+    "name": "Exterior",
+    "floormap": [],
+    "images": [
+     "https://plusjun1.cafe24.com/%EC%A0%80%EC%9A%A9%EB%9F%89/20/LAYER-20-%ED%98%84%EC%88%98%EB%A7%89_2.jpg",
+     "https://plusjun1.cafe24.com/%EC%A0%80%EC%9A%A9%EB%9F%89/20/0724_%EC%99%B8%EB%B6%802.jpeg",
+     "https://plusjun.com/images/layer%2011/layer20/250206_20_2.jpg",
+     "https://plusjun.com/images/layer%2011/layer20/250206_20_1.jpg",
+     "https://plusjun.com/images/layer%2011/layer20/0724_%E1%84%8B%E1%85%AC%E1%84%87%E1%85%AE3.jpg",
+     "https://plusjun1.cafe24.com/%EC%A0%80%EC%9A%A9%EB%9F%89/20/250206_20_3.jpeg"
+    ]
+   },
+   {
+    "name": "Caravan",
+    "floormap": [],
+    "images": [
+     "https://plusjun.com/images/studios//layer57/c/cr_s_detail_01.jpg",
+     "https://plusjun.com/images/studios/layer57/c/cr_s_detail_02.jpg",
+     "https://plusjun.com/images/studios/layer57/c/cr_s_detail_03.jpg",
+     "https://plusjun1.cafe24.com/%EC%A0%80%EC%9A%A9%EB%9F%89/20/cr_s_detail_14.jpeg",
+     "https://plusjun1.cafe24.com/%EC%A0%80%EC%9A%A9%EB%9F%89/20/cr_s_detail_11.jpeg",
+     "https://plusjun1.cafe24.com/%EC%A0%80%EC%9A%A9%EB%9F%89/20/cr_s_detail_12.jpeg",
+     "https://plusjun.com/images/studios/layer57/c/cr_s_detail_04.jpg",
+     "https://plusjun1.cafe24.com/%EC%A0%80%EC%9A%A9%EB%9F%89/20/240528_20_C.jpeg",
+     "https://plusjun.com/images/studios/layer57/c/crv03.jpg",
+     "https://plusjun.com/images/studios/layer57/c/cr_detail_01.jpg",
+     "https://plusjun.com/images/studios/layer57/c/c03.jpg",
+     "https://plusjun.com/images/studios/layer57/c/c04.jpg",
+     "https://plusjun.com/images/studios/layer57/c/c06.jpg",
+     "https://plusjun.com/images/studios/layer57/c/cr_a_detail_1.jpg"
+    ]
+   }
+  ],
+  "source": "https://plusjun.com/product/studio-20.html"
+ },
+ {
+  "key": "layer-11",
+  "title": "Layer 11",
+  "area": "Sinsu-dong · Mapo",
+  "tag": "Steel Truss Hall · 8m Ceiling",
+  "hero": "https://plusjun1.cafe24.com/images/layer%2011/1115_B8.jpg",
+  "desc": "레이어11은 마포구 신수동 경의선 숲길 인근에 위치한 연면적 약 300평의 복합 스튜디오입니다. 최대 층고 8m, 최대 60m까지 이어지는 개방적인 구조와 철골 트러스, 높은 창을 통해 들어오는 자연광이 독특한 공간감을 만들어냅니다. 메인홀과 카페로 활용 가능한 공간을 함께 갖추고 있으며, 촬영을 비롯해 전시, 브랜드 행사, 팝업 등 다양한 형태로 활용할 수 있습니다.",
+  "location_kr": "서울 마포구 신수동 93-4 (광성로 41-11)",
+  "location_en": "41-11, Gwangseong-ro, Mapo-gu, Seoul",
+  "map": "https://naver.me/GfbP73Lj",
+  "links": [
+   {
+    "label": "Rental Fee",
+    "href": "https://rentalfee.cargo.site/eleven"
+   },
+   {
+    "label": "Main Information (PDF)",
+    "href": "https://drive.google.com/file/d/1BXdy29a1nP_0ezjsKkl1p7WitIoNYda6/view?usp=sharing"
+   },
+   {
+    "label": "Parking & More Information",
+    "href": "https://rentalfee.cargo.site/11_info1"
+   }
+  ],
+  "floormaps": [
+   "https://plusjun1.cafe24.com/images/layer%2011/11%E1%84%83%E1%85%A9%E1%84%86%E1%85%A7%E1%86%AB_240108.jpg"
+  ],
+  "parts": [
+   {
+    "name": "Exterior",
+    "floormap": [],
+    "images": [
+     "https://plusjun1.cafe24.com/%EC%A0%80%EC%9A%A9%EB%9F%89/11/240812_11_ex.jpeg",
+     "https://plusjun1.cafe24.com/%EC%A0%80%EC%9A%A9%EB%9F%89/11/250226_11_e.jpeg",
+     "https://plusjun1.cafe24.com/%EC%A0%80%EC%9A%A9%EB%9F%89/11/1005_E1.jpeg",
+     "https://plusjun1.cafe24.com/%EC%A0%80%EC%9A%A9%EB%9F%89/11/0913_%EC%99%B8%EB%B6%801.jpeg"
+    ]
+   },
+   {
+    "name": "A",
+    "floormap": [],
+    "images": [
+     "https://plusjun1.cafe24.com/%EC%A0%80%EC%9A%A9%EB%9F%89/11/1005_A1.jpeg",
+     "https://plusjun1.cafe24.com/%EC%A0%80%EC%9A%A9%EB%9F%89/11/1005_A2.jpeg",
+     "https://plusjun1.cafe24.com/%EC%A0%80%EC%9A%A9%EB%9F%89/11/1115_A3.jpeg",
+     "https://plusjun1.cafe24.com/%EC%A0%80%EC%9A%A9%EB%9F%89/11/1115_A4.jpeg",
+     "https://plusjun1.cafe24.com/%EC%A0%80%EC%9A%A9%EB%9F%89/11/1005_A6.jpeg",
+     "https://plusjun1.cafe24.com/images/layer%2011/2-2.jpg",
+     "https://plusjun1.cafe24.com/%EC%A0%80%EC%9A%A9%EB%9F%89/11/25_11_a_1.jpeg",
+     "https://plusjun1.cafe24.com/%EC%A0%80%EC%9A%A9%EB%9F%89/11/250226_11_A.jpeg"
+    ]
+   },
+   {
+    "name": "B",
+    "floormap": [],
+    "images": [
+     "https://plusjun1.cafe24.com/%EC%A0%80%EC%9A%A9%EB%9F%89/11/1115_B1.jpeg",
+     "https://plusjun1.cafe24.com/%EC%A0%80%EC%9A%A9%EB%9F%89/11/1115_B2.jpeg",
+     "https://plusjun1.cafe24.com/%EC%A0%80%EC%9A%A9%EB%9F%89/11/1115_B3.jpeg",
+     "https://plusjun1.cafe24.com/%EC%A0%80%EC%9A%A9%EB%9F%89/11/1115_B7.jpeg",
+     "https://plusjun1.cafe24.com/%EC%A0%80%EC%9A%A9%EB%9F%89/11/1005_B2.jpeg",
+     "https://plusjun1.cafe24.com/%EC%A0%80%EC%9A%A9%EB%9F%89/11/0913_B2.jpeg"
+    ]
+   },
+   {
+    "name": "Cafe",
+    "floormap": [],
+    "images": [
+     "https://plusjun1.cafe24.com/%EC%A0%80%EC%9A%A9%EB%9F%89/11/1005_C1.jpeg",
+     "https://plusjun1.cafe24.com/%EC%A0%80%EC%9A%A9%EB%9F%89/11/1005_C2.jpeg",
+     "https://plusjun1.cafe24.com/%EC%A0%80%EC%9A%A9%EB%9F%89/11/1005_C3.jpeg",
+     "https://plusjun1.cafe24.com/%EC%A0%80%EC%9A%A9%EB%9F%89/11/0913_%EC%B9%B4%ED%8E%981.jpeg"
+    ]
+   }
+  ],
+  "source": "https://plusjun.com/product/11_info.html"
+ },
+ {
+  "key": "layer-26",
+  "title": "Layer 26",
+  "area": "Seongsu-dong · Seoul",
+  "tag": "Steel Factory · Daylight Horizon",
+  "hero": "https://plusjun1.cafe24.com/images/mainslide/main_26_01.jpg",
+  "desc": "레이어26은 성수동에 위치한 100평 규모의 철강 공장을 리모델링한 공간입니다. 스튜디오 절반 크기의 어닝을 열고 닫을 수 있으며, 자연광을 활용할 수 있는 호리존이 있어 다양한 컨셉의 촬영이 가능합니다. 최근에는 전시 공간으로도 활용되고 있습니다.",
+  "location_kr": "서울 성동구 성수동2가 279-2 (아차산로11가길 26)",
+  "location_en": "26, Achasan-ro 11ga-gil, Seongdong-gu, Seoul",
+  "map": "http://naver.me/x9Zo8gdq",
+  "links": [
+   {
+    "label": "Rental Fee",
+    "href": "https://rentalfee.cargo.site/twentysix"
+   },
+   {
+    "label": "Main Information (PDF)",
+    "href": "https://drive.google.com/file/d/1OzreFNAE5ywX3u449UwXix-PV41J6D_O/view?usp=sharing"
+   },
+   {
+    "label": "Parking & More Information",
+    "href": "https://rentalfee.cargo.site/26_info1"
+   }
+  ],
+  "floormaps": [
+   "https://plusjun1.cafe24.com/images/studios/layer26/layer26_floormaps_240613.jpeg"
+  ],
+  "parts": [
+   {
+    "name": "A",
+    "floormap": [],
+    "images": [
+     "https://plusjun.com/images/studios/layer26/26_a_01.jpg",
+     "https://plusjun.com/images/studios/layer26/26_a_02.jpg",
+     "https://plusjun.com/images/studios/layer26/26_a_10.jpg",
+     "https://plusjun.com/images/studios/layer26/26_a_11.jpg",
+     "https://plusjun.com/images/studios/layer26/26_a_15-1.jpg",
+     "https://plusjun.com/images/studios/layer26/26_a_16.jpg",
+     "https://plusjun.com/images/studios/layer26/26_a_14.jpg",
+     "https://plusjun.com/images/studios/layer26/26_a_09-1.jpg",
+     "https://plusjun.com/images/studios/layer26/26_a_13.jpg",
+     "https://plusjun.com/images/studios/layer26/26_a_05.jpg",
+     "https://plusjun.com/images/studios/layer26/26_a_06.jpg",
+     "https://plusjun.com/images/studios/layer26/26_a_07.jpg",
+     "https://plusjun1.cafe24.com/%EC%A0%80%EC%9A%A9%EB%9F%89/26/250226_26_a_1_2.jpg",
+     "https://plusjun.com/images/studios/layer26/26_2.jpg"
+    ]
+   },
+   {
+    "name": "B",
+    "floormap": [],
+    "images": [
+     "https://plusjun1.cafe24.com/%EC%A0%80%EC%9A%A9%EB%9F%89/26/26_1.jpg",
+     "https://plusjun.com/images/studios/layer26/26_b_02.jpg",
+     "https://plusjun.com/images/studios/layer26/26_b_01.jpg",
+     "https://plusjun.com/images/studios/layer26/26_b_04-1.jpg"
+    ]
+   },
+   {
+    "name": "Exterior",
+    "floormap": [],
+    "images": [
+     "https://plusjun1.cafe24.com/%EC%A0%80%EC%9A%A9%EB%9F%89/26/layer26_01_250124.jpeg",
+     "https://plusjun1.cafe24.com/images/studios/layer26/layer26_02_250124.jpg",
+     "https://plusjun1.cafe24.com/images/studios/layer26/250206_26_ex.jpg"
+    ]
+   }
+  ],
+  "source": "https://plusjun.com/product/studio-26.html"
+ },
+ {
+  "key": "layer-27",
+  "title": "Layer 27",
+  "area": "Seongsu-dong · Seoul",
+  "tag": "Studio & Office",
+  "hero": "https://plusjun1.cafe24.com/images/layer27/27_R_3.JPG",
+  "desc": "레이어27은 성수동에 위치한 120평 규모의 스튜디오로, 층고는 6m입니다. 자연광이 들어오는 천장과 나선형 계단으로 연결된 복층 구조의 A파트, 넓은 창을 가진 2층 Office 파트로 구성되어 있습니다. 이 두 개의 파트를 활용하여 다양한 촬영, 전시 및 행사를 진행할 수 있습니다.",
+  "location_kr": "서울 성동구 성수동2가 279-2 (아차산로11가길 26)",
+  "location_en": "26, Achasan-ro 11ga-gil, Seongdong-gu, Seoul",
+  "map": "https://naver.me/5MCEWkOz",
+  "links": [
+   {
+    "label": "Rental Fee",
+    "href": "https://rentalfee.cargo.site/twentyseven"
+   },
+   {
+    "label": "Main Information (PDF)",
+    "href": "https://drive.google.com/file/d/1tkS2_iwYvhKP14xaNtRf4B5LOum5qR7c/view?usp=sharing"
+   },
+   {
+    "label": "Parking & More Information",
+    "href": "https://rentalfee.cargo.site/27_info1"
+   }
+  ],
+  "floormaps": [
+   "https://plusjun1.cafe24.com/images/layer27/240405_27_floorplan.jpg"
+  ],
+  "parts": [
+   {
+    "name": "A",
+    "floormap": [],
+    "images": [
+     "https://plusjun1.cafe24.com/images/layer27/27_R_3.JPG",
+     "https://plusjun1.cafe24.com/images/layer27/27_R_4.JPG",
+     "https://plusjun1.cafe24.com/images/layer27/27_R_7.JPG",
+     "https://plusjun1.cafe24.com/images/layer27/27_R_8.JPG",
+     "https://plusjun1.cafe24.com/images/layer27/27_R_2.JPG",
+     "https://plusjun1.cafe24.com/%EC%A0%80%EC%9A%A9%EB%9F%89/27/27_a5.jpeg",
+     "https://plusjun1.cafe24.com/%EC%A0%80%EC%9A%A9%EB%9F%89/27/27_a6.jpeg",
+     "https://plusjun1.cafe24.com/%EC%A0%80%EC%9A%A9%EB%9F%89/27/27_a7.jpeg",
+     "https://plusjun1.cafe24.com/%EC%A0%80%EC%9A%A9%EB%9F%89/27/27_1.jpeg",
+     "https://plusjun1.cafe24.com/%EC%A0%80%EC%9A%A9%EB%9F%89/27/27_2.jpeg",
+     "https://plusjun1.cafe24.com/%EC%A0%80%EC%9A%A9%EB%9F%89/27/27_3.jpeg",
+     "https://plusjun1.cafe24.com/%EC%A0%80%EC%9A%A9%EB%9F%89/27/27_4.jpeg",
+     "https://plusjun1.cafe24.com/%EC%A0%80%EC%9A%A9%EB%9F%89/27/27_5.jpeg",
+     "https://plusjun1.cafe24.com/%EC%A0%80%EC%9A%A9%EB%9F%89/27/27_6.jpeg",
+     "https://plusjun1.cafe24.com/%EC%A0%80%EC%9A%A9%EB%9F%89/27/27_7.jpeg"
+    ]
+   },
+   {
+    "name": "Office",
+    "floormap": [],
+    "images": [
+     "https://plusjun1.cafe24.com/%EC%A0%80%EC%9A%A9%EB%9F%89/27/27_c1.jpeg",
+     "https://plusjun1.cafe24.com/%EC%A0%80%EC%9A%A9%EB%9F%89/27/27_c2.jpeg",
+     "https://plusjun1.cafe24.com/%EC%A0%80%EC%9A%A9%EB%9F%89/27/27_c3.jpeg",
+     "https://plusjun1.cafe24.com/%EC%A0%80%EC%9A%A9%EB%9F%89/27/27_c4.jpeg"
+    ]
+   },
+   {
+    "name": "Exterior",
+    "floormap": [],
+    "images": [
+     "https://plusjun1.cafe24.com/%EC%A0%80%EC%9A%A9%EB%9F%89/27/27_e2%20copy.jpeg",
+     "https://plusjun1.cafe24.com/%EC%A0%80%EC%9A%A9%EB%9F%89/27/27_e3%20copy.jpeg"
+    ]
+   }
+  ],
+  "source": "https://plusjun.com/js/27_info.html"
+ },
+ {
+  "key": "layer-7",
+  "title": "Layer 7",
+  "area": "Galwol-dong · Yongsan",
+  "tag": "60-Year-Old Church · 8m Ceiling",
+  "hero": "https://plusjun1.cafe24.com/images/mainslide/main_ys_01.jpg",
+  "desc": "레이어7은 빛이 아름답게 들어오는 60년 된 오래된 교회 건물을 리모델링한 공간입니다. 8m의 층고를 갖춘 100평 규모의 A파트와 60평 규모의 B, C파트로 구성되어 있으며, 야외 테라스도 이용 가능합니다. 그동안 다양한 행사와 전시가 진행되었습니다.",
+  "location_kr": "서울 용산구 갈월동 7-7 (한강대로98가길 7)",
+  "location_en": "7 Hangang-daero 98ga-gil, Yongsan-gu, Seoul",
+  "map": "http://naver.me/FSKBGV3m",
+  "links": [
+   {
+    "label": "Rental Fee",
+    "href": "https://rentalfee.cargo.site/seven"
+   },
+   {
+    "label": "Main Information (PDF)",
+    "href": "https://drive.google.com/file/d/1lq81u6J3gAhTI4Y5dcVIfsJgyr3RYcYd/view?usp=sharing"
+   },
+   {
+    "label": "Parking & More Information",
+    "href": "https://rentalfee.cargo.site/7_info1"
+   }
+  ],
+  "floormaps": [],
+  "parts": [
+   {
+    "name": "A",
+    "floormap": [
+     "https://plusjun.com/images/studios/yongsan/ys_fm_01-1.jpg"
+    ],
+    "images": [
+     "https://plusjun.com/images/studios/yongsan/ys_preview_13.jpg",
+     "https://plusjun.com/images/studios/yongsan/ys_preview_08-3.jpg",
+     "https://plusjun.com/images/studios/yongsan/ys_preview_20-1.jpg",
+     "https://plusjun.com/images/studios/yongsan/ys_preview_09-2.jpg",
+     "https://plusjun.com/images/studios/yongsan/ys_preview_10.jpg",
+     "https://plusjun.com/images/studios/yongsan/ys_preview_21-1.jpg",
+     "https://plusjun.com/images/studios/yongsan/ys_preview_12.jpg",
+     "https://plusjun.com/images/studios/yongsan/ys_preview_14.jpg",
+     "https://plusjun.com/images/studios/yongsan/ys_preview_15-1.jpg",
+     "https://plusjun.com/images/studios/yongsan/ys_a_01.jpg",
+     "https://plusjun.com/images/studios/yongsan/ys_a_02.jpg",
+     "https://plusjun1.cafe24.com/%EC%A0%80%EC%9A%A9%EB%9F%89/7/241023_7_1.jpeg",
+     "https://plusjun1.cafe24.com/%EC%A0%80%EC%9A%A9%EB%9F%89/7/241023_7_2.jpeg"
+    ]
+   },
+   {
+    "name": "B",
+    "floormap": [
+     "https://plusjun.com/images/studios/yongsan/ys_fm_b_01-1.jpg"
+    ],
+    "images": [
+     "https://plusjun.com/images/studios/yongsan/ys_b_detail_11.jpg",
+     "https://plusjun.com/images/studios/yongsan/ys_b_detail_12.jpg",
+     "https://plusjun.com/images/studios/yongsan/ys_b_detail_07-1.jpg",
+     "https://plusjun.com/images/studios/yongsan/ys_b_detail_06.jpg",
+     "https://plusjun.com/images/studios/yongsan/ys_b_detail_05.jpg",
+     "https://plusjun.com/images/studios/yongsan/ys_b_detail_04.jpg"
+    ]
+   },
+   {
+    "name": "C",
+    "floormap": [
+     "https://plusjun.com/images/studios/yongsan/ys_fm_c_01-1.jpg"
+    ],
+    "images": [
+     "https://plusjun.com/images/studios/yongsan/ys_c_detail_01-2.jpg",
+     "https://plusjun.com/images/studios/yongsan/ys_c_detail_06.jpg",
+     "https://plusjun.com/images/studios/yongsan/ys_c_detail_03.jpg",
+     "https://plusjun.com/images/studios/yongsan/ys_c_detail_09-1.jpg",
+     "https://plusjun.com/images/studios/yongsan/ys_c_detail_10-1.jpg",
+     "https://plusjun.com/images/studios/yongsan/ys_c_detail_04.jpg",
+     "https://plusjun.com/images/studios/yongsan/ys_ex_detail_07.jpg",
+     "https://plusjun.com/images/studios/yongsan/ys_ex_detail_08.jpg",
+     "https://plusjun.com/images/studios/yongsan/ys_ex_detail_09.jpg",
+     "https://plusjun.com/images/studios/yongsan/ys_ex_detail_10.jpg"
+    ]
+   },
+   {
+    "name": "Exterior",
+    "floormap": [],
+    "images": [
+     "https://plusjun1.cafe24.com/%EC%A0%80%EC%9A%A9%EB%9F%89/7/ys_ex_detail_06-3.jpeg",
+     "https://plusjun.com/images/studios/yongsan/ys_ex_detail_06-1.jpg",
+     "https://plusjun.com/images/studios/yongsan/ys_ex_detail_01.jpg",
+     "https://plusjun.com/images/studios/yongsan/ys_ex_detail_02.jpg",
+     "https://plusjun.com/images/studios/yongsan/ys_ex_detail_07.jpg",
+     "https://plusjun.com/images/studios/yongsan/ys_ex_detail_08.jpg",
+     "https://plusjun.com/images/studios/yongsan/ys_ex_detail_09.jpg",
+     "https://plusjun.com/images/studios/yongsan/ys_ex_detail_10.jpg",
+     "https://plusjun.com/images/studios/yongsan/ys_ex_detail_11.jpg"
+    ]
+   }
+  ],
+  "source": "https://plusjun.com/product/studio-ys.html"
+ },
+ {
+  "key": "layer-10",
+  "title": "Layer 10",
+  "area": "Seongsu-dong · Seoul",
+  "tag": "Former Textile Factory · Cafe",
+  "hero": "https://plusjun1.cafe24.com/images/mainslide/main_10_23.jpg",
+  "desc": "성수동 뚝섬역 앞에 위치한 레이어10은 400평 규모의 방직 공장을 리모델링한 공간입니다. 스튜디오와 카페를 함께 운영 중이며, 오픈과 동시에 다양한 팝업 행사가 진행되고 있습니다.",
+  "location_kr": "서울 성동구 성수동1가 14-27 (상원4길 10)",
+  "location_en": "10, Sangwon 4-gil, Seongdong-gu, Seoul",
+  "map": "http://naver.me/xhsl9DyY",
+  "links": [
+   {
+    "label": "Main Information (PDF)",
+    "href": "https://drive.google.com/file/d/1KoDoTzWNauiKPSfJDhJm_-9A9XHLlwLq/view?usp=sharing"
+   },
+   {
+    "label": "Parking & More Information",
+    "href": "https://plusjun.com/10_info.html"
+   }
+  ],
+  "floormaps": [
+   "https://plusjun.com/images/studios/layer10/layer10_floormaps_20210219-1.jpg"
+  ],
+  "parts": [
+   {
+    "name": "A",
+    "floormap": [],
+    "images": [
+     "https://plusjun.com/images/studios/layer10/10_a_detail_01.jpg",
+     "https://plusjun.com/images/studios/layer10/10_preview_033.jpg",
+     "https://plusjun.com/images/studios/layer10/10_a_detail_07.jpg",
+     "https://plusjun.com/images/studios/layer10/10_a_detail_03.jpg",
+     "https://plusjun.com/images/studios/layer10/10_a_detail_11-1.jpg",
+     "https://plusjun.com/images/studios/layer10/10_a_detail_09.jpg",
+     "https://plusjun.com/images/studios/layer10/10_a_detail_08.jpg",
+     "https://plusjun.com/images/studios/layer10/10_a_detail_10.jpg",
+     "https://plusjun.com/images/studios/layer10/10_preview_020.jpg"
+    ]
+   },
+   {
+    "name": "B",
+    "floormap": [],
+    "images": [
+     "https://plusjun.com/images/studios/layer10/10_preview_025.jpg",
+     "https://plusjun.com/images/studios/layer10/10_c_detail_03.jpg",
+     "https://plusjun.com/images/studios/layer10/10_b_detail_01.jpg",
+     "https://plusjun.com/images/studios/layer10/10_b_detail_11.jpg",
+     "https://plusjun.com/images/studios/layer10/10_b_detail_06.jpg",
+     "https://plusjun.com/images/studios/layer10/10_b_detail_06-3.jpg",
+     "https://plusjun.com/images/studios/layer10/10_b_detail_05.jpg",
+     "https://plusjun.com/images/studios/layer10/10_b_detail_07.jpg",
+     "https://plusjun.com/images/studios/layer10/10_b_detail_04.jpg",
+     "https://plusjun.com/images/studios/layer10/10_b_detail_08.jpg",
+     "https://plusjun.com/images/studios/layer10/10_b_detail_02.jpg",
+     "https://plusjun.com/images/studios/layer10/10_b_detail_12-1.jpg"
+    ]
+   },
+   {
+    "name": "C",
+    "floormap": [],
+    "images": [
+     "https://plusjun.com/images/studios/layer10/10_c_detail_04.jpg",
+     "https://plusjun.com/images/studios/layer10/10_c_detail_01.jpg",
+     "https://plusjun.com/images/studios/layer10/10_c_detail_02.jpg",
+     "https://plusjun.com/images/studios/layer10/10_c_detail_05-1.jpg",
+     "https://plusjun.com/images/studios/layer10/10_preview_023.jpg"
+    ]
+   },
+   {
+    "name": "D",
+    "floormap": [],
+    "images": [
+     "https://plusjun.com/images/studios/layer10/10_d_detail_04.jpg",
+     "https://plusjun.com/images/studios/layer10/10_d_detail_07.jpg",
+     "https://plusjun.com/images/studios/layer10/10_d_detail_05.jpg",
+     "https://plusjun1.cafe24.com/%EC%A0%80%EC%9A%A9%EB%9F%89/10/10_d_detail_08.jpeg",
+     "https://plusjun.com/images/studios/layer10/10_d_detail_01.jpg",
+     "https://plusjun.com/images/studios/layer10/10_d_detail_03.jpg"
+    ]
+   },
+   {
+    "name": "E",
+    "floormap": [],
+    "images": [
+     "https://plusjun.com/images/studios/layer10/10_e_detail_10.jpg",
+     "https://plusjun.com/images/studios/layer10/10_e_detail_18-1.jpg",
+     "https://plusjun.com/images/studios/layer10/10_e_detail_17-1.jpg",
+     "https://plusjun.com/images/studios/layer10/10_e_detail_19.jpg",
+     "https://plusjun.com/images/studios/layer10/10_e_detail_23.jpg",
+     "https://plusjun.com/images/studios/layer10/10_e_detail_20.jpg",
+     "https://plusjun.com/images/studios/layer10/10_e_detail_21.jpg",
+     "https://plusjun.com/images/studios/layer10/10_e_detail_24.jpg",
+     "https://plusjun.com/images/studios/layer10/10_e_detail_25.jpg"
+    ]
+   },
+   {
+    "name": "Cafe",
+    "floormap": [],
+    "images": [
+     "https://plusjun1.cafe24.com/%EC%A0%80%EC%9A%A9%EB%9F%89/10/10_cafe_detail_14.jpeg",
+     "https://plusjun.com/images/studios/layer10/10_cafe_detail_10.jpg",
+     "https://plusjun.com/images/studios/layer10/10_cafe_detail_19.jpg",
+     "https://plusjun.com/images/studios/layer10/10_cafe_detail_20.jpg",
+     "https://plusjun.com/images/studios/layer10/10_cafe_detail_12.jpg",
+     "https://plusjun.com/images/studios/layer10/10_cafe_detail_11.jpg",
+     "https://plusjun1.cafe24.com/%EC%A0%80%EC%9A%A9%EB%9F%89/10/10_cafe_detail_18.jpeg"
+    ]
+   },
+   {
+    "name": "Exterior",
+    "floormap": [],
+    "images": [
+     "https://plusjun1.cafe24.com/%EC%A0%80%EC%9A%A9%EB%9F%89/10/10_ex_sketch_10.jpeg",
+     "https://plusjun1.cafe24.com/%EC%A0%80%EC%9A%A9%EB%9F%89/10/10_ex_sketch_11.jpeg",
+     "https://plusjun.com/images/studios/layer10/10_ex_detail_16.jpg",
+     "https://plusjun.com/images/studios/layer10/10_ex_detail_01.jpg",
+     "https://plusjun.com/images/studios/layer10/10_ex_detail_02.jpg",
+     "https://plusjun.com/images/studios/layer10/10_ex_detail_04.jpg",
+     "https://plusjun.com/images/studios/layer10/10_ex_detail_11.jpg",
+     "https://plusjun1.cafe24.com/%EC%A0%80%EC%9A%A9%EB%9F%89/10/10_ex_detail_12-1.jpeg"
+    ]
+   }
+  ],
+  "source": "https://plusjun.com/product/studio-10.html"
+ },
+ {
+  "key": "layer-hannam",
+  "title": "Layer Hannam",
+  "area": "Hannam-dong · Yongsan",
+  "tag": "Two-Storey House · Next to Leeum",
+  "hero": "https://plusjun1.cafe24.com/Hannam/1114_e1.jpg",
+  "desc": "한남점은 리움미술관 바로 옆, 한강진역에서 도보 5분 거리에 있어 접근성이 좋은 단독 주택 건물로, 대지 면적은 150평이며 전체 2층 규모입니다. 다양한 촬영과 전시 행사가 가능합니다.",
+  "location_kr": "서울 용산구 한남동 743-27 (이태원로45길 64)",
+  "location_en": "743-27, Hannam-dong, Yongsan-gu, Seoul",
+  "map": "https://naver.me/55RHk9sb",
+  "links": [
+   {
+    "label": "Rental Fee",
+    "href": "https://rentalfee.cargo.site/hannam"
+   },
+   {
+    "label": "Main Information (PDF)",
+    "href": "https://drive.google.com/file/d/1qDUFtPRi3uvDhX1C-vQZpkRIZRIIIfXb/view?usp=sharing"
+   },
+   {
+    "label": "Parking & More Information",
+    "href": "https://rentalfee.cargo.site/hannam_info1-1"
+   }
+  ],
+  "floormaps": [
+   "https://plusjun1.cafe24.com/Hannam/240923_height_0_1f.jpg",
+   "https://plusjun1.cafe24.com/Hannam/240923_height_0_2f.jpg"
+  ],
+  "parts": [
+   {
+    "name": "Exterior",
+    "floormap": [],
+    "images": [
+     "https://plusjun1.cafe24.com/%EC%A0%80%EC%9A%A9%EB%9F%89/hn/1114_e1.jpeg",
+     "https://plusjun1.cafe24.com/%EC%A0%80%EC%9A%A9%EB%9F%89/hn/1106_E2.jpeg",
+     "https://plusjun1.cafe24.com/%EC%A0%80%EC%9A%A9%EB%9F%89/hn/1114_e3.jpeg",
+     "https://plusjun1.cafe24.com/%EC%A0%80%EC%9A%A9%EB%9F%89/hn/hn_ex1.jpeg",
+     "https://plusjun1.cafe24.com/%EC%A0%80%EC%9A%A9%EB%9F%89/hn/hn_ex2.jpeg",
+     "https://plusjun1.cafe24.com/%EC%A0%80%EC%9A%A9%EB%9F%89/hn/hn_ex3.jpeg",
+     "https://plusjun1.cafe24.com/%EC%A0%80%EC%9A%A9%EB%9F%89/hn/0818_05.jpeg",
+     "https://plusjun1.cafe24.com/%EC%A0%80%EC%9A%A9%EB%9F%89/hn/1128_%ED%95%9C%EB%82%A8%EC%8A%A4%EC%97%851.jpeg",
+     "https://plusjun1.cafe24.com/Hannam/1128_%E1%84%92%E1%85%A1%E1%86%AB%E1%84%82%E1%85%A1%E1%86%B7%E1%84%89%E1%85%B3%E1%84%8B%E1%85%A5%E1%86%B82.png"
+    ]
+   },
+   {
+    "name": "1F",
+    "floormap": [],
+    "images": [
+     "https://plusjun1.cafe24.com/Hannam/hn_1f_1.jpg",
+     "https://plusjun1.cafe24.com/Hannam/hn_1f_2.jpg",
+     "https://plusjun1.cafe24.com/Hannam/hn_1f_3.jpg",
+     "https://plusjun1.cafe24.com/Hannam/hn_1f_4.jpg",
+     "https://plusjun1.cafe24.com/Hannam/hn_1f_5.jpg",
+     "https://plusjun1.cafe24.com/Hannam/hn_1f_6.jpg",
+     "https://plusjun1.cafe24.com/Hannam/hn_1f_7.jpg",
+     "https://plusjun1.cafe24.com/Hannam/hn_1f_8.jpg"
+    ]
+   },
+   {
+    "name": "2F",
+    "floormap": [],
+    "images": [
+     "https://plusjun1.cafe24.com/Hannam/hn_2f_1.jpg",
+     "https://plusjun1.cafe24.com/Hannam/hn_2f_2.jpg",
+     "https://plusjun1.cafe24.com/Hannam/hn_2f_3.jpg",
+     "https://plusjun1.cafe24.com/Hannam/hn_2f_4.jpg",
+     "https://plusjun1.cafe24.com/Hannam/hn_2f_5.jpg",
+     "https://plusjun1.cafe24.com/Hannam/hn_2f_6.jpg",
+     "https://plusjun1.cafe24.com/Hannam/hn_2f_7.jpg",
+     "https://plusjun1.cafe24.com/Hannam/hn_2f_8.jpg",
+     "https://plusjun1.cafe24.com/Hannam/hn_2f_9.jpg",
+     "https://plusjun1.cafe24.com/Hannam/hn_2f_10.jpg",
+     "https://plusjun1.cafe24.com/%EC%A0%80%EC%9A%A9%EB%9F%89/hn/241023_hn_2F_1.jpeg",
+     "https://plusjun1.cafe24.com/%EC%A0%80%EC%9A%A9%EB%9F%89/hn/241023_hn_2F_2.jpeg"
+    ]
+   }
+  ],
+  "source": "https://plusjun.com/product/studio-hannam.html"
+ },
+ {
+  "key": "hongdae",
+  "title": "Hongdae",
+  "area": "Seongsan-dong · Mapo",
+  "tag": "House Studio · Garden & Greenhouse",
+  "hero": "https://plusjun1.cafe24.com/BG01.jpeg",
+  "desc": "홍대점은 성산동에 위치한 300평 규모의 단독 주택을 리모델링한 스튜디오입니다. 2층 건물 내부는 세 가지 컨셉의 룸으로 구성되어 있으며, 외부에는 200평 규모의 가든이 있어 야외 웨딩 및 행사 공간으로도 사용되고 있습니다.",
+  "location_kr": "서울 마포구 성산동 46-1 (월드컵북로15길 23)",
+  "location_en": "46-1, Sungsan-dong, Mapo-gu, Seoul",
+  "map": "https://map.naver.com/v5/search/%ED%94%8C%EB%9F%AC%EC%8A%A4%EC%A4%80%EC%8A%A4%ED%8A%9C%EB%94%94%EC%98%A4%20%ED%99%8D%EB%8C%80%EC%A0%90/place/36449066?c=14127388.9554794,4517865.4959094,15,0,0,0,dh",
+  "links": [
+   {
+    "label": "View Calendar",
+    "href": "http://raysoda.cafe24.com/zeroboard/zboard.php?id=hong_schedule&page=1&page_num=500&select_arrange=headnum&desc=&sn=off&ss=on&sc=on&keyword=&no=8712&category=1%20%20%20"
+   },
+   {
+    "label": "Parking & More Information",
+    "href": "https://plusjun.com/hd_info.html"
+   }
+  ],
+  "floormaps": [
+   "https://plusjun1.cafe24.com/images/studios/hongdae/240527_hongdae_1F.jpg",
+   "https://plusjun1.cafe24.com/images/studios/hongdae/240527_hongdae_2F.jpg"
+  ],
+  "parts": [
+   {
+    "name": "A",
+    "floormap": [],
+    "images": [
+     "https://plusjun.com/images/studios/hongdae/hd_A_detail_05.jpg",
+     "https://plusjun.com/images/studios/hongdae/hd_A_detail_11-1.jpg",
+     "https://plusjun.com/images/studios/hongdae/hd_A_detail_07.jpg",
+     "https://plusjun.com/images/studios/hongdae/38.jpg",
+     "https://plusjun.com/images/studios/hongdae/37.jpg"
+    ]
+   },
+   {
+    "name": "B",
+    "floormap": [],
+    "images": [
+     "https://plusjun.com/images/studios/hongdae/250206_hd_7.jpg",
+     "https://plusjun.com/images/studios/hongdae/250206_hd_3.jpg",
+     "https://plusjun.com/images/studios/hongdae/250206_hd_6.jpg",
+     "https://plusjun.com/images/studios/hongdae/250206_hd_4.jpg",
+     "https://plusjun1.cafe24.com/%EC%A0%80%EC%9A%A9%EB%9F%89/hd/250226_hd_b_2.jpg",
+     "https://plusjun1.cafe24.com/%EC%A0%80%EC%9A%A9%EB%9F%89/hd/25_hd_b_1.jpg"
+    ]
+   },
+   {
+    "name": "D",
+    "floormap": [],
+    "images": [
+     "https://plusjun.com/images/studios/hongdae/hd_D_detail_19-1.jpg",
+     "https://plusjun.com/images/studios/hongdae/hd_D_detail_20-1.jpg",
+     "https://plusjun.com/images/studios/hongdae/hd_D_detail_21-2.jpg",
+     "https://plusjun.com/images/studios/hongdae/hd_D_detail_22-1.jpg",
+     "https://plusjun.com/images/studios/hongdae/hd_D_detail_24-2.jpg",
+     "https://plusjun1.cafe24.com/%EC%A0%80%EC%9A%A9%EB%9F%89/hd/250226_hd_d_1.jpeg",
+     "https://plusjun1.cafe24.com/%EC%A0%80%EC%9A%A9%EB%9F%89/hd/25_hd_d_1.jpeg",
+     "https://plusjun1.cafe24.com/%EC%A0%80%EC%9A%A9%EB%9F%89/hd/250226_hd_d.jpeg",
+     "https://plusjun.com/images/studios/hongdae/hd_D_detail_05.jpg",
+     "https://plusjun1.cafe24.com/%EC%A0%80%EC%9A%A9%EB%9F%89/hd/hd_D_detail_09.jpeg",
+     "https://plusjun.com/images/studios/hongdae/hd_D_detail_10.jpg",
+     "https://plusjun.com/images/studios/hongdae/hd_D_detail_11.jpg",
+     "https://plusjun1.cafe24.com/%EC%A0%80%EC%9A%A9%EB%9F%89/hd/hd_D_detail_27-1.jpeg"
+    ]
+   },
+   {
+    "name": "Back Garden",
+    "floormap": [],
+    "images": [
+     "https://plusjun1.cafe24.com/%EC%A0%80%EC%9A%A9%EB%9F%89/hd/BG01.jpeg",
+     "https://plusjun1.cafe24.com/%EC%A0%80%EC%9A%A9%EB%9F%89/hd/BG2.jpeg",
+     "https://plusjun1.cafe24.com/%EC%A0%80%EC%9A%A9%EB%9F%89/hd/BG4.jpeg",
+     "https://plusjun1.cafe24.com/%EC%A0%80%EC%9A%A9%EB%9F%89/hd/BG3.jpeg",
+     "https://plusjun1.cafe24.com/%EC%A0%80%EC%9A%A9%EB%9F%89/hd/BG6.jpeg",
+     "https://plusjun1.cafe24.com/%EC%A0%80%EC%9A%A9%EB%9F%89/hd/hd_BG_detail_11-2.jpg"
+    ]
+   },
+   {
+    "name": "Greenhouse",
+    "floormap": [],
+    "images": [
+     "https://plusjun1.cafe24.com/images/studios/hongdae/ex_2-2.jpg",
+     "https://plusjun1.cafe24.com/images/studios/hongdae/in_1-2.jpg",
+     "https://plusjun1.cafe24.com/images/studios/hongdae/in_3-2.jpg",
+     "https://plusjun1.cafe24.com/images/studios/hongdae/ex_1-4.jpg"
+    ]
+   },
+   {
+    "name": "Garden",
+    "floormap": [],
+    "images": [
+     "https://plusjun.com/images/studios/hongdae/hd_G_detail_04.jpg",
+     "https://plusjun.com/images/studios/hongdae/hd_G_detail_03.jpg",
+     "https://plusjun.com/images/studios/hongdae/hd_G_detail_02.jpg",
+     "https://plusjun.com/images/studios/hongdae/hd_G_detail_01.jpg",
+     "https://plusjun.com/images/studios/hongdae/g01.jpg",
+     "https://plusjun.com/images/studios/hongdae/g05.jpg",
+     "https://plusjun.com/images/studios/hongdae/g04.jpg",
+     "https://plusjun1.cafe24.com/%EC%A0%80%EC%9A%A9%EB%9F%89/hd/hd_wedding_detail_01.jpeg"
+    ]
+   }
+  ],
+  "source": "https://plusjun.com/product/studio-hd.html"
+ },
+ {
+  "key": "faust",
+  "title": "Faust",
+  "area": "Itaewon · Yongsan",
+  "tag": "Techno Club · Spatial Sound",
+  "hero": "https://plusjun1.cafe24.com/images/mainslide/main_ft_01-3.jpg",
+  "desc": "파우스트는 국내 최초로 공간 음향 설계 개념으로 만들어진 테크노 클럽입니다. 사진, 영상 뿐 아니라 브랜드 파티 및 공연 렌탈이 가능합니다.",
+  "location_kr": "서울 용산구 이태원동 127-15 (보광로60길 7)",
+  "location_en": "7, Bogwang-ro 60-gil, Yongsan-gu, Seoul",
+  "map": "https://map.naver.com/v5/search/%EC%84%9C%EC%9A%B8%ED%8A%B9%EB%B3%84%EC%8B%9C%20%EC%9A%A9%EC%82%B0%EA%B5%AC%20%EC%9D%B4%ED%83%9C%EC%9B%90%EB%8F%99%20127-15/address/14136968.661784794,4513817.162574444,%EC%84%9C%EC%9A%B8%ED%8A%B9%EB%B3%84%EC%8B%9C%20%EC%9A%A9%EC%82%B0%EA%B5%AC%20%EC%9D%B4%ED%83%9C%EC%9B%90%EB%8F%99%20127-15,jibun?c=19,0,0,0,dh&amp;isCorrectAnswer=true",
+  "links": [
+   {
+    "label": "Parking & More Information",
+    "href": "https://plusjun.com/ft_info.html"
+   }
+  ],
+  "floormaps": [],
+  "parts": [
+   {
+    "name": "Faust",
+    "floormap": [
+     "https://plusjun.com/images/studios/faust/faust_floormaps_220716-1.jpg"
+    ],
+    "images": [
+     "https://plusjun.com/images/studios/faust/ft_preview_06.jpg",
+     "https://plusjun.com/images/studios/faust/ft_main_01.jpg",
+     "https://plusjun.com/images/studios/faust/ft_main_02.jpg",
+     "https://plusjun.com/images/studios/faust/ft_preview_04.jpg",
+     "https://plusjun.com/images/studios/faust/ft_preview_05.jpg",
+     "https://plusjun.com/images/studios/faust/ft_preview_03.jpg",
+     "https://plusjun.com/images/studios/faust/ft_preview_02-1.jpg",
+     "https://plusjun.com/images/studios/faust/ft_preview_01-1.jpg",
+     "https://plusjun.com/images/studios/faust/ft_lounge_01-1.jpg",
+     "https://plusjun.com/images/studios/faust/ft_lounge_02.jpg",
+     "https://plusjun.com/images/studios/faust/ft_lounge_04.jpg",
+     "https://plusjun.com/images/studios/faust/ft_lounge_08.jpg",
+     "https://plusjun.com/images/studios/faust/ft_lounge_05.jpg",
+     "https://plusjun.com/images/studios/faust/ft_preview_08.jpg"
+    ]
+   }
+  ],
+  "source": "https://plusjun.com/product/studio-ft.html"
+ },
+ {
+  "key": "layer-57",
+  "title": "Layer 57",
+  "area": "Seongsu-dong · Seoul",
+  "tag": "Cultural Space · Open 26.11.01",
+  "hero": "https://plusjun1.cafe24.com/%EC%A0%80%EC%9A%A9%EB%9F%89/57/IMG_6552.jpeg",
+  "desc": "Layer Studios 57 — Open 26.11.01. 성수동에 새로 문을 여는 레이어 스튜디오의 문화 공간입니다.",
+  "location_kr": "서울특별시 성동구 성수이로26길 19",
+  "location_en": "19, Seongsui-ro 26-gil, Seongdong-gu, Seoul",
+  "map": "https://naver.me/xdMxgGEv",
+  "links": [],
+  "floormaps": [
+   "https://plusjun1.cafe24.com/%EC%A0%80%EC%9A%A9%EB%9F%89/57/1ba0b9e69e6c1bffe14f7a062b211f58.jpeg"
+  ],
+  "parts": [
+   {
+    "name": "Exterior",
+    "floormap": [],
+    "images": [
+     "https://plusjun1.cafe24.com/%EC%A0%80%EC%9A%A9%EB%9F%89/57/IMG_6552.jpeg",
+     "https://plusjun1.cafe24.com/%EC%A0%80%EC%9A%A9%EB%9F%89/57/IMG_6553.jpeg",
+     "https://plusjun1.cafe24.com/%EC%A0%80%EC%9A%A9%EB%9F%89/57/IMG_6551%202.jpeg"
+    ]
+   },
+   {
+    "name": "Interior",
+    "floormap": [],
+    "images": [
+     "https://plusjun1.cafe24.com/%EC%A0%80%EC%9A%A9%EB%9F%89/57/1%EC%B8%B5(1).jpeg",
+     "https://plusjun1.cafe24.com/%EC%A0%80%EC%9A%A9%EB%9F%89/57/1%EC%B8%B5(2).jpeg",
+     "https://plusjun1.cafe24.com/%EC%A0%80%EC%9A%A9%EB%9F%89/57/1%EC%B8%B5(3).jpeg",
+     "https://plusjun1.cafe24.com/%EC%A0%80%EC%9A%A9%EB%9F%89/57/2%EC%B8%B5(2).jpeg",
+     "https://plusjun1.cafe24.com/%EC%A0%80%EC%9A%A9%EB%9F%89/57/2%EC%B8%B5(3).jpeg",
+     "https://plusjun1.cafe24.com/%EC%A0%80%EC%9A%A9%EB%9F%89/57/3%EC%B8%B5(2).jpeg",
+     "https://plusjun1.cafe24.com/%EC%A0%80%EC%9A%A9%EB%9F%89/57/3%EC%B8%B5(3).jpeg",
+     "https://plusjun1.cafe24.com/%EC%A0%80%EC%9A%A9%EB%9F%89/57/4%EC%B8%B5(1).jpeg",
+     "https://plusjun1.cafe24.com/%EC%A0%80%EC%9A%A9%EB%9F%89/57/4%EC%B8%B5(2).jpeg",
+     "https://plusjun1.cafe24.com/%EC%A0%80%EC%9A%A9%EB%9F%89/57/4%EC%B8%B5(3).jpeg"
+    ]
+   }
+  ],
+  "source": "https://plusjun.com/studio-57_2.html",
+  "specs": [
+   "Site area — 660m² / 200py",
+   "1+2F — 562m² / 170py / H4.5m–9m",
+   "3F — 396m² / 120py / H4.5m",
+   "4F — 396m² / 120py / H8m",
+   "5F — 212m² / 65py / H5m"
+  ]
+ },
+ {
+  "key": "horizon",
+  "title": "Horizon",
+  "area": "Loopscene Studio",
+  "tag": "Operated by Loopscene",
+  "hero": "https://plusjun.com/images/studios/horizon/h21.jpg",
+  "desc": "2025년 9월 1일부터 호리존 스튜디오는 새로운 곳에서 운영됩니다. 문의: 010-9094-8205 / loopscene75@gmail.com",
+  "location_kr": "",
+  "location_en": "",
+  "map": "https://map.naver.com/v5/search/%ED%94%8C%EB%9F%AC%EC%8A%A4%EC%A4%80%20%EC%8A%A4%ED%8A%9C%EB%94%94%EC%98%A4%20%ED%98%B8%EB%A6%AC%EC%A1%B4/place/36459557?c=14128547.4541894,4516224.4884584,15,0,0,0,dh",
+  "links": [
+   {
+    "label": "Website - www.loopscene.co.kr",
+    "href": "http://www.loopscene.co.kr/"
+   },
+   {
+    "label": "Instagram - Loopscene_studio",
+    "href": "https://www.instagram.com/loopscene_studio/"
+   }
+  ],
+  "floormaps": [
+   "https://plusjun1.cafe24.com/images/studios/horizon/240527_hr.jpg"
+  ],
+  "parts": [
+   {
+    "name": "Horizon 5F",
+    "floormap": [],
+    "images": [
+     "https://plusjun.com/images/studios/horizon/h21.jpg",
+     "https://plusjun.com/images/studios/horizon/h002.jpg",
+     "https://plusjun.com/images/studios/horizon/hz_5F_detail_01.jpg",
+     "https://plusjun.com/images/studios/horizon/h005.jpg",
+     "https://plusjun.com/images/studios/horizon/h010-2.jpg",
+     "https://plusjun.com/images/studios/horizon/36.jpg",
+     "https://plusjun.com/images/studios/horizon/h12.jpg",
+     "https://plusjun.com/images/studios/horizon/6f/241023_hr_1.jpg"
+    ]
+   },
+   {
+    "name": "Horizon 6F",
+    "floormap": [],
+    "images": [
+     "https://plusjun.com/images/studios/horizon/240528_001.jpg",
+     "https://plusjun.com/images/studios/horizon/6f/hz_6F_detail_02.jpg",
+     "https://plusjun.com/images/studios/horizon/6f/hz_6F_detail_03-1.jpg",
+     "https://plusjun.com/images/studios/horizon/240528_002.jpg",
+     "https://plusjun.com/images/studios/horizon/240528_003.jpg",
+     "https://plusjun.com/images/studios/horizon/6f/hz_6F_detail_05.jpg"
+    ]
+   }
+  ],
+  "source": "https://plusjun.com/product/studio-hz.html"
+ }
+]
