@@ -217,6 +217,12 @@ body.past-hero .sidenav {
   margin: 18px 0 20px;
 }
 .slide--cta .slide__title { margin-bottom: 20px; }
+.slide__title a {
+  display: inline-block;
+  border-bottom: 3px solid transparent;
+  transition: border-color .3s var(--ease);
+}
+.slide__title a:hover, .slide__title a:focus-visible { border-color: currentColor; outline: none; }
 .slide__cta {
   font-size: var(--fs-nav);
   font-weight: 700;
@@ -839,21 +845,6 @@ body.page-studio.past-hero .header__logo img { filter: invert(1); }
   .snext__title { font-size: 20px; }
 }
 
-/* View Studio link inside home slides */
-.slide__more {
-  display: inline-block;
-  width: auto !important;
-  align-self: flex-start;
-  margin-left: calc(50% - 327px);
-  margin-top: 22px;
-  font-size: var(--fs-ui);
-  font-weight: 700;
-  letter-spacing: .04em;
-  border-bottom: 1px solid currentColor;
-  padding-bottom: 3px;
-}
-.slide.is-active .slide__caption > .slide__more { transition-delay: .24s; }
-@media (max-width: 720px) { .slide__more { margin-left: 0; } }
 
 /* Studio pages: opaque header once past the hero so sticky tabs don't show through */
 body.page-studio.past-hero .header { background: var(--white); }
