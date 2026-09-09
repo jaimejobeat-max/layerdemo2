@@ -13,3 +13,15 @@
 ```bash
 python3 -m http.server 8765
 ```
+
+## 이미지 파이프라인
+
+원격 이미지를 로컬 WebP(1920px / 960px)로 변환해 `assets/img/`에 둡니다.
+
+```bash
+python3 tools/images.py <urls.json> <cache-dir>   # 다운로드 + 변환, data/images.json 갱신
+python3 tools/apply_images.py                     # index.html, 아카이브/저널 데이터에 적용
+python3 tools/build_studios.py                    # 스튜디오 페이지 재생성
+```
+
+아카이브/저널 상세 보기 안의 이미지는 아직 원격(plusjun.com)을 참조합니다.

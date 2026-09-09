@@ -5,11 +5,20 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Journal — Layer Studios</title>
   <meta name="description" content="Layer Studios의 전시, 이벤트, 공간 소식을 담은 저널.">
+  <meta property="og:type" content="website">
+  <meta property="og:site_name" content="Layer Studios">
+  <meta property="og:title" content="Journal — Layer Studios">
+  <meta property="og:description" content="Layer Studios의 전시, 이벤트, 공간 소식을 담은 저널.">
+  <meta property="og:image" content="https://layerdemo2.vercel.app/assets/img/c57be4941d-1920.webp">
+  <meta property="og:url" content="https://layerdemo2.vercel.app/journal">
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="theme-color" content="#000000">
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/static/pretendard.min.css">
   <link rel="icon" type="image/svg+xml" href="assets/favicon.svg">
   <link rel="stylesheet" href="css/style.css">
 </head>
 <body class="page-light">
+  <a class="skip-link" href="#main">본문으로 건너뛰기</a>
 
   <!-- ===== Header ===== -->
   <header class="header" id="header">
@@ -59,7 +68,7 @@
     </div>
   </div>
 
-  <main class="archive journal" id="journal">
+  <main class="archive journal" id="main">
 
     <!-- ===== Page head: section tabs / title / year filter ===== -->
     <div class="archive__head">
@@ -151,6 +160,7 @@
     </div>
   </footer>
 
+  <script src="js/common.js"></script>
   <script src="js/journal-data.js"></script>
   <script src="js/journal.js"></script>
 </body>

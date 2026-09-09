@@ -42,7 +42,7 @@
   function card(d) {
     return '<li class="acard">' +
       '<a href="#item-' + d.id + '" class="acard__link" data-id="' + d.id + '">' +
-        '<span class="acard__img"><img src="' + esc(d.thumb) + '" alt="' + esc(d.title) + '" loading="lazy"></span>' +
+        '<span class="acard__img"><img src="' + esc(d.thumb) + '"' + (d.thumbSet ? ' srcset="' + esc(d.thumbSet) + '" sizes="(max-width: 767px) 100vw, (max-width: 1023px) 50vw, 33vw"' : '') + ' alt="' + esc(d.title) + '" loading="lazy"></span>' +
         '<span class="acard__meta">' +
           '<span class="acard__type">' + esc(typeLabel(d.type)) + (d.date ? ' · ' + esc(d.date) : '') + '</span>' +
           '<span class="acard__title">' + esc(d.title) + '</span>' +

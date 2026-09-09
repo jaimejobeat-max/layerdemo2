@@ -43,7 +43,7 @@
   function card(d) {
     return '<li class="jcard">' +
       '<a href="#item-' + d.id + '" class="jcard__link" data-id="' + d.id + '">' +
-        '<span class="jcard__img"><img src="' + esc(d.cover) + '" alt="' + esc(d.title) + '" loading="lazy"></span>' +
+        '<span class="jcard__img"><img src="' + esc(d.cover) + '"' + (d.coverSet ? ' srcset="' + esc(d.coverSet) + '" sizes="(max-width: 767px) 100vw, 50vw"' : '') + ' alt="' + esc(d.title) + '" loading="lazy"></span>' +
         '<span class="jcard__meta">' +
           '<span class="jcard__date">' + esc(d.date || '') + '</span>' +
           '<span class="jcard__title">' + esc(d.title) + '</span>' +

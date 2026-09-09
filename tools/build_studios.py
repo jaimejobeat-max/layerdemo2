@@ -8,6 +8,21 @@ ROOT = pathlib.Path(__file__).resolve().parent.parent
 DATA = json.load(open(ROOT / 'data' / 'studios.json', encoding='utf-8'))
 OUT = ROOT / 'studios'
 OUT.mkdir(exist_ok=True)
+IMAGES = json.load(open(ROOT / 'data' / 'images.json', encoding='utf-8')) if (ROOT / 'data' / 'images.json').exists() else {}
+SITE = 'https://layerdemo2.vercel.app'
+
+def img(url, alt, sizes, extra=''):
+    """<img> tag using local WebP srcset when available, remote URL otherwise."""
+    m = IMAGES.get(url)
+    if not m:
+        return f'<img src="{e(url)}" alt="{e(alt)}" {extra}>'
+    s = m['sizes']; small = s.get('960') or s[min(s)]
+    srcset = ', '.join(f"../{v['src']} {v['w']}w" for k, v in sorted(s.items(), key=lambda kv: int(kv[0])))
+    return f'<img src="../{small["src"]}" srcset="{srcset}" sizes="{sizes}" width="{m["w"]}" height="{m["h"]}" alt="{e(alt)}" {extra}>'
+
+def og_image(url):
+    m = IMAGES.get(url)
+    return SITE + '/' + m['sizes']['1920']['src'] if m and '1920' in m['sizes'] else url
 
 def e(s): return html.escape(str(s), quote=True)
 def pad(n): return f'{n:02d}'
@@ -24,7 +39,7 @@ def menu_html():
 
 def part_html(p, idx):
     imgs = ''.join(
-        f'<li class="gallery__item"><img src="{e(src)}" alt="{e(p["name"])} {i+1}" loading="lazy"></li>'
+        f'<li class="gallery__item">{img(src, f"{p["name"]} {i+1}", "(max-width: 767px) 90vw, 60vw", "loading=\"lazy\"")}</li>'
         for i, src in enumerate(p['images']))
     fm = ''
     if p.get('floormap'):
@@ -55,8 +70,8 @@ def page(o, prev, nxt):
     floor = ''
     if o.get('floormaps'):
         floor = '<section class="floormap" id="floormap"><h2 class="part__title">Floor Map</h2><div class="floormap__grid">' + ''.join(
-            f'<a href="{e(f)}" target="_blank" rel="noopener"><img src="{e(f)}" alt="{e(o["title"])} floor map" loading="lazy"></a>' for f in o['floormaps']) + '</div></section>'
-    hero = f'<img class="slide__img" src="{e(o["hero"])}" alt="{e(o["title"])}">' if o['hero'] else ''
+            f'<a href="{e(f)}" target="_blank" rel="noopener">{img(f, o["title"] + " floor map", "(max-width: 767px) 100vw, 50vw", "loading=\"lazy\"")}</a>' for f in o['floormaps']) + '</div></section>'
+    hero = img(o['hero'], o['title'], '100vw', 'class="slide__img" fetchpriority="high"') if o['hero'] else ''
     loc = ''
     if o.get('location_kr') or o.get('location_en'):
         loc = f'''<div class="sinfo__block">
@@ -72,11 +87,20 @@ def page(o, prev, nxt):
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>{e(o['title'])} — Layer Studios</title>
   <meta name="description" content="{e(o['desc'][:150])}">
+  <meta property="og:type" content="website">
+  <meta property="og:site_name" content="Layer Studios">
+  <meta property="og:title" content="{e(o['title'])} — Layer Studios">
+  <meta property="og:description" content="{e(o['desc'][:150])}">
+  <meta property="og:image" content="{e(og_image(o['hero']))}">
+  <meta property="og:url" content="{SITE}/studios/{o['key']}">
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="theme-color" content="#000000">
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/static/pretendard.min.css">
   <link rel="icon" type="image/svg+xml" href="../assets/favicon.svg">
   <link rel="stylesheet" href="../css/style.css">
 </head>
 <body class="page-studio">
+  <a class="skip-link" href="#main">본문으로 건너뛰기</a>
 
   <header class="header" id="header">
     <a class="header__logo header__logo--stack" href="../index.html" aria-label="Layer Studios 홈">
@@ -105,7 +129,7 @@ def page(o, prev, nxt):
     </div>
   </div>
 
-  <main>
+  <main id="main">
     <section class="shero slide is-active" id="hero">
       {hero}
       <div class="slide__overlay"></div>
@@ -181,6 +205,7 @@ def page(o, prev, nxt):
     </div>
   </footer>
 
+  <script src="../js/common.js"></script>
   <script src="../js/studio.js"></script>
 </body>
 </html>

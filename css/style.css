@@ -850,3 +850,46 @@ body.page-studio.past-hero .header__logo img { filter: invert(1); }
 body.page-studio.past-hero .header { background: var(--white); }
 .sparts { top: var(--header-h); }
 .part, .floormap { scroll-margin-top: calc(var(--header-h) + 56px); }
+
+/* =========================================================
+   Polish: page enter, image fade-in, slide shade, focus, skip link
+   ========================================================= */
+@keyframes pageIn { from { opacity: 0; } to { opacity: 1; } }
+body { animation: pageIn .6s var(--ease) both; }
+
+html.js img { opacity: 0; transition: opacity .7s var(--ease); }
+html.js img.is-loaded { opacity: 1; }
+html.js .slide__img { transition: opacity .7s var(--ease), transform 1.6s var(--ease); }
+html.js .header__logo img, html.js .footer img { opacity: 1; }
+
+/* Left shade under the side nav so white menu text reads on bright photos */
+.slide::before {
+  content: "";
+  position: absolute; inset: 0;
+  background: linear-gradient(90deg, rgba(0,0,0,.38) 0%, rgba(0,0,0,0) 42%);
+  pointer-events: none;
+}
+@media (max-width: 1023px) { .slide::before { background: linear-gradient(180deg, rgba(0,0,0,.25), rgba(0,0,0,0) 30%); } }
+
+a:focus-visible, button:focus-visible { outline: 2px solid currentColor; outline-offset: 3px; }
+.skip-link {
+  position: absolute; left: var(--gutter); top: -100px;
+  z-index: 500; background: var(--black); color: var(--white);
+  padding: 8px 12px; font-size: var(--fs-ui);
+}
+.skip-link:focus { top: 12px; }
+
+/* 404 */
+.notfound {
+  min-height: 100vh; display: grid; place-items: center; text-align: center;
+  padding: var(--header-h) var(--gutter);
+}
+.notfound__code { font-size: 120px; font-weight: 700; letter-spacing: -0.04em; line-height: .9; }
+.notfound__text { font-size: var(--fs-nav); font-weight: 700; letter-spacing: -0.02em; margin: 16px 0 28px; }
+.notfound__link { font-size: var(--fs-ui); font-weight: 700; border-bottom: 1px solid currentColor; padding-bottom: 3px; }
+@media (max-width: 767px) { .notfound__code { font-size: 72px; } }
+
+@media (prefers-reduced-motion: reduce) {
+  body { animation: none; }
+  html.js img { opacity: 1; transition: none; }
+}
