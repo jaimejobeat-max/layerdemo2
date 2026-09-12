@@ -35,7 +35,12 @@
     'search':         { en: 'Search',         ko: '검색' },
     'menu.open':      { en: 'Open menu',      ko: '메뉴 열기' },
     'menu.close':     { en: 'Close menu',     ko: '메뉴 닫기' },
-    'email':          { en: 'Email',          ko: '이메일' }
+    'email':          { en: 'Email',          ko: '이메일' },
+    'search.placeholder': { en: 'Search studios, archives, journal', ko: '스튜디오, 아카이브, 저널 검색' },
+    'search.hint':    { en: 'Type to search. Press Esc to close.', ko: '검색어를 입력하세요. Esc로 닫습니다.' },
+    'search.studio':  { en: 'Studios',        ko: '스튜디오' },
+    'search.archive': { en: 'Archives',       ko: '아카이브' },
+    'search.journal': { en: 'Journal',        ko: '저널' }
   };
   function detect() {
     try { var v = localStorage.getItem(KEY); if (v === 'ko' || v === 'en') return v; } catch (e) {}

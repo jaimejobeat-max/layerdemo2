@@ -25,11 +25,11 @@ def rewrite_img_tags(html, sizes_for):
     return re.sub(r'<img[^>]+src="(https?://[^"]+)"[^>]*>', rep, html)
 
 # --- index.html ---
-p = ROOT / 'index.html'; s = p.read_text()
+p = ROOT / 'src' / 'pages' / 'index.html'; s = p.read_text()
 s = rewrite_img_tags(s, lambda cls: '100vw' if 'slide__img' in cls else '(max-width: 767px) 100vw, 50vw')
 # first slide: eager + high priority
 s = s.replace('loading="eager"', 'loading="eager" fetchpriority="high"', 1)
-p.write_text(s); print('index.html remote imgs left:', len(re.findall(r'<img[^>]+src="https?://', s)))
+p.write_text(s); print('src/pages/index.html remote imgs left:', len(re.findall(r'<img[^>]+src="https?://', s)))
 
 # --- data js: thumb/cover ---
 for f, key in [('js/archive-data.js', 'thumb'), ('js/journal-data.js', 'cover')]:

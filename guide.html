@@ -5,14 +5,18 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Guide — Layer Studios</title>
   <meta name="description" content="레이어 스튜디오 예약 방법, 이용 안내, 예약금과 환불 기준.">
+  <link rel="canonical" href="https://layerdemo2.vercel.app/guide">
   <meta property="og:type" content="website">
   <meta property="og:site_name" content="Layer Studios">
+  <meta property="og:locale" content="ko_KR">
+  <meta property="og:locale:alternate" content="en_US">
   <meta property="og:title" content="Guide — Layer Studios">
   <meta property="og:description" content="레이어 스튜디오 예약 방법, 이용 안내, 예약금과 환불 기준.">
   <meta property="og:image" content="https://layerdemo2.vercel.app/assets/img/a468e3e22d-1920.webp">
   <meta property="og:url" content="https://layerdemo2.vercel.app/guide">
   <meta name="twitter:card" content="summary_large_image">
   <meta name="theme-color" content="#000000">
+  <link rel="preconnect" href="https://cdn.jsdelivr.net" crossorigin>
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/static/pretendard.min.css">
   <link rel="icon" type="image/svg+xml" href="assets/favicon.svg">
   <script src="js/i18n.js"></script>
@@ -21,13 +25,12 @@
 <body class="page-light">
   <a class="skip-link" href="#main" data-i18n="skip">본문으로 건너뛰기</a>
 
-  <!-- ===== Header ===== -->
   <header class="header" id="header">
-    <a class="header__logo header__logo--stack" href="index.html" aria-label="Layer Studios 홈">
+    <a class="header__logo header__logo--stack" href="index.html" aria-label="Layer Studios">
       <img src="assets/logo-white.png" alt="Layer Studios">
       <span class="header__page">Guide</span>
     </a>
-    <nav class="header__nav" aria-label="유틸리티 메뉴">
+    <nav class="header__nav" aria-label="Utility">
       <a href="guide.html" class="header__link">Guide</a>
       <a href="about.html" class="header__link">About</a>
       <a href="journal.html" class="header__link">Journal</a>
@@ -35,7 +38,7 @@
       <a href="#" class="header__link header__link--ko"><span class="ko">로그인</span><span class="en">Login</span></a>
       <a href="#" class="header__link header__link--ko"><span class="ko">고객 서비스</span><span class="en">Client Service</span></a>
       <button type="button" class="header__lang" data-lang-toggle aria-label="KO / EN"><span data-lang-opt="ko">KO</span><span class="header__lang-sep">/</span><span data-lang-opt="en">EN</span></button>
-      <button class="header__icon" type="button" data-i18n-attr="aria-label:search">
+      <button class="header__icon header__search-btn" type="button" data-i18n-attr="aria-label:search" data-search-toggle>
         <svg width="16" height="16" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.4"><circle cx="7" cy="7" r="5.2"/><path d="M11 11l3.8 3.8"/></svg>
       </button>
       <button class="header__icon header__menu-btn" type="button" data-i18n-attr="aria-label:menu.open" aria-expanded="false" data-menu-toggle>
@@ -44,7 +47,6 @@
     </nav>
   </header>
 
-  <!-- ===== Full-screen menu ===== -->
   <div class="menu" id="menu" hidden>
     <div class="menu__inner">
       <button class="menu__close" type="button" data-i18n-attr="aria-label:menu.close" data-menu-toggle data-i18n="close">Close</button>
@@ -64,14 +66,27 @@
         <li><a href="studios/layer-57.html">Layer 57</a></li>
         <li class="menu__gap"><a href="journal.html">Journal</a></li>
         <li><a href="qna.html">Q&amp;A</a></li>
-        <li><a href="guide.html"><span class="en">Guide</span><span class="ko">가이드</span></a></li>
+        <li><a href="guide.html">Guide</a></li>
         <li><a href="about.html">About</a></li>
       </ul>
       <div class="menu__lang"><a href="#" data-lang-set="ko">KO</a><a href="#" data-lang-set="en">EN</a></div>
     </div>
   </div>
 
-  <main class="doc" id="main">
+  <div class="search" id="search" hidden role="dialog" aria-modal="true" aria-label="Search">
+    <div class="search__bar">
+      <svg class="search__icon" width="16" height="16" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.4"><circle cx="7" cy="7" r="5.2"/><path d="M11 11l3.8 3.8"/></svg>
+      <input class="search__input" id="searchInput" type="search" autocomplete="off" spellcheck="false" placeholder="Search" data-i18n-attr="placeholder:search.placeholder,aria-label:search">
+      <button type="button" class="search__close" data-search-toggle data-i18n="close">Close</button>
+    </div>
+    <div class="search__body">
+      <p class="search__hint" id="searchHint" data-i18n="search.hint">Studios, archives, journal</p>
+      <div class="search__results" id="searchResults"></div>
+    </div>
+  </div>
+
+
+<main class="doc" id="main">
     <div class="archive__head">
       <nav class="archive__tabs" aria-label="Sections">
         <a href="#reservation" class="archive__tab is-active">Reservation</a>
@@ -143,7 +158,7 @@
     </section>
   </main>
 
-  <!-- ===== Footer ===== -->
+
   <footer class="footer">
     <div class="footer__cols">
       <div class="footer__col">
@@ -170,7 +185,7 @@
         <form class="footer__form" onsubmit="return false">
           <label for="nl" class="visually-hidden" data-i18n="email">이메일</label>
           <input id="nl" type="email" placeholder="Email" data-i18n-attr="placeholder:email" autocomplete="off">
-          <button type="submit" aria-label="구독">→</button>
+          <button type="submit" aria-label="Subscribe">→</button>
         </form>
       </div>
     </div>
@@ -185,6 +200,8 @@
   </footer>
 
   <script src="js/common.js"></script>
+  <script src="js/search-index.js"></script>
+  <script src="js/search.js"></script>
   <script src="js/page.js"></script>
 </body>
 </html>

@@ -1,0 +1,64 @@
+<main class="archive" id="main">
+
+    <!-- ===== Page head: type tabs / title / studio filter ===== -->
+    <div class="archive__head">
+      <nav class="archive__tabs" aria-label="유형 필터" id="typeTabs">
+        <button type="button" class="archive__tab is-active" data-type="" data-i18n="tab.all">All</button>
+        <button type="button" class="archive__tab" data-type="Magazine" data-i18n="tab.magazine">Magazine</button>
+        <button type="button" class="archive__tab" data-type="Lookbook" data-i18n="tab.lookbook">Lookbook</button>
+        <button type="button" class="archive__tab" data-type="Video" data-i18n="tab.video">Video</button>
+      </nav>
+
+      <h1 class="archive__title">Archives</h1>
+
+      <div class="archive__filter">
+        <button type="button" class="archive__filter-btn" id="studioBtn" aria-expanded="false" aria-controls="studioMenu">
+          <span id="studioLabel" data-i18n="filter.studios">All Studios</span>
+          <svg width="10" height="6" viewBox="0 0 10 6" fill="none" stroke="currentColor" stroke-width="1.2"><path d="M1 1l4 4 4-4"/></svg>
+        </button>
+        <ul class="archive__filter-menu" id="studioMenu" hidden>
+          <li><button type="button" data-studio="" class="is-active" data-i18n="filter.studios">All Studios</button></li>
+          <li><button type="button" data-studio="Layer 41">Layer 41</button></li>
+          <li><button type="button" data-studio="Layer 20">Layer 20</button></li>
+          <li><button type="button" data-studio="Layer 11">Layer 11</button></li>
+          <li><button type="button" data-studio="Layer 26">Layer 26</button></li>
+          <li><button type="button" data-studio="Layer 27">Layer 27</button></li>
+          <li><button type="button" data-studio="Layer 7">Layer 7</button></li>
+          <li><button type="button" data-studio="Layer 10">Layer 10</button></li>
+          <li><button type="button" data-studio="Layer Hannam">Layer Hannam</button></li>
+          <li><button type="button" data-studio="Hongdae">Hongdae</button></li>
+          <li><button type="button" data-studio="Horizon">Horizon</button></li>
+          <li><button type="button" data-studio="Layer 57">Layer 57</button></li>
+        </ul>
+      </div>
+    </div>
+
+    <p class="archive__count" id="count" aria-live="polite"></p>
+
+    <!-- ===== Grid ===== -->
+    <ul class="archive__grid" id="grid"></ul>
+
+    <div class="archive__more">
+      <button type="button" class="archive__more-btn" id="moreBtn" data-i18n="more">Load More</button>
+      <p class="archive__empty" id="empty" hidden data-i18n="empty">No results.</p>
+    </div>
+  </main>
+
+  <!-- ===== Detail overlay ===== -->
+  <div class="detail" id="detail" hidden role="dialog" aria-modal="true" aria-labelledby="detailTitle">
+    <div class="detail__bar">
+      <button type="button" class="detail__nav" id="detailPrev" data-i18n="prev">← Prev</button>
+      <span class="detail__index" id="detailIndex"></span>
+      <button type="button" class="detail__nav" id="detailNext" data-i18n="next">Next →</button>
+      <button type="button" class="detail__close" id="detailClose" data-i18n="close">Close</button>
+    </div>
+    <div class="detail__scroll" id="detailScroll">
+      <header class="detail__head">
+        <p class="detail__meta" id="detailMeta"></p>
+        <h2 class="detail__title" id="detailTitle"></h2>
+        <p class="detail__studio" id="detailStudio"></p>
+      </header>
+      <div class="detail__images" id="detailImages"></div>
+      <footer class="detail__credits" id="detailCredits"></footer>
+    </div>
+  </div>

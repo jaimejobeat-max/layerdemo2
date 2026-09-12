@@ -83,7 +83,45 @@
   "source": "https://plusjun.com/product/studio-41.html",
   "area_ko": "성수동 · 서울",
   "tag_ko": "옛 철강 공장 · 층고 9m",
-  "desc_en": "Layer 41 is a large multi-purpose studio converted from a 1,500㎡ steel factory in Seongsu-dong. It keeps the high ceilings and structural character of factory architecture and is divided into three parts. Part A, the main hall, has a 9m ceiling and about 830㎡, and connects three-dimensionally to the split-level Part B. Part C on the third floor is an independent 500㎡ space with a 4m ceiling and access to the rooftop. All parts are linked by internal stairs and can be configured for shoots, exhibitions, pop-ups, performances and events of every kind."
+  "desc_en": "Layer 41 is a large multi-purpose studio converted from a 1,500㎡ steel factory in Seongsu-dong. It keeps the high ceilings and structural character of factory architecture and is divided into three parts. Part A, the main hall, has a 9m ceiling and about 830㎡, and connects three-dimensionally to the split-level Part B. Part C on the third floor is an independent 500㎡ space with a 4m ceiling and access to the rooftop. All parts are linked by internal stairs and can be configured for shoots, exhibitions, pop-ups, performances and events of every kind.",
+  "spec_rows": [
+   {
+    "label_ko": "면적",
+    "label_en": "Area",
+    "value_ko": "450평 (약 1,490㎡) · A 250평 · C 150평",
+    "value_en": "1,490㎡ (450py) · A 830㎡ · C 500㎡"
+   },
+   {
+    "label_ko": "층고",
+    "label_en": "Ceiling",
+    "value_ko": "A 9m · C 4m",
+    "value_en": "A 9m · C 4m"
+   },
+   {
+    "label_ko": "구성",
+    "label_en": "Parts",
+    "value_ko": "A · B · C · 옥상",
+    "value_en": "A · B · C · Rooftop"
+   },
+   {
+    "label_ko": "주차",
+    "label_en": "Parking",
+    "value_ko": "전체 대관 5대 · 1층 3대 · 3층 2대",
+    "value_en": "5 cars (full) · 3 (1F) · 2 (3F)"
+   },
+   {
+    "label_ko": "교통",
+    "label_en": "Access",
+    "value_ko": "2호선 성수역 2번 출구 도보 6분",
+    "value_en": "6 min walk from Seongsu Stn. exit 2"
+   },
+   {
+    "label_ko": "최소 대관",
+    "label_en": "Min. booking",
+    "value_ko": "4시간",
+    "value_en": "4 hours"
+   }
+  ]
  },
  {
   "key": "layer-20",
@@ -199,7 +237,45 @@
   "source": "https://plusjun.com/product/studio-20.html",
   "area_ko": "원효로 · 용산",
   "tag_ko": "옛 변전소 · 카라반",
-  "desc_en": "Layer 20 reinterprets an industrial building on Wonhyo-ro, Yongsan, completed in 1939 and once used as an electrical substation. Around 1,300㎡ across four floors, its aged concrete and solid column structure give the space its particular atmosphere. The first and second floors are open spaces with a 6.2m ceiling; the third floor, with a 4m ceiling, opens onto an outdoor terrace filled with natural light. Suitable for shoots, brand events, exhibitions and pop-ups."
+  "desc_en": "Layer 20 reinterprets an industrial building on Wonhyo-ro, Yongsan, completed in 1939 and once used as an electrical substation. Around 1,300㎡ across four floors, its aged concrete and solid column structure give the space its particular atmosphere. The first and second floors are open spaces with a 6.2m ceiling; the third floor, with a 4m ceiling, opens onto an outdoor terrace filled with natural light. Suitable for shoots, brand events, exhibitions and pop-ups.",
+  "spec_rows": [
+   {
+    "label_ko": "면적",
+    "label_en": "Area",
+    "value_ko": "연면적 400평 (약 1,320㎡) · 4개 층",
+    "value_en": "1,320㎡ across 4 floors"
+   },
+   {
+    "label_ko": "층고",
+    "label_en": "Ceiling",
+    "value_ko": "1·2F 6.2m · 3F 4m",
+    "value_en": "1F–2F 6.2m · 3F 4m"
+   },
+   {
+    "label_ko": "구성",
+    "label_en": "Parts",
+    "value_ko": "1F · 2F · 3F · Exterior · Caravan",
+    "value_en": "1F · 2F · 3F · Exterior · Caravan"
+   },
+   {
+    "label_ko": "주차",
+    "label_en": "Parking",
+    "value_ko": "전체 대관 6대 · 1파트 3대",
+    "value_en": "6 cars (full) · 3 (one part)"
+   },
+   {
+    "label_ko": "교통",
+    "label_en": "Access",
+    "value_ko": "삼각지·효창공원·남영역 도보 10분",
+    "value_en": "10 min walk from Samgakji / Hyochang Park / Namyeong Stn."
+   },
+   {
+    "label_ko": "최소 대관",
+    "label_en": "Min. booking",
+    "value_ko": "4시간",
+    "value_en": "4 hours"
+   }
+  ]
  },
  {
   "key": "layer-11",
@@ -279,7 +355,45 @@
   "source": "https://plusjun.com/product/11_info.html",
   "area_ko": "신수동 · 마포",
   "tag_ko": "철골 트러스 홀 · 층고 8m",
-  "desc_en": "Layer 11 is a multi-purpose studio of about 1,000㎡ near the Gyeongui Line Forest Park in Sinsu-dong, Mapo. An open structure up to 8m high and 60m long, steel trusses and daylight through tall windows create a distinctive sense of space. It combines a main hall with an area that can be used as a cafe, and works for shoots, exhibitions, brand events and pop-ups."
+  "desc_en": "Layer 11 is a multi-purpose studio of about 1,000㎡ near the Gyeongui Line Forest Park in Sinsu-dong, Mapo. An open structure up to 8m high and 60m long, steel trusses and daylight through tall windows create a distinctive sense of space. It combines a main hall with an area that can be used as a cafe, and works for shoots, exhibitions, brand events and pop-ups.",
+  "spec_rows": [
+   {
+    "label_ko": "면적",
+    "label_en": "Area",
+    "value_ko": "연면적 300평 (약 990㎡)",
+    "value_en": "990㎡ (300py)"
+   },
+   {
+    "label_ko": "층고",
+    "label_en": "Ceiling",
+    "value_ko": "최대 8m · 길이 60m",
+    "value_en": "Up to 8m · 60m long"
+   },
+   {
+    "label_ko": "구성",
+    "label_en": "Parts",
+    "value_ko": "A · B · Cafe · Exterior",
+    "value_en": "A · B · Cafe · Exterior"
+   },
+   {
+    "label_ko": "주차",
+    "label_en": "Parking",
+    "value_ko": "지점 주차 없음 · 인근 유료 주차장 (70m)",
+    "value_en": "No on-site parking · paid lot 70m away"
+   },
+   {
+    "label_ko": "교통",
+    "label_en": "Access",
+    "value_ko": "서강대역 도보 2분 · 대흥역 도보 5분",
+    "value_en": "2 min walk from Sogang Univ. Stn."
+   },
+   {
+    "label_ko": "최소 대관",
+    "label_en": "Min. booking",
+    "value_ko": "4시간",
+    "value_en": "4 hours"
+   }
+  ]
  },
  {
   "key": "layer-26",
@@ -352,7 +466,45 @@
   "source": "https://plusjun.com/product/studio-26.html",
   "area_ko": "성수동 · 서울",
   "tag_ko": "철강 공장 · 자연광 호리존",
-  "desc_en": "Layer 26 is a converted 330㎡ steel factory in Seongsu-dong. An awning covering half the studio can be opened or closed, and a daylight cyclorama allows shoots of many different concepts. It has recently been used as an exhibition space as well."
+  "desc_en": "Layer 26 is a converted 330㎡ steel factory in Seongsu-dong. An awning covering half the studio can be opened or closed, and a daylight cyclorama allows shoots of many different concepts. It has recently been used as an exhibition space as well.",
+  "spec_rows": [
+   {
+    "label_ko": "면적",
+    "label_en": "Area",
+    "value_ko": "100평 (약 330㎡)",
+    "value_en": "330㎡ (100py)"
+   },
+   {
+    "label_ko": "특징",
+    "label_en": "Features",
+    "value_ko": "개폐형 어닝 · 자연광 호리존",
+    "value_en": "Retractable awning · daylight cyclorama"
+   },
+   {
+    "label_ko": "구성",
+    "label_en": "Parts",
+    "value_ko": "A · B · Exterior",
+    "value_en": "A · B · Exterior"
+   },
+   {
+    "label_ko": "주차",
+    "label_en": "Parking",
+    "value_ko": "2대 (지점 앞 전용 구역)",
+    "value_en": "2 cars (dedicated bays in front)"
+   },
+   {
+    "label_ko": "교통",
+    "label_en": "Access",
+    "value_ko": "2호선 성수역 2번 출구 도보 10분",
+    "value_en": "10 min walk from Seongsu Stn. exit 2"
+   },
+   {
+    "label_ko": "최소 대관",
+    "label_en": "Min. booking",
+    "value_ko": "4시간",
+    "value_en": "4 hours"
+   }
+  ]
  },
  {
   "key": "layer-27",
@@ -425,7 +577,45 @@
   "source": "https://plusjun.com/js/27_info.html",
   "area_ko": "성수동 · 서울",
   "tag_ko": "스튜디오 & 오피스",
-  "desc_en": "Layer 27 is a 400㎡ studio in Seongsu-dong with a 6m ceiling. It consists of Part A, a split-level space with a daylit ceiling connected by a spiral staircase, and a second-floor Office part with wide windows. Together the two parts host shoots, exhibitions and events."
+  "desc_en": "Layer 27 is a 400㎡ studio in Seongsu-dong with a 6m ceiling. It consists of Part A, a split-level space with a daylit ceiling connected by a spiral staircase, and a second-floor Office part with wide windows. Together the two parts host shoots, exhibitions and events.",
+  "spec_rows": [
+   {
+    "label_ko": "면적",
+    "label_en": "Area",
+    "value_ko": "120평 (약 400㎡)",
+    "value_en": "400㎡ (120py)"
+   },
+   {
+    "label_ko": "층고",
+    "label_en": "Ceiling",
+    "value_ko": "6m",
+    "value_en": "6m"
+   },
+   {
+    "label_ko": "구성",
+    "label_en": "Parts",
+    "value_ko": "A (복층) · Office · Exterior",
+    "value_en": "A (split-level) · Office · Exterior"
+   },
+   {
+    "label_ko": "주차",
+    "label_en": "Parking",
+    "value_ko": "2대 (지점 앞 전용 구역)",
+    "value_en": "2 cars (dedicated bays in front)"
+   },
+   {
+    "label_ko": "교통",
+    "label_en": "Access",
+    "value_ko": "2호선 성수역 2번 출구 도보 10분",
+    "value_en": "10 min walk from Seongsu Stn. exit 2"
+   },
+   {
+    "label_ko": "최소 대관",
+    "label_en": "Min. booking",
+    "value_ko": "4시간",
+    "value_en": "4 hours"
+   }
+  ]
  },
  {
   "key": "layer-7",
@@ -525,7 +715,45 @@
   "source": "https://plusjun.com/product/studio-ys.html",
   "area_ko": "갈월동 · 용산",
   "tag_ko": "60년 된 교회 · 층고 8m",
-  "desc_en": "Layer 7 is a converted 60-year-old church building where the light falls beautifully. It consists of Part A, about 330㎡ with an 8m ceiling, and Parts B and C of about 200㎡ each, with an outdoor terrace also available. Many events and exhibitions have been held here."
+  "desc_en": "Layer 7 is a converted 60-year-old church building where the light falls beautifully. It consists of Part A, about 330㎡ with an 8m ceiling, and Parts B and C of about 200㎡ each, with an outdoor terrace also available. Many events and exhibitions have been held here.",
+  "spec_rows": [
+   {
+    "label_ko": "면적",
+    "label_en": "Area",
+    "value_ko": "A 100평 (330㎡) · B/C 각 60평 (200㎡)",
+    "value_en": "A 330㎡ · B and C 200㎡ each"
+   },
+   {
+    "label_ko": "층고",
+    "label_en": "Ceiling",
+    "value_ko": "A 8m",
+    "value_en": "A 8m"
+   },
+   {
+    "label_ko": "구성",
+    "label_en": "Parts",
+    "value_ko": "A · B · C · Exterior · 야외 테라스",
+    "value_en": "A · B · C · Exterior · Terrace"
+   },
+   {
+    "label_ko": "주차",
+    "label_en": "Parking",
+    "value_ko": "차고지 (스타렉스 높이까지) + 옆 교회 주차장 2대 (금·토 제외)",
+    "value_en": "Garage (up to van height) + 2 cars at the church lot (not Fri/Sat)"
+   },
+   {
+    "label_ko": "교통",
+    "label_en": "Access",
+    "value_ko": "4호선 숙대입구역 2번 출구 도보 10분",
+    "value_en": "10 min walk from Sookmyung Univ. Stn. exit 2"
+   },
+   {
+    "label_ko": "최소 대관",
+    "label_en": "Min. booking",
+    "value_ko": "4시간",
+    "value_en": "4 hours"
+   }
+  ]
  },
  {
   "key": "layer-10",
@@ -653,7 +881,39 @@
   "source": "https://plusjun.com/product/studio-10.html",
   "area_ko": "성수동 · 서울",
   "tag_ko": "옛 방직 공장 · 카페",
-  "desc_en": "Layer 10, in front of Ttukseom Station in Seongsu-dong, is a converted 1,300㎡ textile factory. It runs a studio and a cafe together, and has hosted a wide range of pop-up events since opening."
+  "desc_en": "Layer 10, in front of Ttukseom Station in Seongsu-dong, is a converted 1,300㎡ textile factory. It runs a studio and a cafe together, and has hosted a wide range of pop-up events since opening.",
+  "spec_rows": [
+   {
+    "label_ko": "면적",
+    "label_en": "Area",
+    "value_ko": "400평 (약 1,320㎡)",
+    "value_en": "1,320㎡ (400py)"
+   },
+   {
+    "label_ko": "구성",
+    "label_en": "Parts",
+    "value_ko": "A · B · C · D · E · Cafe · Exterior",
+    "value_en": "A · B · C · D · E · Cafe · Exterior"
+   },
+   {
+    "label_ko": "주차",
+    "label_en": "Parking",
+    "value_ko": "전체 대관 4대 · 1파트 2대 (발전차·탑차 포함)",
+    "value_en": "4 cars (full) · 2 (one part), incl. generator/box trucks"
+   },
+   {
+    "label_ko": "교통",
+    "label_en": "Access",
+    "value_ko": "2호선 뚝섬역 4번 출구 앞",
+    "value_en": "Right by Ttukseom Stn. exit 4"
+   },
+   {
+    "label_ko": "최소 대관",
+    "label_en": "Min. booking",
+    "value_ko": "4시간",
+    "value_en": "4 hours"
+   }
+  ]
  },
  {
   "key": "layer-hannam",
@@ -735,7 +995,39 @@
   "source": "https://plusjun.com/product/studio-hannam.html",
   "area_ko": "한남동 · 용산",
   "tag_ko": "2층 단독 주택 · 리움 옆",
-  "desc_en": "Layer Hannam is a detached house right next to the Leeum Museum, a five-minute walk from Hangangjin Station. On a 500㎡ plot with two floors, it suits a wide range of shoots and exhibitions."
+  "desc_en": "Layer Hannam is a detached house right next to the Leeum Museum, a five-minute walk from Hangangjin Station. On a 500㎡ plot with two floors, it suits a wide range of shoots and exhibitions.",
+  "spec_rows": [
+   {
+    "label_ko": "면적",
+    "label_en": "Area",
+    "value_ko": "대지 150평 (약 500㎡) · 2층",
+    "value_en": "500㎡ plot · 2 floors"
+   },
+   {
+    "label_ko": "구성",
+    "label_en": "Parts",
+    "value_ko": "1F · 2F · Exterior",
+    "value_en": "1F · 2F · Exterior"
+   },
+   {
+    "label_ko": "주차",
+    "label_en": "Parking",
+    "value_ko": "1F+2F 대관 2대 · 한 층 대관 1대",
+    "value_en": "2 cars (both floors) · 1 (one floor)"
+   },
+   {
+    "label_ko": "교통",
+    "label_en": "Access",
+    "value_ko": "한강진역 도보 5분 · 이태원역 도보 10분",
+    "value_en": "5 min walk from Hangangjin Stn."
+   },
+   {
+    "label_ko": "최소 대관",
+    "label_en": "Min. booking",
+    "value_ko": "4시간",
+    "value_en": "4 hours"
+   }
+  ]
  },
  {
   "key": "hongdae",
@@ -848,7 +1140,39 @@
   "source": "https://plusjun.com/product/studio-hd.html",
   "area_ko": "성산동 · 마포",
   "tag_ko": "주택 스튜디오 · 가든 & 온실",
-  "desc_en": "Hongdae is a studio converted from a 1,000㎡ detached house in Seongsan-dong. The two-storey interior holds three rooms of different concepts, and a 660㎡ garden outside is also used for outdoor weddings and events."
+  "desc_en": "Hongdae is a studio converted from a 1,000㎡ detached house in Seongsan-dong. The two-storey interior holds three rooms of different concepts, and a 660㎡ garden outside is also used for outdoor weddings and events.",
+  "spec_rows": [
+   {
+    "label_ko": "면적",
+    "label_en": "Area",
+    "value_ko": "주택 300평 (약 990㎡) · 가든 200평 (660㎡)",
+    "value_en": "990㎡ house · 660㎡ garden"
+   },
+   {
+    "label_ko": "구성",
+    "label_en": "Parts",
+    "value_ko": "A · B · D · Back Garden · Greenhouse · Garden",
+    "value_en": "A · B · D · Back Garden · Greenhouse · Garden"
+   },
+   {
+    "label_ko": "주차",
+    "label_en": "Parking",
+    "value_ko": "차고지 팀당 1대 · 추가 차량은 인근 주차장",
+    "value_en": "1 car per team in the garage · more nearby"
+   },
+   {
+    "label_ko": "무상 제공",
+    "label_en": "Included",
+    "value_ko": "룸당 스팀다리미 · 행거 · 전신거울 · 조명 1대",
+    "value_en": "Steamer, rack, mirror and one light per room"
+   },
+   {
+    "label_ko": "최소 대관",
+    "label_en": "Min. booking",
+    "value_ko": "2시간",
+    "value_en": "2 hours"
+   }
+  ]
  },
  {
   "key": "faust",
@@ -894,7 +1218,33 @@
   "source": "https://plusjun.com/product/studio-ft.html",
   "area_ko": "이태원 · 용산",
   "tag_ko": "테크노 클럽 · 공간 음향",
-  "desc_en": "Faust is Korea's first techno club designed around spatial sound. Beyond photo and video shoots, it is available for brand parties and performances."
+  "desc_en": "Faust is Korea's first techno club designed around spatial sound. Beyond photo and video shoots, it is available for brand parties and performances.",
+  "spec_rows": [
+   {
+    "label_ko": "구성",
+    "label_en": "Parts",
+    "value_ko": "M · L",
+    "value_en": "M · L"
+   },
+   {
+    "label_ko": "주차",
+    "label_en": "Parking",
+    "value_ko": "인근 유료 주차장 (16m)",
+    "value_en": "Paid lot 16m away"
+   },
+   {
+    "label_ko": "교통",
+    "label_en": "Access",
+    "value_ko": "6호선 이태원역 3번 출구 도보 2분",
+    "value_en": "2 min walk from Itaewon Stn. exit 3"
+   },
+   {
+    "label_ko": "대관료",
+    "label_en": "Rates",
+    "value_ko": "별도 문의",
+    "value_en": "On request"
+   }
+  ]
  },
  {
   "key": "layer-57",
@@ -938,16 +1288,47 @@
    }
   ],
   "source": "https://plusjun.com/studio-57_2.html",
-  "specs": [
-   "Site area — 660m² / 200py",
-   "1+2F — 562m² / 170py / H4.5m–9m",
-   "3F — 396m² / 120py / H4.5m",
-   "4F — 396m² / 120py / H8m",
-   "5F — 212m² / 65py / H5m"
-  ],
   "area_ko": "성수동 · 서울",
   "tag_ko": "문화 공간 · 26.11.01 오픈",
-  "desc_en": "Layer Studios 57 — opening 26.11.01. A new cultural space by Layer Studios in Seongsu-dong."
+  "desc_en": "Layer Studios 57 — opening 26.11.01. A new cultural space by Layer Studios in Seongsu-dong.",
+  "spec_rows": [
+   {
+    "label_ko": "대지",
+    "label_en": "Site area",
+    "value_ko": "660㎡ / 200평",
+    "value_en": "660㎡ / 200py"
+   },
+   {
+    "label_ko": "1+2F",
+    "label_en": "1+2F",
+    "value_ko": "562㎡ / 170평 · 층고 4.5–9m",
+    "value_en": "562㎡ / 170py · H 4.5–9m"
+   },
+   {
+    "label_ko": "3F",
+    "label_en": "3F",
+    "value_ko": "396㎡ / 120평 · 층고 4.5m",
+    "value_en": "396㎡ / 120py · H 4.5m"
+   },
+   {
+    "label_ko": "4F",
+    "label_en": "4F",
+    "value_ko": "396㎡ / 120평 · 층고 8m",
+    "value_en": "396㎡ / 120py · H 8m"
+   },
+   {
+    "label_ko": "5F",
+    "label_en": "5F",
+    "value_ko": "212㎡ / 65평 · 층고 5m",
+    "value_en": "212㎡ / 65py · H 5m"
+   },
+   {
+    "label_ko": "오픈",
+    "label_en": "Opening",
+    "value_ko": "2026.11.01",
+    "value_en": "2026.11.01"
+   }
+  ]
  },
  {
   "key": "horizon",
@@ -1003,6 +1384,7 @@
   "source": "https://plusjun.com/product/studio-hz.html",
   "area_ko": "루프씬 스튜디오",
   "tag_ko": "루프씬 운영",
-  "desc_en": "From 1 September 2025, Horizon Studio operates at a new location. Enquiries: 010-9094-8205 / loopscene75@gmail.com"
+  "desc_en": "From 1 September 2025, Horizon Studio operates at a new location. Enquiries: 010-9094-8205 / loopscene75@gmail.com",
+  "spec_rows": []
  }
 ]
