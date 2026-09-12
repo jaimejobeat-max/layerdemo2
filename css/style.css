@@ -834,7 +834,8 @@ body.page-studio.past-hero .header__logo img { filter: invert(1); }
 @media (max-width: 767px) {
   .sinfo { padding: 72px var(--gutter) 64px; }
   .sinfo__desc p { font-size: 15px; }
-  .sparts { gap: 16px; padding: 14px var(--gutter); overflow-x: auto; flex-wrap: nowrap; scrollbar-width: none; }
+  .sparts { gap: 16px; padding: 14px 48px 14px var(--gutter); overflow-x: auto; flex-wrap: nowrap; scrollbar-width: none; -webkit-mask-image: linear-gradient(90deg, #000 calc(100% - 48px), transparent); mask-image: linear-gradient(90deg, #000 calc(100% - 48px), transparent); }
+  .sparts::-webkit-scrollbar { display: none; }
   .part { padding-top: 48px; }
   .part__head { flex-direction: column; align-items: flex-start; gap: 12px; }
   .part__title { font-size: 36px; }
