@@ -15,10 +15,11 @@
   <meta name="theme-color" content="#000000">
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/static/pretendard.min.css">
   <link rel="icon" type="image/svg+xml" href="assets/favicon.svg">
+  <script src="js/i18n.js"></script>
   <link rel="stylesheet" href="css/style.css">
 </head>
 <body class="page-light">
-  <a class="skip-link" href="#main">본문으로 건너뛰기</a>
+  <a class="skip-link" href="#main" data-i18n="skip">본문으로 건너뛰기</a>
 
   <!-- ===== Header ===== -->
   <header class="header" id="header">
@@ -31,12 +32,13 @@
       <a href="about.html" class="header__link">About</a>
       <a href="journal.html" class="header__link">Journal</a>
       <a href="qna.html" class="header__link">Q&amp;A</a>
-      <a href="#" class="header__link header__link--ko">로그인</a>
-      <a href="#" class="header__link header__link--ko">고객 서비스</a>
-      <button class="header__icon" type="button" aria-label="검색">
+      <a href="#" class="header__link header__link--ko"><span class="ko">로그인</span><span class="en">Login</span></a>
+      <a href="#" class="header__link header__link--ko"><span class="ko">고객 서비스</span><span class="en">Client Service</span></a>
+      <button type="button" class="header__lang" data-lang-toggle aria-label="KO / EN"><span data-lang-opt="ko">KO</span><span class="header__lang-sep">/</span><span data-lang-opt="en">EN</span></button>
+      <button class="header__icon" type="button" data-i18n-attr="aria-label:search">
         <svg width="16" height="16" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.4"><circle cx="7" cy="7" r="5.2"/><path d="M11 11l3.8 3.8"/></svg>
       </button>
-      <button class="header__icon header__menu-btn" type="button" aria-label="메뉴 열기" aria-expanded="false" data-menu-toggle>
+      <button class="header__icon header__menu-btn" type="button" data-i18n-attr="aria-label:menu.open" aria-expanded="false" data-menu-toggle>
         <svg width="18" height="14" viewBox="0 0 18 14" fill="none" stroke="currentColor" stroke-width="1.4"><path d="M0 1h18M0 7h18M0 13h18"/></svg>
       </button>
     </nav>
@@ -45,7 +47,7 @@
   <!-- ===== Full-screen menu ===== -->
   <div class="menu" id="menu" hidden>
     <div class="menu__inner">
-      <button class="menu__close" type="button" aria-label="메뉴 닫기" data-menu-toggle>Close</button>
+      <button class="menu__close" type="button" data-i18n-attr="aria-label:menu.close" data-menu-toggle data-i18n="close">Close</button>
       <ul class="menu__list">
         <li><a href="#">Reservation</a></li>
         <li><a href="archives.html">Archives</a></li>
@@ -62,15 +64,16 @@
         <li><a href="studios/layer-57.html">Layer 57</a></li>
         <li class="menu__gap"><a href="journal.html">Journal</a></li>
         <li><a href="qna.html">Q&amp;A</a></li>
-        <li><a href="guide.html">Guide</a></li>
+        <li><a href="guide.html"><span class="en">Guide</span><span class="ko">가이드</span></a></li>
         <li><a href="about.html">About</a></li>
       </ul>
+      <div class="menu__lang"><a href="#" data-lang-set="ko">KO</a><a href="#" data-lang-set="en">EN</a></div>
     </div>
   </div>
 
   <main class="doc" id="main">
     <div class="archive__head">
-      <nav class="archive__tabs" aria-label="섹션">
+      <nav class="archive__tabs" aria-label="Sections">
         <a href="#reservation" class="archive__tab is-active">Reservation</a>
         <a href="#usage" class="archive__tab">Usage</a>
         <a href="#payment" class="archive__tab">Payment</a>
@@ -82,60 +85,60 @@
     </div>
 
     <section class="doc__section" id="reservation">
-      <h2 class="doc__h">스튜디오 예약 방법</h2>
-      <ol class="steps"><li class="steps__item"><span class="steps__num">01</span><span class="steps__title">지점 및 파트 선택</span><span class="steps__desc">스튜디오 페이지에서 지점과 파트(A·B·C 등)를 고릅니다.</span></li><li class="steps__item"><span class="steps__num">02</span><span class="steps__title">예약 신청</span><span class="steps__desc">Reservation 메뉴에서 예약글을 작성합니다.</span></li><li class="steps__item"><span class="steps__num">03</span><span class="steps__title">1:1 안내</span><span class="steps__desc">예약글 확인 후 전화 또는 댓글로 상세 안내를 드립니다.</span></li><li class="steps__item"><span class="steps__num">04</span><span class="steps__title">예약금 입금</span><span class="steps__desc">안내받은 계좌로 예약금을 입금합니다.</span></li><li class="steps__item"><span class="steps__num">05</span><span class="steps__title">예약 완료</span><span class="steps__desc">입금 확인 후 예약이 확정됩니다.</span></li></ol>
+      <h2 class="doc__h"><span class="ko">스튜디오 예약 방법</span><span class="en">How to book a studio</span></h2>
+      <ol class="steps"><li class="steps__item"><span class="steps__num">01</span><span class="steps__title"><span class="ko">지점 및 파트 선택</span><span class="en">Choose a studio and part</span></span><span class="steps__desc"><span class="ko">스튜디오 페이지에서 지점과 파트(A·B·C 등)를 고릅니다.</span><span class="en">Pick the studio and the part (A, B, C…) on its page.</span></span></li><li class="steps__item"><span class="steps__num">02</span><span class="steps__title"><span class="ko">예약 신청</span><span class="en">Request a booking</span></span><span class="steps__desc"><span class="ko">Reservation 메뉴에서 예약글을 작성합니다.</span><span class="en">Write a booking request in the Reservation menu.</span></span></li><li class="steps__item"><span class="steps__num">03</span><span class="steps__title"><span class="ko">1:1 안내</span><span class="en">Personal guidance</span></span><span class="steps__desc"><span class="ko">예약글 확인 후 전화 또는 댓글로 상세 안내를 드립니다.</span><span class="en">We reply by phone or comment with the details.</span></span></li><li class="steps__item"><span class="steps__num">04</span><span class="steps__title"><span class="ko">예약금 입금</span><span class="en">Pay the deposit</span></span><span class="steps__desc"><span class="ko">안내받은 계좌로 예약금을 입금합니다.</span><span class="en">Transfer the deposit to the account we give you.</span></span></li><li class="steps__item"><span class="steps__num">05</span><span class="steps__title"><span class="ko">예약 완료</span><span class="en">Booking confirmed</span></span><span class="steps__desc"><span class="ko">입금 확인 후 예약이 확정됩니다.</span><span class="en">Your booking is confirmed once the deposit arrives.</span></span></li></ol>
     </section>
 
     <section class="doc__section" id="usage">
-      <h2 class="doc__h">스튜디오 이용 안내</h2>
+      <h2 class="doc__h"><span class="ko">스튜디오 이용 안내</span><span class="en">Using the studio</span></h2>
       <dl class="doc__dl">
-        <dt>이용 시간</dt><dd>입·퇴장 기준으로 계산합니다. 세팅과 철수 시간이 포함되며 정시에 입·퇴장합니다.</dd>
-        <dt>최소 대관 시간</dt><dd>홍대 2시간 / 레이어 4시간부터 예약 가능</dd>
-        <dt>추가 협의</dt><dd>가구 촬영, 차량 내부 진입 시 별도 금액을 협의합니다.</dd>
-        <dt>견적 및 주차</dt><dd><a href="https://rentalfee.cargo.site/41_info1" target="_blank" rel="noopener">지점별 견적 및 주차 정보 확인하기 ↗</a></dd>
-        <dt>사전 답사</dt><dd>답사를 원하시면 <a href="https://forms.gle/fEZqkTdAjeU1zvLW6" target="_blank" rel="noopener">답사 신청 양식 ↗</a>을 작성해 주세요.</dd>
-        <dt>소품·가구</dt><dd>소품과 가구는 수시로 변경될 수 있습니다.</dd>
+        <dt><span class="ko">이용 시간</span><span class="en">Hours</span></dt><dd><span class="ko">입·퇴장 기준으로 계산합니다. 세팅과 철수 시간이 포함되며 정시에 입·퇴장합니다.</span><span class="en">Rental time runs from entry to exit, including set-up and strike. Please arrive and leave on the hour.</span></dd>
+        <dt><span class="ko">최소 대관 시간</span><span class="en">Minimum booking</span></dt><dd><span class="ko">홍대 2시간 / 레이어 4시간부터 예약 가능</span><span class="en">Hongdae from 2 hours / Layer studios from 4 hours</span></dd>
+        <dt><span class="ko">추가 협의</span><span class="en">Extra charges</span></dt><dd><span class="ko">가구 촬영, 차량 내부 진입 시 별도 금액을 협의합니다.</span><span class="en">Furniture shoots and vehicles entering the studio are quoted separately.</span></dd>
+        <dt><span class="ko">견적 및 주차</span><span class="en">Rates & parking</span></dt><dd><a href="https://rentalfee.cargo.site/41_info1" target="_blank" rel="noopener"><span class="ko">지점별 견적 및 주차 정보 확인하기 ↗</span><span class="en">Rates and parking by studio ↗</span></a></dd>
+        <dt><span class="ko">사전 답사</span><span class="en">Site visit</span></dt><dd><span class="ko">답사를 원하시면 <a href="https://forms.gle/fEZqkTdAjeU1zvLW6" target="_blank" rel="noopener">답사 신청 양식 ↗</a>을 작성해 주세요.</span><span class="en">To visit before your shoot, fill in the <a href="https://forms.gle/fEZqkTdAjeU1zvLW6" target="_blank" rel="noopener">site visit form ↗</a>.</span></dd>
+        <dt><span class="ko">소품·가구</span><span class="en">Props & furniture</span></dt><dd><span class="ko">소품과 가구는 수시로 변경될 수 있습니다.</span><span class="en">Props and furniture may change without notice.</span></dd>
       </dl>
     </section>
 
     <section class="doc__section" id="payment">
-      <h2 class="doc__h">예약금 및 결제</h2>
+      <h2 class="doc__h"><span class="ko">예약금 및 결제</span><span class="en">Deposit & payment</span></h2>
       <dl class="doc__dl">
-        <dt>예약금</dt><dd>예약 확정 시 별도로 안내드립니다.</dd>
-        <dt>입금 계좌</dt><dd><span class="doc__account" data-copy="8889991234">우리은행 888-999-1234</span> 플러스준스튜디오 <button type="button" class="doc__copy" data-copy-btn>Copy</button></dd>
+        <dt><span class="ko">예약금</span><span class="en">Deposit</span></dt><dd><span class="ko">예약 확정 시 별도로 안내드립니다.</span><span class="en">The deposit amount is confirmed with your booking.</span></dd>
+        <dt><span class="ko">입금 계좌</span><span class="en">Bank account</span></dt><dd><span class="doc__account" data-copy="8889991234"><span class="ko">우리은행 888-999-1234</span><span class="en">Woori Bank 888-999-1234</span></span> <span class="ko">플러스준스튜디오</span><span class="en">Plusjun Studio</span> <button type="button" class="doc__copy" data-copy-btn>Copy</button></dd>
       </dl>
     </section>
 
     <section class="doc__section" id="refund">
-      <h2 class="doc__h">환불 / 위약금 기준</h2>
+      <h2 class="doc__h"><span class="ko">환불 / 위약금 기준</span><span class="en">Cancellation policy</span></h2>
       <div class="refund">
         <div class="refund__col">
-          <h3 class="sinfo__h">홍대</h3>
+          <h3 class="sinfo__h"><span class="ko">홍대</span><span class="en">Hongdae</span></h3>
           <ul class="refund__list">
-            <li><span>촬영 6일 이내</span><span>50%</span></li>
-            <li><span>촬영 3일 이내</span><span>70%</span></li>
-            <li><span>촬영 당일</span><span>100%</span></li>
+            <li><span><span class="ko">촬영 6일 이내</span><span class="en">Within 6 days of the shoot</span></span><span>50%</span></li>
+            <li><span><span class="ko">촬영 3일 이내</span><span class="en">Within 3 days</span></span><span>70%</span></li>
+            <li><span><span class="ko">촬영 당일</span><span class="en">On the day</span></span><span>100%</span></li>
           </ul>
         </div>
         <div class="refund__col">
-          <h3 class="sinfo__h">레이어</h3>
+          <h3 class="sinfo__h"><span class="ko">레이어</span><span class="en">Layer studios</span></h3>
           <ul class="refund__list">
-            <li><span>촬영 14일 이내</span><span>50%</span></li>
-            <li><span>촬영 7일 이내</span><span>70%</span></li>
-            <li><span>촬영 3일 이내</span><span>80%</span></li>
-            <li><span>전날 혹은 당일</span><span>100%</span></li>
+            <li><span><span class="ko">촬영 14일 이내</span><span class="en">Within 14 days of the shoot</span></span><span>50%</span></li>
+            <li><span><span class="ko">촬영 7일 이내</span><span class="en">Within 7 days</span></span><span>70%</span></li>
+            <li><span><span class="ko">촬영 3일 이내</span><span class="en">Within 3 days</span></span><span>80%</span></li>
+            <li><span><span class="ko">전날 혹은 당일</span><span class="en">The day before or on the day</span></span><span>100%</span></li>
           </ul>
         </div>
       </div>
-      <p class="doc__note">* 웨딩 및 행사는 별도 기준이 적용됩니다.</p>
+      <p class="doc__note"><span class="ko">* 웨딩 및 행사는 별도 기준이 적용됩니다.</span><span class="en">* Weddings and events follow a separate policy.</span></p>
     </section>
 
     <section class="doc__section" id="contact">
-      <h2 class="doc__h">문의</h2>
+      <h2 class="doc__h"><span class="ko">문의</span><span class="en">Contact</span></h2>
       <dl class="doc__dl">
-        <dt>전화</dt><dd><a href="tel:0233567750">02-336-7750</a></dd>
-        <dt>메일</dt><dd><a href="mailto:contact@plusjun.com">contact@plusjun.com</a></dd>
-        <dt>Q&amp;A</dt><dd><a href="qna.html">자주 묻는 질문과 문의 양식 보기 →</a></dd>
+        <dt><span class="ko">전화</span><span class="en">Phone</span></dt><dd><a href="tel:0233567750">02-336-7750</a></dd>
+        <dt><span class="ko">메일</span><span class="en">Email</span></dt><dd><a href="mailto:contact@plusjun.com">contact@plusjun.com</a></dd>
+        <dt>Q&amp;A</dt><dd><a href="qna.html"><span class="ko">자주 묻는 질문과 문의 양식 보기 →</span><span class="en">FAQ and inquiry form →</span></a></dd>
       </dl>
     </section>
   </main>
@@ -144,29 +147,29 @@
   <footer class="footer">
     <div class="footer__cols">
       <div class="footer__col">
-        <h3 class="footer__h">Location</h3>
-        <p>743-27, Hannam-dong<br>Yongsan-gu, Seoul</p>
-        <a href="index.html#studios" class="footer__arrow-link">Find Studios</a>
+        <h3 class="footer__h"><span class="en">Location</span><span class="ko">위치</span></h3>
+        <p class="en">743-27, Hannam-dong<br>Yongsan-gu, Seoul</p><p class="ko">서울 용산구 한남동 743-27</p>
+        <a href="index.html#studios" class="footer__arrow-link"><span class="en">Find Studios</span><span class="ko">스튜디오 보기</span></a>
       </div>
       <div class="footer__col">
-        <h3 class="footer__h">Contact</h3>
+        <h3 class="footer__h"><span class="en">Contact</span><span class="ko">연락처</span></h3>
         <p><a href="tel:0233567750">02.336.7750</a><br><a href="mailto:contact@plusjun.com">contact@plusjun.com</a></p>
-        <a href="#" class="footer__arrow-link">Reservation</a>
+        <a href="#" class="footer__arrow-link"><span class="en">Reservation</span><span class="ko">예약</span></a>
       </div>
       <div class="footer__col">
-        <h3 class="footer__h">Legal</h3>
+        <h3 class="footer__h"><span class="en">Legal</span><span class="ko">법적 고지</span></h3>
         <ul class="footer__links">
-          <li><a href="#">Terms</a></li>
-          <li><a href="#">Privacy</a></li>
-          <li><a href="guide.html">Guide</a></li>
-          <li><a href="#">Careers</a></li>
+          <li><a href="#"><span class="en">Terms</span><span class="ko">이용약관</span></a></li>
+          <li><a href="#"><span class="en">Privacy</span><span class="ko">개인정보처리방침</span></a></li>
+          <li><a href="guide.html"><span class="en">Guide</span><span class="ko">가이드</span></a></li>
+          <li><a href="#"><span class="en">Careers</span><span class="ko">채용</span></a></li>
         </ul>
       </div>
       <div class="footer__col">
-        <h3 class="footer__h">Newsletter</h3>
+        <h3 class="footer__h"><span class="en">Newsletter</span><span class="ko">뉴스레터</span></h3>
         <form class="footer__form" onsubmit="return false">
-          <label for="nl" class="visually-hidden">이메일</label>
-          <input id="nl" type="email" placeholder="Email" autocomplete="off">
+          <label for="nl" class="visually-hidden" data-i18n="email">이메일</label>
+          <input id="nl" type="email" placeholder="Email" data-i18n-attr="placeholder:email" autocomplete="off">
           <button type="submit" aria-label="구독">→</button>
         </form>
       </div>
@@ -176,7 +179,7 @@
         <a href="#" aria-label="Instagram"><svg width="16" height="16" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.3"><rect x="1.5" y="1.5" width="13" height="13" rx="3.5"/><circle cx="8" cy="8" r="3"/><circle cx="11.8" cy="4.2" r=".6" fill="currentColor"/></svg></a>
         <a href="#" aria-label="YouTube"><svg width="16" height="16" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.3"><rect x="1" y="3.5" width="14" height="9" rx="2.5"/><path d="M6.5 6v4l3.5-2z" fill="currentColor" stroke="none"/></svg></a>
       </div>
-      <p class="footer__legal">Layer Studios · Founder Heo Jun-sung · Business No. 837-87-01038 · Mail-order License 2018-서울성동-0310</p>
+      <p class="footer__legal en">Layer Studios · Founder Heo Jun-sung · Business No. 837-87-01038 · Mail-order License 2018-서울성동-0310</p><p class="footer__legal ko">주식회사 레이어스튜디오 · 대표 허준성 · 사업자등록번호 837-87-01038 · 통신판매업신고 2018-서울성동-0310</p>
       <p class="footer__copy">© 2009 — 2026 Layer Studios</p>
     </div>
   </footer>

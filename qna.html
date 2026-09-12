@@ -15,10 +15,11 @@
   <meta name="theme-color" content="#000000">
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/static/pretendard.min.css">
   <link rel="icon" type="image/svg+xml" href="assets/favicon.svg">
+  <script src="js/i18n.js"></script>
   <link rel="stylesheet" href="css/style.css">
 </head>
 <body class="page-light">
-  <a class="skip-link" href="#main">본문으로 건너뛰기</a>
+  <a class="skip-link" href="#main" data-i18n="skip">본문으로 건너뛰기</a>
 
   <!-- ===== Header ===== -->
   <header class="header" id="header">
@@ -31,12 +32,13 @@
       <a href="about.html" class="header__link">About</a>
       <a href="journal.html" class="header__link">Journal</a>
       <a href="qna.html" class="header__link">Q&amp;A</a>
-      <a href="#" class="header__link header__link--ko">로그인</a>
-      <a href="#" class="header__link header__link--ko">고객 서비스</a>
-      <button class="header__icon" type="button" aria-label="검색">
+      <a href="#" class="header__link header__link--ko"><span class="ko">로그인</span><span class="en">Login</span></a>
+      <a href="#" class="header__link header__link--ko"><span class="ko">고객 서비스</span><span class="en">Client Service</span></a>
+      <button type="button" class="header__lang" data-lang-toggle aria-label="KO / EN"><span data-lang-opt="ko">KO</span><span class="header__lang-sep">/</span><span data-lang-opt="en">EN</span></button>
+      <button class="header__icon" type="button" data-i18n-attr="aria-label:search">
         <svg width="16" height="16" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.4"><circle cx="7" cy="7" r="5.2"/><path d="M11 11l3.8 3.8"/></svg>
       </button>
-      <button class="header__icon header__menu-btn" type="button" aria-label="메뉴 열기" aria-expanded="false" data-menu-toggle>
+      <button class="header__icon header__menu-btn" type="button" data-i18n-attr="aria-label:menu.open" aria-expanded="false" data-menu-toggle>
         <svg width="18" height="14" viewBox="0 0 18 14" fill="none" stroke="currentColor" stroke-width="1.4"><path d="M0 1h18M0 7h18M0 13h18"/></svg>
       </button>
     </nav>
@@ -45,7 +47,7 @@
   <!-- ===== Full-screen menu ===== -->
   <div class="menu" id="menu" hidden>
     <div class="menu__inner">
-      <button class="menu__close" type="button" aria-label="메뉴 닫기" data-menu-toggle>Close</button>
+      <button class="menu__close" type="button" data-i18n-attr="aria-label:menu.close" data-menu-toggle data-i18n="close">Close</button>
       <ul class="menu__list">
         <li><a href="#">Reservation</a></li>
         <li><a href="archives.html">Archives</a></li>
@@ -62,44 +64,64 @@
         <li><a href="studios/layer-57.html">Layer 57</a></li>
         <li class="menu__gap"><a href="journal.html">Journal</a></li>
         <li><a href="qna.html">Q&amp;A</a></li>
-        <li><a href="guide.html">Guide</a></li>
+        <li><a href="guide.html"><span class="en">Guide</span><span class="ko">가이드</span></a></li>
         <li><a href="about.html">About</a></li>
       </ul>
+      <div class="menu__lang"><a href="#" data-lang-set="ko">KO</a><a href="#" data-lang-set="en">EN</a></div>
     </div>
   </div>
 
   <main class="doc" id="main">
     <div class="archive__head">
-      <nav class="archive__tabs" aria-label="섹션">
+      <nav class="archive__tabs" aria-label="Sections">
         <a href="#faq" class="archive__tab is-active">FAQ</a>
         <a href="#inquiry" class="archive__tab">Inquiry</a>
-        <a href="#english" class="archive__tab">English</a>
+        <a href="#english" class="archive__tab ko">English</a>
       </nav>
       <h1 class="archive__title">Q&amp;A</h1>
       <span></span>
     </div>
 
     <section class="doc__section" id="faq">
-      <h2 class="doc__h">자주 묻는 질문</h2>
-      <div class="faq-list"><details class="faq" open><summary class="faq__q"><span class="faq__num">01</span>예약은 어떻게 하나요?</summary><div class="faq__a"><p>스튜디오 페이지에서 지점과 파트를 고른 뒤 Reservation 메뉴에서 예약글을 작성해 주세요. 확인 후 전화 또는 댓글로 안내드리고, 예약금 입금이 확인되면 예약이 확정됩니다. 문의 게시판으로는 예약이 되지 않습니다.</p></div></details><details class="faq" ><summary class="faq__q"><span class="faq__num">02</span>최소 몇 시간부터 대관할 수 있나요?</summary><div class="faq__a"><p>홍대는 2시간, 레이어 지점은 4시간부터 예약할 수 있습니다. 이용 시간은 세팅과 철수를 포함한 입·퇴장 기준입니다.</p></div></details><details class="faq" ><summary class="faq__q"><span class="faq__num">03</span>견적은 어디서 확인하나요?</summary><div class="faq__a"><p>지점별 견적표와 주차 정보는 각 스튜디오 페이지의 Rental Fee, Parking &amp; More Information 링크에서 확인할 수 있습니다. 가구 촬영이나 차량 진입은 별도 협의가 필요합니다.</p></div></details><details class="faq" ><summary class="faq__q"><span class="faq__num">04</span>예약금은 얼마인가요?</summary><div class="faq__a"><p>예약 확정 시 별도로 안내드립니다. 입금 계좌는 우리은행 888-999-1234 (플러스준스튜디오)입니다.</p></div></details><details class="faq" ><summary class="faq__q"><span class="faq__num">05</span>취소하면 환불이 되나요?</summary><div class="faq__a"><p>홍대는 촬영 6일 이내 50%, 3일 이내 70%, 당일 100%의 위약금이 있습니다. 레이어는 14일 이내 50%, 7일 이내 70%, 3일 이내 80%, 전날 혹은 당일 100%입니다. 웨딩과 행사는 별도 기준을 적용합니다.</p></div></details><details class="faq" ><summary class="faq__q"><span class="faq__num">06</span>촬영 전에 답사할 수 있나요?</summary><div class="faq__a"><p>가능합니다. 답사 신청 양식을 작성해 주시면 일정을 조율해 드립니다.</p></div></details><details class="faq" ><summary class="faq__q"><span class="faq__num">07</span>장비 대여도 되나요?</summary><div class="faq__a"><p>배경지, 배경천, 카메라 등 기본 장비를 대여할 수 있습니다. 망원 렌즈나 프로포토 조명처럼 별도 장비가 필요하면 문의 시 함께 적어 주세요.</p></div></details><details class="faq" ><summary class="faq__q"><span class="faq__num">08</span>전시나 행사도 가능한가요?</summary><div class="faq__a"><p>촬영 외에 전시, 팝업, 공연, 파티 등 다양한 형태로 이용할 수 있습니다. 행사 성격에 따라 별도 견적과 기준이 적용됩니다.</p></div></details></div>
+      <h2 class="doc__h"><span class="ko">자주 묻는 질문</span><span class="en">Frequently asked questions</span></h2>
+      <div class="faq-list"><details class="faq" open><summary class="faq__q"><span class="faq__num">01</span><span class="ko">예약은 어떻게 하나요?</span><span class="en">How do I book?</span></summary><div class="faq__a"><p><span class="ko">스튜디오 페이지에서 지점과 파트를 고른 뒤 Reservation 메뉴에서 예약글을 작성해 주세요. 확인 후 전화 또는 댓글로 안내드리고, 예약금 입금이 확인되면 예약이 확정됩니다. 문의 게시판으로는 예약이 되지 않습니다.</span><span class="en">Choose the studio and part on its page, then write a booking request in the Reservation menu. We reply by phone or comment, and the booking is confirmed once your deposit arrives. Bookings cannot be made through the inquiry board.</span></p></div></details><details class="faq" ><summary class="faq__q"><span class="faq__num">02</span><span class="ko">최소 몇 시간부터 대관할 수 있나요?</span><span class="en">What is the minimum booking?</span></summary><div class="faq__a"><p><span class="ko">홍대는 2시간, 레이어 지점은 4시간부터 예약할 수 있습니다. 이용 시간은 세팅과 철수를 포함한 입·퇴장 기준입니다.</span><span class="en">Hongdae from 2 hours, Layer studios from 4 hours. Rental time runs from entry to exit and includes set-up and strike.</span></p></div></details><details class="faq" ><summary class="faq__q"><span class="faq__num">03</span><span class="ko">견적은 어디서 확인하나요?</span><span class="en">Where can I see the rates?</span></summary><div class="faq__a"><p><span class="ko">지점별 견적표와 주차 정보는 각 스튜디오 페이지의 Rental Fee, Parking &amp; More Information 링크에서 확인할 수 있습니다. 가구 촬영이나 차량 진입은 별도 협의가 필요합니다.</span><span class="en">Rates and parking for each studio are linked from its page under Rental Fee and Parking &amp; More Information. Furniture shoots and vehicle access are quoted separately.</span></p></div></details><details class="faq" ><summary class="faq__q"><span class="faq__num">04</span><span class="ko">예약금은 얼마인가요?</span><span class="en">How much is the deposit?</span></summary><div class="faq__a"><p><span class="ko">예약 확정 시 별도로 안내드립니다. 입금 계좌는 우리은행 888-999-1234 (플러스준스튜디오)입니다.</span><span class="en">We confirm the amount with your booking. The account is Woori Bank 888-999-1234 (Plusjun Studio).</span></p></div></details><details class="faq" ><summary class="faq__q"><span class="faq__num">05</span><span class="ko">취소하면 환불이 되나요?</span><span class="en">What if I cancel?</span></summary><div class="faq__a"><p><span class="ko">홍대는 촬영 6일 이내 50%, 3일 이내 70%, 당일 100%의 위약금이 있습니다. 레이어는 14일 이내 50%, 7일 이내 70%, 3일 이내 80%, 전날 혹은 당일 100%입니다. 웨딩과 행사는 별도 기준을 적용합니다.</span><span class="en">Hongdae: 50% within 6 days of the shoot, 70% within 3 days, 100% on the day. Layer studios: 50% within 14 days, 70% within 7 days, 80% within 3 days, 100% the day before or on the day. Weddings and events follow a separate policy.</span></p></div></details><details class="faq" ><summary class="faq__q"><span class="faq__num">06</span><span class="ko">촬영 전에 답사할 수 있나요?</span><span class="en">Can I visit before the shoot?</span></summary><div class="faq__a"><p><span class="ko">가능합니다. 답사 신청 양식을 작성해 주시면 일정을 조율해 드립니다.</span><span class="en">Yes. Fill in the site visit form and we will arrange a time.</span></p></div></details><details class="faq" ><summary class="faq__q"><span class="faq__num">07</span><span class="ko">장비 대여도 되나요?</span><span class="en">Can I rent equipment?</span></summary><div class="faq__a"><p><span class="ko">배경지, 배경천, 카메라 등 기본 장비를 대여할 수 있습니다. 망원 렌즈나 프로포토 조명처럼 별도 장비가 필요하면 문의 시 함께 적어 주세요.</span><span class="en">Basic equipment such as background paper, cloth and a camera is available. For telephoto lenses, Profoto lighting or other gear, mention it in your inquiry.</span></p></div></details><details class="faq" ><summary class="faq__q"><span class="faq__num">08</span><span class="ko">전시나 행사도 가능한가요?</span><span class="en">Can I hold an exhibition or event?</span></summary><div class="faq__a"><p><span class="ko">촬영 외에 전시, 팝업, 공연, 파티 등 다양한 형태로 이용할 수 있습니다. 행사 성격에 따라 별도 견적과 기준이 적용됩니다.</span><span class="en">Beyond shoots, the studios host exhibitions, pop-ups, performances and parties. Quotes and terms depend on the type of event.</span></p></div></details></div>
     </section>
 
     <section class="doc__section" id="inquiry">
-      <h2 class="doc__h">문의하기</h2>
-      <p class="doc__p">아래 양식에 맞춰 메일로 보내 주시면 확인 후 전화 또는 메일로 안내드립니다. 문의 게시판으로는 예약이 되지 않습니다.</p>
-      <pre class="doc__form">1. 업체명(예약자명) / 촬영내용 : 
+      <h2 class="doc__h"><span class="ko">문의하기</span><span class="en">Send an inquiry</span></h2>
+      <div class="ko">
+        <p class="doc__p">아래 양식에 맞춰 메일로 보내 주시면 확인 후 전화 또는 메일로 안내드립니다. 문의 게시판으로는 예약이 되지 않습니다.</p>
+        <pre class="doc__form">1. 업체명(예약자명) / 촬영내용 : 
 2. 촬영날짜 : 
 3. 연락처 : 
 4. 문의사항 : </pre>
-      <div class="doc__actions">
-        <a class="sinfo__cta" href="mailto:contact@plusjun.com?subject=%5B%EB%AC%B8%EC%9D%98%5D%20%EC%8A%A4%ED%8A%9C%EB%94%94%EC%98%A4%20%EB%8C%80%EA%B4%80&amp;body=1.%20%EC%97%85%EC%B2%B4%EB%AA%85%28%EC%98%88%EC%95%BD%EC%9E%90%EB%AA%85%29%20/%20%EC%B4%AC%EC%98%81%EB%82%B4%EC%9A%A9%20%3A%20%0A2.%20%EC%B4%AC%EC%98%81%EB%82%A0%EC%A7%9C%20%3A%20%0A3.%20%EC%97%B0%EB%9D%BD%EC%B2%98%20%3A%20%0A4.%20%EB%AC%B8%EC%9D%98%EC%82%AC%ED%95%AD%20%3A%20">메일로 문의하기</a>
-        <a class="doc__alt" href="https://plusjun.com/board/product/list.html?board_no=6" target="_blank" rel="noopener">기존 문의 게시판 ↗</a>
+        <div class="doc__actions">
+          <a class="sinfo__cta" href="mailto:contact@plusjun.com?subject=%5B%EB%AC%B8%EC%9D%98%5D%20%EC%8A%A4%ED%8A%9C%EB%94%94%EC%98%A4%20%EB%8C%80%EA%B4%80&amp;body=1.%20%EC%97%85%EC%B2%B4%EB%AA%85%28%EC%98%88%EC%95%BD%EC%9E%90%EB%AA%85%29%20/%20%EC%B4%AC%EC%98%81%EB%82%B4%EC%9A%A9%20%3A%20%0A2.%20%EC%B4%AC%EC%98%81%EB%82%A0%EC%A7%9C%20%3A%20%0A3.%20%EC%97%B0%EB%9D%BD%EC%B2%98%20%3A%20%0A4.%20%EB%AC%B8%EC%9D%98%EC%82%AC%ED%95%AD%20%3A%20">메일로 문의하기</a>
+          <a class="doc__alt" href="https://plusjun.com/board/product/list.html?board_no=6" target="_blank" rel="noopener">기존 문의 게시판 ↗</a>
+        </div>
+      </div>
+      <div class="en">
+        <p class="doc__p">Copy the format below and send it to <a href="mailto:contact@plusjun.com">contact@plusjun.com</a>. We will respond as soon as possible. If you would like to pay the full amount before visiting, please add the depositor's name.</p>
+        <pre class="doc__form">Name :
+Studio selection :          ex) Hongdae
+Room selection :            ex) A / D
+Date of shooting :          ex) 2026. 06. 30 Sat
+Shooting time :             ex) A 09–14 / D 14–18
+Number of employees :
+Visiting vehicle :
+Company / Person in charge :
+Shooting contents :
+Contact / E-mail :</pre>
+        <p class="doc__note">Equipment rental (optional): background paper 40,000 / background cloth 30,000 / 5D Mark III + 24-70 L 30,000 per day. Ask for other equipment in your request.</p>
+        <div class="doc__actions">
+          <a class="sinfo__cta" href="mailto:contact@plusjun.com?subject=%5BInquiry%5D%20Studio%20reservation&amp;body=1.%20Company%20/%20Kind%20of%20shooting%3A%20%0A2.%20Shooting%20day%3A%20%0A3.%20Tel%3A%20%0A4.%20Request%3A%20">Send an inquiry</a>
+        </div>
       </div>
     </section>
 
-    <section class="doc__section" id="english">
-      <h2 class="doc__h">How to make a reservation</h2>
-      <p class="doc__p doc__en">Thank you for visiting Layer Studios. Please copy the format below and send it to <a href="mailto:contact@plusjun.com">contact@plusjun.com</a>. We will respond as soon as possible.</p>
+    <section class="doc__section ko" id="english">
+      <h2 class="doc__h">How to make a reservation in English</h2>
+      <p class="doc__p">Thank you for visiting Layer Studios. Please copy the format below and send it to <a href="mailto:contact@plusjun.com">contact@plusjun.com</a>. We will respond as soon as possible.</p>
       <pre class="doc__form">Name :
 Studio selection :          ex) Hongdae
 Room selection :            ex) A / D
@@ -110,7 +132,7 @@ Visiting vehicle :
 Company / Person in charge :
 Shooting contents :
 Contact / E-mail :</pre>
-      <p class="doc__note doc__en">Equipment rental (optional): background paper 40,000 / background cloth 30,000 / 5D Mark III + 24-70 L 30,000 per day. Ask for other equipment in your request.</p>
+      <p class="doc__note">Equipment rental (optional): background paper 40,000 / background cloth 30,000 / 5D Mark III + 24-70 L 30,000 per day. Ask for other equipment in your request.</p>
       <div class="doc__actions">
         <a class="sinfo__cta" href="mailto:contact@plusjun.com?subject=%5BInquiry%5D%20Studio%20reservation&amp;body=1.%20Company%20/%20Kind%20of%20shooting%3A%20%0A2.%20Shooting%20day%3A%20%0A3.%20Tel%3A%20%0A4.%20Request%3A%20">Send an inquiry</a>
       </div>
@@ -121,29 +143,29 @@ Contact / E-mail :</pre>
   <footer class="footer">
     <div class="footer__cols">
       <div class="footer__col">
-        <h3 class="footer__h">Location</h3>
-        <p>743-27, Hannam-dong<br>Yongsan-gu, Seoul</p>
-        <a href="index.html#studios" class="footer__arrow-link">Find Studios</a>
+        <h3 class="footer__h"><span class="en">Location</span><span class="ko">위치</span></h3>
+        <p class="en">743-27, Hannam-dong<br>Yongsan-gu, Seoul</p><p class="ko">서울 용산구 한남동 743-27</p>
+        <a href="index.html#studios" class="footer__arrow-link"><span class="en">Find Studios</span><span class="ko">스튜디오 보기</span></a>
       </div>
       <div class="footer__col">
-        <h3 class="footer__h">Contact</h3>
+        <h3 class="footer__h"><span class="en">Contact</span><span class="ko">연락처</span></h3>
         <p><a href="tel:0233567750">02.336.7750</a><br><a href="mailto:contact@plusjun.com">contact@plusjun.com</a></p>
-        <a href="#" class="footer__arrow-link">Reservation</a>
+        <a href="#" class="footer__arrow-link"><span class="en">Reservation</span><span class="ko">예약</span></a>
       </div>
       <div class="footer__col">
-        <h3 class="footer__h">Legal</h3>
+        <h3 class="footer__h"><span class="en">Legal</span><span class="ko">법적 고지</span></h3>
         <ul class="footer__links">
-          <li><a href="#">Terms</a></li>
-          <li><a href="#">Privacy</a></li>
-          <li><a href="guide.html">Guide</a></li>
-          <li><a href="#">Careers</a></li>
+          <li><a href="#"><span class="en">Terms</span><span class="ko">이용약관</span></a></li>
+          <li><a href="#"><span class="en">Privacy</span><span class="ko">개인정보처리방침</span></a></li>
+          <li><a href="guide.html"><span class="en">Guide</span><span class="ko">가이드</span></a></li>
+          <li><a href="#"><span class="en">Careers</span><span class="ko">채용</span></a></li>
         </ul>
       </div>
       <div class="footer__col">
-        <h3 class="footer__h">Newsletter</h3>
+        <h3 class="footer__h"><span class="en">Newsletter</span><span class="ko">뉴스레터</span></h3>
         <form class="footer__form" onsubmit="return false">
-          <label for="nl" class="visually-hidden">이메일</label>
-          <input id="nl" type="email" placeholder="Email" autocomplete="off">
+          <label for="nl" class="visually-hidden" data-i18n="email">이메일</label>
+          <input id="nl" type="email" placeholder="Email" data-i18n-attr="placeholder:email" autocomplete="off">
           <button type="submit" aria-label="구독">→</button>
         </form>
       </div>
@@ -153,7 +175,7 @@ Contact / E-mail :</pre>
         <a href="#" aria-label="Instagram"><svg width="16" height="16" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.3"><rect x="1.5" y="1.5" width="13" height="13" rx="3.5"/><circle cx="8" cy="8" r="3"/><circle cx="11.8" cy="4.2" r=".6" fill="currentColor"/></svg></a>
         <a href="#" aria-label="YouTube"><svg width="16" height="16" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.3"><rect x="1" y="3.5" width="14" height="9" rx="2.5"/><path d="M6.5 6v4l3.5-2z" fill="currentColor" stroke="none"/></svg></a>
       </div>
-      <p class="footer__legal">Layer Studios · Founder Heo Jun-sung · Business No. 837-87-01038 · Mail-order License 2018-서울성동-0310</p>
+      <p class="footer__legal en">Layer Studios · Founder Heo Jun-sung · Business No. 837-87-01038 · Mail-order License 2018-서울성동-0310</p><p class="footer__legal ko">주식회사 레이어스튜디오 · 대표 허준성 · 사업자등록번호 837-87-01038 · 통신판매업신고 2018-서울성동-0310</p>
       <p class="footer__copy">© 2009 — 2026 Layer Studios</p>
     </div>
   </footer>

@@ -15,10 +15,11 @@
   <meta name="theme-color" content="#000000">
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/static/pretendard.min.css">
   <link rel="icon" type="image/svg+xml" href="../assets/favicon.svg">
+  <script src="../js/i18n.js"></script>
   <link rel="stylesheet" href="../css/style.css">
 </head>
 <body class="page-studio">
-  <a class="skip-link" href="#main">본문으로 건너뛰기</a>
+  <a class="skip-link" href="#main" data-i18n="skip">본문으로 건너뛰기</a>
 
   <header class="header" id="header">
     <a class="header__logo header__logo--stack" href="../index.html" aria-label="Layer Studios 홈">
@@ -30,9 +31,10 @@
       <a href="../about.html" class="header__link">About</a>
       <a href="../journal.html" class="header__link">Journal</a>
       <a href="../qna.html" class="header__link">Q&amp;A</a>
-      <a href="#" class="header__link header__link--ko">로그인</a>
-      <a href="#" class="header__link header__link--ko">고객 서비스</a>
-      <button class="header__icon header__menu-btn" type="button" aria-label="메뉴 열기" aria-expanded="false" data-menu-toggle>
+      <a href="#" class="header__link header__link--ko"><span class="ko">로그인</span><span class="en">Login</span></a>
+      <a href="#" class="header__link header__link--ko"><span class="ko">고객 서비스</span><span class="en">Client Service</span></a>
+      <button type="button" class="header__lang" data-lang-toggle aria-label="KO / EN"><span data-lang-opt="ko">KO</span><span class="header__lang-sep">/</span><span data-lang-opt="en">EN</span></button>
+      <button class="header__icon header__menu-btn" type="button" data-i18n-attr="aria-label:menu.open" aria-expanded="false" data-menu-toggle>
         <svg width="18" height="14" viewBox="0 0 18 14" fill="none" stroke="currentColor" stroke-width="1.4"><path d="M0 1h18M0 7h18M0 13h18"/></svg>
       </button>
     </nav>
@@ -40,7 +42,7 @@
 
   <div class="menu" id="menu" hidden>
     <div class="menu__inner">
-      <button class="menu__close" type="button" aria-label="메뉴 닫기" data-menu-toggle>Close</button>
+      <button class="menu__close" type="button" data-i18n-attr="aria-label:menu.close" data-menu-toggle data-i18n="close">Close</button>
       <ul class="menu__list">
         <li><a href="#">Reservation</a></li>
         <li><a href="../archives.html">Archives</a></li>
@@ -60,6 +62,7 @@
         <li><a href="../guide.html">Guide</a></li>
         <li><a href="../about.html">About</a></li>
       </ul>
+      <div class="menu__lang"><a href="#" data-lang-set="ko">KO</a><a href="#" data-lang-set="en">EN</a></div>
     </div>
   </div>
 
@@ -68,9 +71,9 @@
       <img src="../assets/img/6dc1c1c783-960.webp" srcset="../assets/img/6dc1c1c783-960.webp 960w, ../assets/img/6dc1c1c783-1920.webp 1920w" sizes="100vw" width="2532" height="1258" alt="Layer 10" class="slide__img" fetchpriority="high">
       <div class="slide__overlay"></div>
       <div class="slide__caption">
-        <p class="slide__eyebrow">Seongsu-dong · Seoul</p>
+        <p class="slide__eyebrow"><span class="en">Seongsu-dong · Seoul</span><span class="ko">성수동 · 서울</span></p>
         <h1 class="slide__title">Layer 10</h1>
-        <p class="slide__type">Former Textile Factory · Cafe</p>
+        <p class="slide__type"><span class="en">Former Textile Factory · Cafe</span><span class="ko">옛 방직 공장 · 카페</span></p>
       </div>
       <a class="shero__arrow" href="#info" aria-label="아래로">
         <svg width="12" height="8" viewBox="0 0 12 8" fill="none" stroke="currentColor" stroke-width="1.4"><path d="M1 1l5 5 5-5"/></svg>
@@ -79,23 +82,24 @@
 
     <section class="sinfo" id="info">
       <div class="sinfo__desc">
-        <p>성수동 뚝섬역 앞에 위치한 레이어10은 400평 규모의 방직 공장을 리모델링한 공간입니다. 스튜디오와 카페를 함께 운영 중이며, 오픈과 동시에 다양한 팝업 행사가 진행되고 있습니다.</p>
+        <p class="ko">성수동 뚝섬역 앞에 위치한 레이어10은 400평 규모의 방직 공장을 리모델링한 공간입니다. 스튜디오와 카페를 함께 운영 중이며, 오픈과 동시에 다양한 팝업 행사가 진행되고 있습니다.</p>
+        <p class="en">Layer 10, in front of Ttukseom Station in Seongsu-dong, is a converted 1,300㎡ textile factory. It runs a studio and a cafe together, and has hosted a wide range of pop-up events since opening.</p>
       </div>
       <aside class="sinfo__side">
         <div class="sinfo__block">
-            <h3 class="sinfo__h">Location</h3>
+            <h3 class="sinfo__h"><span class="en">Location</span><span class="ko">위치</span></h3>
             <p class="sinfo__ko">서울 성동구 성수동1가 14-27 (상원4길 10)</p>
             <p>10, Sangwon 4-gil, Seongdong-gu, Seoul</p>
-            <a class="sinfo__link" href="http://naver.me/xhsl9DyY" target="_blank" rel="noopener">View Map ↗</a>
+            <a class="sinfo__link" href="http://naver.me/xhsl9DyY" target="_blank" rel="noopener"><span class="en">View Map ↗</span><span class="ko">지도 보기 ↗</span></a>
           </div>
         
-        <div class="sinfo__block"><h3 class="sinfo__h">Information</h3><ul class="sinfo__list"><li><a href="https://drive.google.com/file/d/1KoDoTzWNauiKPSfJDhJm_-9A9XHLlwLq/view?usp=sharing" target="_blank" rel="noopener">Main Information (PDF) ↗</a></li><li><a href="https://plusjun.com/10_info.html" target="_blank" rel="noopener">Parking &amp; More Information ↗</a></li></ul></div>
-        <a class="sinfo__cta" href="#">Make a Reservation</a>
+        <div class="sinfo__block"><h3 class="sinfo__h"><span class="en">Information</span><span class="ko">안내</span></h3><ul class="sinfo__list"><li><a href="https://drive.google.com/file/d/1KoDoTzWNauiKPSfJDhJm_-9A9XHLlwLq/view?usp=sharing" target="_blank" rel="noopener"><span class="en">Main Information (PDF) ↗</span><span class="ko">기본 안내 (PDF) ↗</span></a></li><li><a href="https://plusjun.com/10_info.html" target="_blank" rel="noopener"><span class="en">Parking &amp; More Information ↗</span><span class="ko">주차 및 추가 안내 ↗</span></a></li></ul></div>
+        <a class="sinfo__cta" href="#"><span class="en">Make a Reservation</span><span class="ko">예약하기</span></a>
       </aside>
     </section>
 
     <nav class="sparts" id="sparts" aria-label="공간 구성">
-      <a href="#part-0" class="sparts__tab">A</a><a href="#part-1" class="sparts__tab">B</a><a href="#part-2" class="sparts__tab">C</a><a href="#part-3" class="sparts__tab">D</a><a href="#part-4" class="sparts__tab">E</a><a href="#part-5" class="sparts__tab">Cafe</a><a href="#part-6" class="sparts__tab">Exterior</a><a href="#floormap" class="sparts__tab">Floor Map</a>
+      <a href="#part-0" class="sparts__tab">A</a><a href="#part-1" class="sparts__tab">B</a><a href="#part-2" class="sparts__tab">C</a><a href="#part-3" class="sparts__tab">D</a><a href="#part-4" class="sparts__tab">E</a><a href="#part-5" class="sparts__tab">Cafe</a><a href="#part-6" class="sparts__tab">Exterior</a><a href="#floormap" class="sparts__tab"><span class="en">Floor Map</span><span class="ko">평면도</span></a>
     </nav>
 
     <div class="parts">
@@ -105,8 +109,8 @@
           <div class="part__ui">
             
             <span class="part__counter" data-counter>01 / 09</span>
-            <button type="button" class="part__btn" data-prev aria-label="이전 이미지">←</button>
-            <button type="button" class="part__btn" data-next aria-label="다음 이미지">→</button>
+            <button type="button" class="part__btn" data-prev aria-label="Prev">←</button>
+            <button type="button" class="part__btn" data-next aria-label="Next">→</button>
           </div>
         </div>
         <ul class="gallery" data-gallery><li class="gallery__item"><img src="../assets/img/8ffd136080-960.webp" srcset="../assets/img/8ffd136080-960.webp 960w" sizes="(max-width: 767px) 90vw, 60vw" width="1000" height="667" alt="A 1" loading="lazy"></li><li class="gallery__item"><img src="../assets/img/f1aba59daa-960.webp" srcset="../assets/img/f1aba59daa-960.webp 960w" sizes="(max-width: 767px) 90vw, 60vw" width="1000" height="667" alt="A 2" loading="lazy"></li><li class="gallery__item"><img src="../assets/img/f6d38ad21b-960.webp" srcset="../assets/img/f6d38ad21b-960.webp 960w" sizes="(max-width: 767px) 90vw, 60vw" width="1500" height="1000" alt="A 3" loading="lazy"></li><li class="gallery__item"><img src="../assets/img/ec0f75c801-960.webp" srcset="../assets/img/ec0f75c801-960.webp 960w" sizes="(max-width: 767px) 90vw, 60vw" width="1200" height="800" alt="A 4" loading="lazy"></li><li class="gallery__item"><img src="../assets/img/4b4412e7b9-960.webp" srcset="../assets/img/4b4412e7b9-960.webp 960w" sizes="(max-width: 767px) 90vw, 60vw" width="1500" height="1000" alt="A 5" loading="lazy"></li><li class="gallery__item"><img src="../assets/img/577b02e6a0-960.webp" srcset="../assets/img/577b02e6a0-960.webp 960w" sizes="(max-width: 767px) 90vw, 60vw" width="1500" height="1000" alt="A 6" loading="lazy"></li><li class="gallery__item"><img src="../assets/img/86decb1f89-960.webp" srcset="../assets/img/86decb1f89-960.webp 960w" sizes="(max-width: 767px) 90vw, 60vw" width="1500" height="1000" alt="A 7" loading="lazy"></li><li class="gallery__item"><img src="../assets/img/0f71ea3bc8-960.webp" srcset="../assets/img/0f71ea3bc8-960.webp 960w" sizes="(max-width: 767px) 90vw, 60vw" width="1500" height="1000" alt="A 8" loading="lazy"></li><li class="gallery__item"><img src="../assets/img/70ce6ba381-960.webp" srcset="../assets/img/70ce6ba381-960.webp 960w" sizes="(max-width: 767px) 90vw, 60vw" width="1000" height="667" alt="A 9" loading="lazy"></li></ul>
@@ -117,8 +121,8 @@
           <div class="part__ui">
             
             <span class="part__counter" data-counter>01 / 12</span>
-            <button type="button" class="part__btn" data-prev aria-label="이전 이미지">←</button>
-            <button type="button" class="part__btn" data-next aria-label="다음 이미지">→</button>
+            <button type="button" class="part__btn" data-prev aria-label="Prev">←</button>
+            <button type="button" class="part__btn" data-next aria-label="Next">→</button>
           </div>
         </div>
         <ul class="gallery" data-gallery><li class="gallery__item"><img src="../assets/img/762ad30b80-960.webp" srcset="../assets/img/762ad30b80-960.webp 960w" sizes="(max-width: 767px) 90vw, 60vw" width="1000" height="666" alt="B 1" loading="lazy"></li><li class="gallery__item"><img src="../assets/img/50c7ef0332-960.webp" srcset="../assets/img/50c7ef0332-960.webp 960w" sizes="(max-width: 767px) 90vw, 60vw" width="1000" height="667" alt="B 2" loading="lazy"></li><li class="gallery__item"><img src="../assets/img/8d5b5b65fe-960.webp" srcset="../assets/img/8d5b5b65fe-960.webp 960w" sizes="(max-width: 767px) 90vw, 60vw" width="1000" height="667" alt="B 3" loading="lazy"></li><li class="gallery__item"><img src="../assets/img/ecfbb08963-960.webp" srcset="../assets/img/ecfbb08963-960.webp 960w" sizes="(max-width: 767px) 90vw, 60vw" width="1500" height="1000" alt="B 4" loading="lazy"></li><li class="gallery__item"><img src="../assets/img/860d61d74c-960.webp" srcset="../assets/img/860d61d74c-960.webp 960w" sizes="(max-width: 767px) 90vw, 60vw" width="1500" height="1000" alt="B 5" loading="lazy"></li><li class="gallery__item"><img src="../assets/img/daa1bf2016-960.webp" srcset="../assets/img/daa1bf2016-960.webp 960w" sizes="(max-width: 767px) 90vw, 60vw" width="1500" height="1000" alt="B 6" loading="lazy"></li><li class="gallery__item"><img src="../assets/img/bfccbb3b7e-960.webp" srcset="../assets/img/bfccbb3b7e-960.webp 960w" sizes="(max-width: 767px) 90vw, 60vw" width="1500" height="1000" alt="B 7" loading="lazy"></li><li class="gallery__item"><img src="../assets/img/e2bef4f6db-960.webp" srcset="../assets/img/e2bef4f6db-960.webp 960w" sizes="(max-width: 767px) 90vw, 60vw" width="1500" height="1000" alt="B 8" loading="lazy"></li><li class="gallery__item"><img src="../assets/img/dd486a9a26-960.webp" srcset="../assets/img/dd486a9a26-960.webp 960w" sizes="(max-width: 767px) 90vw, 60vw" width="1500" height="1000" alt="B 9" loading="lazy"></li><li class="gallery__item"><img src="../assets/img/0140070416-960.webp" srcset="../assets/img/0140070416-960.webp 960w" sizes="(max-width: 767px) 90vw, 60vw" width="1500" height="1000" alt="B 10" loading="lazy"></li><li class="gallery__item"><img src="../assets/img/708e03427c-960.webp" srcset="../assets/img/708e03427c-960.webp 960w" sizes="(max-width: 767px) 90vw, 60vw" width="1500" height="1000" alt="B 11" loading="lazy"></li><li class="gallery__item"><img src="../assets/img/e4cde784e0-960.webp" srcset="../assets/img/e4cde784e0-960.webp 960w" sizes="(max-width: 767px) 90vw, 60vw" width="1500" height="1000" alt="B 12" loading="lazy"></li></ul>
@@ -129,8 +133,8 @@
           <div class="part__ui">
             
             <span class="part__counter" data-counter>01 / 05</span>
-            <button type="button" class="part__btn" data-prev aria-label="이전 이미지">←</button>
-            <button type="button" class="part__btn" data-next aria-label="다음 이미지">→</button>
+            <button type="button" class="part__btn" data-prev aria-label="Prev">←</button>
+            <button type="button" class="part__btn" data-next aria-label="Next">→</button>
           </div>
         </div>
         <ul class="gallery" data-gallery><li class="gallery__item"><img src="../assets/img/94c1170d77-960.webp" srcset="../assets/img/94c1170d77-960.webp 960w" sizes="(max-width: 767px) 90vw, 60vw" width="1000" height="667" alt="C 1" loading="lazy"></li><li class="gallery__item"><img src="../assets/img/b71a0b4d62-960.webp" srcset="../assets/img/b71a0b4d62-960.webp 960w" sizes="(max-width: 767px) 90vw, 60vw" width="1000" height="667" alt="C 2" loading="lazy"></li><li class="gallery__item"><img src="../assets/img/a35d43c206-960.webp" srcset="../assets/img/a35d43c206-960.webp 960w" sizes="(max-width: 767px) 90vw, 60vw" width="1000" height="667" alt="C 3" loading="lazy"></li><li class="gallery__item"><img src="../assets/img/3548ef8e27-960.webp" srcset="../assets/img/3548ef8e27-960.webp 960w" sizes="(max-width: 767px) 90vw, 60vw" width="1500" height="1000" alt="C 4" loading="lazy"></li><li class="gallery__item"><img src="../assets/img/c2608f6d89-960.webp" srcset="../assets/img/c2608f6d89-960.webp 960w" sizes="(max-width: 767px) 90vw, 60vw" width="1000" height="667" alt="C 5" loading="lazy"></li></ul>
@@ -141,8 +145,8 @@
           <div class="part__ui">
             
             <span class="part__counter" data-counter>01 / 06</span>
-            <button type="button" class="part__btn" data-prev aria-label="이전 이미지">←</button>
-            <button type="button" class="part__btn" data-next aria-label="다음 이미지">→</button>
+            <button type="button" class="part__btn" data-prev aria-label="Prev">←</button>
+            <button type="button" class="part__btn" data-next aria-label="Next">→</button>
           </div>
         </div>
         <ul class="gallery" data-gallery><li class="gallery__item"><img src="../assets/img/ea1eb93dd3-960.webp" srcset="../assets/img/ea1eb93dd3-960.webp 960w" sizes="(max-width: 767px) 90vw, 60vw" width="1500" height="1000" alt="D 1" loading="lazy"></li><li class="gallery__item"><img src="../assets/img/f6fb58070f-960.webp" srcset="../assets/img/f6fb58070f-960.webp 960w" sizes="(max-width: 767px) 90vw, 60vw" width="1500" height="1000" alt="D 2" loading="lazy"></li><li class="gallery__item"><img src="../assets/img/d9c021de0b-960.webp" srcset="../assets/img/d9c021de0b-960.webp 960w" sizes="(max-width: 767px) 90vw, 60vw" width="1500" height="1000" alt="D 3" loading="lazy"></li><li class="gallery__item"><img src="../assets/img/a4aa9ed863-960.webp" srcset="../assets/img/a4aa9ed863-960.webp 960w" sizes="(max-width: 767px) 90vw, 60vw" width="1500" height="1000" alt="D 4" loading="lazy"></li><li class="gallery__item"><img src="../assets/img/e4a79d2d82-960.webp" srcset="../assets/img/e4a79d2d82-960.webp 960w" sizes="(max-width: 767px) 90vw, 60vw" width="1500" height="1000" alt="D 5" loading="lazy"></li><li class="gallery__item"><img src="../assets/img/dd7f43c8f9-960.webp" srcset="../assets/img/dd7f43c8f9-960.webp 960w" sizes="(max-width: 767px) 90vw, 60vw" width="1500" height="1000" alt="D 6" loading="lazy"></li></ul>
@@ -153,8 +157,8 @@
           <div class="part__ui">
             
             <span class="part__counter" data-counter>01 / 09</span>
-            <button type="button" class="part__btn" data-prev aria-label="이전 이미지">←</button>
-            <button type="button" class="part__btn" data-next aria-label="다음 이미지">→</button>
+            <button type="button" class="part__btn" data-prev aria-label="Prev">←</button>
+            <button type="button" class="part__btn" data-next aria-label="Next">→</button>
           </div>
         </div>
         <ul class="gallery" data-gallery><li class="gallery__item"><img src="../assets/img/a772995e40-960.webp" srcset="../assets/img/a772995e40-960.webp 960w" sizes="(max-width: 767px) 90vw, 60vw" width="1500" height="1000" alt="E 1" loading="lazy"></li><li class="gallery__item"><img src="../assets/img/3b3d3318e2-960.webp" srcset="../assets/img/3b3d3318e2-960.webp 960w" sizes="(max-width: 767px) 90vw, 60vw" width="1500" height="1000" alt="E 2" loading="lazy"></li><li class="gallery__item"><img src="../assets/img/7daf07a3a9-960.webp" srcset="../assets/img/7daf07a3a9-960.webp 960w" sizes="(max-width: 767px) 90vw, 60vw" width="1500" height="1000" alt="E 3" loading="lazy"></li><li class="gallery__item"><img src="../assets/img/f1f6dcf223-960.webp" srcset="../assets/img/f1f6dcf223-960.webp 960w" sizes="(max-width: 767px) 90vw, 60vw" width="1500" height="1000" alt="E 4" loading="lazy"></li><li class="gallery__item"><img src="../assets/img/01e4375e10-960.webp" srcset="../assets/img/01e4375e10-960.webp 960w" sizes="(max-width: 767px) 90vw, 60vw" width="1500" height="1000" alt="E 5" loading="lazy"></li><li class="gallery__item"><img src="../assets/img/bf9c38b685-960.webp" srcset="../assets/img/bf9c38b685-960.webp 960w" sizes="(max-width: 767px) 90vw, 60vw" width="1500" height="1000" alt="E 6" loading="lazy"></li><li class="gallery__item"><img src="../assets/img/994abf3fe4-960.webp" srcset="../assets/img/994abf3fe4-960.webp 960w" sizes="(max-width: 767px) 90vw, 60vw" width="1500" height="1000" alt="E 7" loading="lazy"></li><li class="gallery__item"><img src="../assets/img/82cef0ceb6-960.webp" srcset="../assets/img/82cef0ceb6-960.webp 960w" sizes="(max-width: 767px) 90vw, 60vw" width="1000" height="667" alt="E 8" loading="lazy"></li><li class="gallery__item"><img src="../assets/img/7363474716-960.webp" srcset="../assets/img/7363474716-960.webp 960w" sizes="(max-width: 767px) 90vw, 60vw" width="1000" height="667" alt="E 9" loading="lazy"></li></ul>
@@ -165,8 +169,8 @@
           <div class="part__ui">
             
             <span class="part__counter" data-counter>01 / 07</span>
-            <button type="button" class="part__btn" data-prev aria-label="이전 이미지">←</button>
-            <button type="button" class="part__btn" data-next aria-label="다음 이미지">→</button>
+            <button type="button" class="part__btn" data-prev aria-label="Prev">←</button>
+            <button type="button" class="part__btn" data-next aria-label="Next">→</button>
           </div>
         </div>
         <ul class="gallery" data-gallery><li class="gallery__item"><img src="../assets/img/1ffce2ab8c-960.webp" srcset="../assets/img/1ffce2ab8c-960.webp 960w" sizes="(max-width: 767px) 90vw, 60vw" width="1500" height="1000" alt="Cafe 1" loading="lazy"></li><li class="gallery__item"><img src="../assets/img/e340cf627f-960.webp" srcset="../assets/img/e340cf627f-960.webp 960w" sizes="(max-width: 767px) 90vw, 60vw" width="1500" height="1000" alt="Cafe 2" loading="lazy"></li><li class="gallery__item"><img src="../assets/img/e09db6cae9-960.webp" srcset="../assets/img/e09db6cae9-960.webp 960w" sizes="(max-width: 767px) 90vw, 60vw" width="1500" height="1000" alt="Cafe 3" loading="lazy"></li><li class="gallery__item"><img src="../assets/img/3dba8c4e0b-960.webp" srcset="../assets/img/3dba8c4e0b-960.webp 960w" sizes="(max-width: 767px) 90vw, 60vw" width="1500" height="1000" alt="Cafe 4" loading="lazy"></li><li class="gallery__item"><img src="../assets/img/fbdb3ab933-960.webp" srcset="../assets/img/fbdb3ab933-960.webp 960w" sizes="(max-width: 767px) 90vw, 60vw" width="1500" height="1000" alt="Cafe 5" loading="lazy"></li><li class="gallery__item"><img src="../assets/img/e2e7f617f2-960.webp" srcset="../assets/img/e2e7f617f2-960.webp 960w" sizes="(max-width: 767px) 90vw, 60vw" width="1500" height="1000" alt="Cafe 6" loading="lazy"></li><li class="gallery__item"><img src="../assets/img/96764ec754-960.webp" srcset="../assets/img/96764ec754-960.webp 960w" sizes="(max-width: 767px) 90vw, 60vw" width="1500" height="1000" alt="Cafe 7" loading="lazy"></li></ul>
@@ -177,61 +181,61 @@
           <div class="part__ui">
             
             <span class="part__counter" data-counter>01 / 08</span>
-            <button type="button" class="part__btn" data-prev aria-label="이전 이미지">←</button>
-            <button type="button" class="part__btn" data-next aria-label="다음 이미지">→</button>
+            <button type="button" class="part__btn" data-prev aria-label="Prev">←</button>
+            <button type="button" class="part__btn" data-next aria-label="Next">→</button>
           </div>
         </div>
         <ul class="gallery" data-gallery><li class="gallery__item"><img src="../assets/img/80422a9cad-960.webp" srcset="../assets/img/80422a9cad-960.webp 960w, ../assets/img/80422a9cad-1920.webp 1920w" sizes="(max-width: 767px) 90vw, 60vw" width="4167" height="2778" alt="Exterior 1" loading="lazy"></li><li class="gallery__item"><img src="../assets/img/00ffcd5042-960.webp" srcset="../assets/img/00ffcd5042-960.webp 960w, ../assets/img/00ffcd5042-1920.webp 1920w" sizes="(max-width: 767px) 90vw, 60vw" width="4167" height="2778" alt="Exterior 2" loading="lazy"></li><li class="gallery__item"><img src="../assets/img/210279da55-960.webp" srcset="../assets/img/210279da55-960.webp 960w" sizes="(max-width: 767px) 90vw, 60vw" width="1500" height="1000" alt="Exterior 3" loading="lazy"></li><li class="gallery__item"><img src="../assets/img/225bf1fc8b-960.webp" srcset="../assets/img/225bf1fc8b-960.webp 960w" sizes="(max-width: 767px) 90vw, 60vw" width="1500" height="1000" alt="Exterior 4" loading="lazy"></li><li class="gallery__item"><img src="../assets/img/c86fbb45d3-960.webp" srcset="../assets/img/c86fbb45d3-960.webp 960w" sizes="(max-width: 767px) 90vw, 60vw" width="1500" height="1000" alt="Exterior 5" loading="lazy"></li><li class="gallery__item"><img src="../assets/img/408c7026b0-960.webp" srcset="../assets/img/408c7026b0-960.webp 960w" sizes="(max-width: 767px) 90vw, 60vw" width="1500" height="1000" alt="Exterior 6" loading="lazy"></li><li class="gallery__item"><img src="../assets/img/96f916c14d-960.webp" srcset="../assets/img/96f916c14d-960.webp 960w" sizes="(max-width: 767px) 90vw, 60vw" width="1500" height="1000" alt="Exterior 7" loading="lazy"></li><li class="gallery__item"><img src="../assets/img/55badf2098-960.webp" srcset="../assets/img/55badf2098-960.webp 960w" sizes="(max-width: 767px) 90vw, 60vw" width="1500" height="1000" alt="Exterior 8" loading="lazy"></li></ul>
       </section></div>
-    <section class="floormap" id="floormap"><h2 class="part__title">Floor Map</h2><div class="floormap__grid"><a href="https://plusjun.com/images/studios/layer10/layer10_floormaps_20210219-1.jpg" target="_blank" rel="noopener"><img src="../assets/img/3e8f17bea1-960.webp" srcset="../assets/img/3e8f17bea1-960.webp 960w, ../assets/img/3e8f17bea1-1920.webp 1920w" sizes="(max-width: 767px) 100vw, 50vw" width="2000" height="1084" alt="Layer 10 floor map" loading="lazy"></a></div></section>
+    <section class="floormap" id="floormap"><h2 class="part__title"><span class="en">Floor Map</span><span class="ko">평면도</span></h2><div class="floormap__grid"><a href="https://plusjun.com/images/studios/layer10/layer10_floormaps_20210219-1.jpg" target="_blank" rel="noopener"><img src="../assets/img/3e8f17bea1-960.webp" srcset="../assets/img/3e8f17bea1-960.webp 960w, ../assets/img/3e8f17bea1-1920.webp 1920w" sizes="(max-width: 767px) 100vw, 50vw" width="2000" height="1084" alt="Layer 10 floor map" loading="lazy"></a></div></section>
     
     <section class="related" aria-label="관련 작업">
       <div class="related__head">
-        <h2 class="related__title">Shot at Layer 10</h2>
-        <a class="related__more" href="../archives.html">All Archives →</a>
+        <h2 class="related__title"><span class="en">Shot at Layer 10</span><span class="ko">Layer 10 촬영 작업</span></h2>
+        <a class="related__more" href="../archives.html"><span class="en">All Archives →</span><span class="ko">전체 아카이브 →</span></a>
       </div>
       <ul class="related__grid"><li class="acard"><a href="../archives.html#item-1577" class="acard__link"><span class="acard__img"><img src="../assets/img/57f884f835-960.webp" srcset="../assets/img/57f884f835-960.webp 960w, ../assets/img/57f884f835-1920.webp 1920w" sizes="(max-width: 767px) 100vw, (max-width: 1023px) 50vw, 33vw" alt="Adidas Originals" loading="lazy"></span><span class="acard__meta"><span class="acard__type">Video · 2024.07</span><span class="acard__title">Adidas Originals</span><span class="acard__studio">Archive</span></span></a></li><li class="acard"><a href="../archives.html#item-1542" class="acard__link"><span class="acard__img"><img src="../assets/img/f1e6c38f9c-960.webp" srcset="../assets/img/f1e6c38f9c-960.webp 804w" sizes="(max-width: 767px) 100vw, (max-width: 1023px) 50vw, 33vw" alt="VOGUE" loading="lazy"></span><span class="acard__meta"><span class="acard__type">Magazine · 2021.04</span><span class="acard__title">VOGUE</span><span class="acard__studio">Archive</span></span></a></li><li class="acard"><a href="../archives.html#item-1535" class="acard__link"><span class="acard__img"><img src="../assets/img/6a3a8f71c4-960.webp" srcset="../assets/img/6a3a8f71c4-960.webp 960w" sizes="(max-width: 767px) 100vw, (max-width: 1023px) 50vw, 33vw" alt="MOONDAL" loading="lazy"></span><span class="acard__meta"><span class="acard__type">Lookbook · 2021.01</span><span class="acard__title">MOONDAL</span><span class="acard__studio">Archive</span></span></a></li><li class="acard"><a href="../archives.html#item-1529" class="acard__link"><span class="acard__img"><img src="../assets/img/61c1b97526-960.webp" srcset="../assets/img/61c1b97526-960.webp 960w" sizes="(max-width: 767px) 100vw, (max-width: 1023px) 50vw, 33vw" alt="INSILENCE" loading="lazy"></span><span class="acard__meta"><span class="acard__type">Lookbook · 2020.10</span><span class="acard__title">INSILENCE</span><span class="acard__studio">Archive</span></span></a></li><li class="acard"><a href="../archives.html#item-1525" class="acard__link"><span class="acard__img"><img src="../assets/img/c5cba90e6b-960.webp" srcset="../assets/img/c5cba90e6b-960.webp 960w" sizes="(max-width: 767px) 100vw, (max-width: 1023px) 50vw, 33vw" alt="STUDIO TOMBOY" loading="lazy"></span><span class="acard__meta"><span class="acard__type">Lookbook · 2020.10</span><span class="acard__title">STUDIO TOMBOY</span><span class="acard__studio">Archive</span></span></a></li><li class="acard"><a href="../archives.html#item-1523" class="acard__link"><span class="acard__img"><img src="../assets/img/b95008eaa7-960.webp" srcset="../assets/img/b95008eaa7-960.webp 960w" sizes="(max-width: 767px) 100vw, (max-width: 1023px) 50vw, 33vw" alt="BEENTRILL" loading="lazy"></span><span class="acard__meta"><span class="acard__type">Lookbook · 2020.09</span><span class="acard__title">BEENTRILL</span><span class="acard__studio">Archive</span></span></a></li></ul>
     </section>
 
     <section class="snext">
-      <a class="snext__link" href="layer-7.html"><span class="snext__label">← Previous</span><span class="snext__title">Layer 7</span></a>
-      <a class="snext__link snext__link--all" href="../index.html#studios"><span class="snext__label">All</span><span class="snext__title">Studios</span></a>
-      <a class="snext__link snext__link--next" href="layer-hannam.html"><span class="snext__label">Next →</span><span class="snext__title">Layer Hannam</span></a>
+      <a class="snext__link" href="layer-7.html"><span class="snext__label"><span class="en">← Previous</span><span class="ko">← 이전</span></span><span class="snext__title">Layer 7</span></a>
+      <a class="snext__link snext__link--all" href="../index.html#studios"><span class="snext__label"><span class="en">All</span><span class="ko">전체</span></span><span class="snext__title">Studios</span></a>
+      <a class="snext__link snext__link--next" href="layer-hannam.html"><span class="snext__label"><span class="en">Next →</span><span class="ko">다음 →</span></span><span class="snext__title">Layer Hannam</span></a>
     </section>
   </main>
 
   <footer class="footer">
     <div class="footer__cols">
       <div class="footer__col">
-        <h3 class="footer__h">Location</h3>
-        <p>743-27, Hannam-dong<br>Yongsan-gu, Seoul</p>
-        <a href="../index.html#studios" class="footer__arrow-link">Find Studios</a>
+        <h3 class="footer__h"><span class="en">Location</span><span class="ko">위치</span></h3>
+        <p class="en">743-27, Hannam-dong<br>Yongsan-gu, Seoul</p><p class="ko">서울 용산구 한남동 743-27</p>
+        <a href="../index.html#studios" class="footer__arrow-link"><span class="en">Find Studios</span><span class="ko">스튜디오 보기</span></a>
       </div>
       <div class="footer__col">
-        <h3 class="footer__h">Contact</h3>
+        <h3 class="footer__h"><span class="en">Contact</span><span class="ko">연락처</span></h3>
         <p><a href="tel:0233567750">02.336.7750</a><br><a href="mailto:contact@plusjun.com">contact@plusjun.com</a></p>
-        <a href="#" class="footer__arrow-link">Reservation</a>
+        <a href="#" class="footer__arrow-link"><span class="en">Reservation</span><span class="ko">예약</span></a>
       </div>
       <div class="footer__col">
-        <h3 class="footer__h">Legal</h3>
+        <h3 class="footer__h"><span class="en">Legal</span><span class="ko">법적 고지</span></h3>
         <ul class="footer__links">
-          <li><a href="#">Terms</a></li>
-          <li><a href="#">Privacy</a></li>
-          <li><a href="../guide.html">Guide</a></li>
-          <li><a href="#">Careers</a></li>
+          <li><a href="#"><span class="en">Terms</span><span class="ko">이용약관</span></a></li>
+          <li><a href="#"><span class="en">Privacy</span><span class="ko">개인정보처리방침</span></a></li>
+          <li><a href="../guide.html"><span class="en">Guide</span><span class="ko">가이드</span></a></li>
+          <li><a href="#"><span class="en">Careers</span><span class="ko">채용</span></a></li>
         </ul>
       </div>
       <div class="footer__col">
-        <h3 class="footer__h">Newsletter</h3>
+        <h3 class="footer__h"><span class="en">Newsletter</span><span class="ko">뉴스레터</span></h3>
         <form class="footer__form" onsubmit="return false">
-          <label for="nl" class="visually-hidden">이메일</label>
-          <input id="nl" type="email" placeholder="Email" autocomplete="off">
+          <label for="nl" class="visually-hidden" data-i18n="email">이메일</label>
+          <input id="nl" type="email" placeholder="Email" data-i18n-attr="placeholder:email" autocomplete="off">
           <button type="submit" aria-label="구독">→</button>
         </form>
       </div>
     </div>
     <div class="footer__bottom">
-      <p class="footer__legal">Layer Studios · Founder Heo Jun-sung · Business No. 837-87-01038 · Mail-order License 2018-서울성동-0310</p>
+      <p class="footer__legal en">Layer Studios · Founder Heo Jun-sung · Business No. 837-87-01038 · Mail-order License 2018-서울성동-0310</p><p class="footer__legal ko">주식회사 레이어스튜디오 · 대표 허준성 · 사업자등록번호 837-87-01038 · 통신판매업신고 2018-서울성동-0310</p>
       <p class="footer__copy">© 2009 — 2026 Layer Studios</p>
     </div>
   </footer>

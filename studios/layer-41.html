@@ -15,10 +15,11 @@
   <meta name="theme-color" content="#000000">
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/static/pretendard.min.css">
   <link rel="icon" type="image/svg+xml" href="../assets/favicon.svg">
+  <script src="../js/i18n.js"></script>
   <link rel="stylesheet" href="../css/style.css">
 </head>
 <body class="page-studio">
-  <a class="skip-link" href="#main">본문으로 건너뛰기</a>
+  <a class="skip-link" href="#main" data-i18n="skip">본문으로 건너뛰기</a>
 
   <header class="header" id="header">
     <a class="header__logo header__logo--stack" href="../index.html" aria-label="Layer Studios 홈">
@@ -30,9 +31,10 @@
       <a href="../about.html" class="header__link">About</a>
       <a href="../journal.html" class="header__link">Journal</a>
       <a href="../qna.html" class="header__link">Q&amp;A</a>
-      <a href="#" class="header__link header__link--ko">로그인</a>
-      <a href="#" class="header__link header__link--ko">고객 서비스</a>
-      <button class="header__icon header__menu-btn" type="button" aria-label="메뉴 열기" aria-expanded="false" data-menu-toggle>
+      <a href="#" class="header__link header__link--ko"><span class="ko">로그인</span><span class="en">Login</span></a>
+      <a href="#" class="header__link header__link--ko"><span class="ko">고객 서비스</span><span class="en">Client Service</span></a>
+      <button type="button" class="header__lang" data-lang-toggle aria-label="KO / EN"><span data-lang-opt="ko">KO</span><span class="header__lang-sep">/</span><span data-lang-opt="en">EN</span></button>
+      <button class="header__icon header__menu-btn" type="button" data-i18n-attr="aria-label:menu.open" aria-expanded="false" data-menu-toggle>
         <svg width="18" height="14" viewBox="0 0 18 14" fill="none" stroke="currentColor" stroke-width="1.4"><path d="M0 1h18M0 7h18M0 13h18"/></svg>
       </button>
     </nav>
@@ -40,7 +42,7 @@
 
   <div class="menu" id="menu" hidden>
     <div class="menu__inner">
-      <button class="menu__close" type="button" aria-label="메뉴 닫기" data-menu-toggle>Close</button>
+      <button class="menu__close" type="button" data-i18n-attr="aria-label:menu.close" data-menu-toggle data-i18n="close">Close</button>
       <ul class="menu__list">
         <li><a href="#">Reservation</a></li>
         <li><a href="../archives.html">Archives</a></li>
@@ -60,6 +62,7 @@
         <li><a href="../guide.html">Guide</a></li>
         <li><a href="../about.html">About</a></li>
       </ul>
+      <div class="menu__lang"><a href="#" data-lang-set="ko">KO</a><a href="#" data-lang-set="en">EN</a></div>
     </div>
   </div>
 
@@ -68,9 +71,9 @@
       <img src="../assets/img/a468e3e22d-960.webp" srcset="../assets/img/a468e3e22d-960.webp 960w, ../assets/img/a468e3e22d-1920.webp 1920w" sizes="100vw" width="1950" height="938" alt="Layer 41" class="slide__img" fetchpriority="high">
       <div class="slide__overlay"></div>
       <div class="slide__caption">
-        <p class="slide__eyebrow">Seongsu-dong · Seoul</p>
+        <p class="slide__eyebrow"><span class="en">Seongsu-dong · Seoul</span><span class="ko">성수동 · 서울</span></p>
         <h1 class="slide__title">Layer 41</h1>
-        <p class="slide__type">Former Steel Factory · 9m Ceiling</p>
+        <p class="slide__type"><span class="en">Former Steel Factory · 9m Ceiling</span><span class="ko">옛 철강 공장 · 층고 9m</span></p>
       </div>
       <a class="shero__arrow" href="#info" aria-label="아래로">
         <svg width="12" height="8" viewBox="0 0 12 8" fill="none" stroke="currentColor" stroke-width="1.4"><path d="M1 1l5 5 5-5"/></svg>
@@ -79,18 +82,19 @@
 
     <section class="sinfo" id="info">
       <div class="sinfo__desc">
-        <p>레이어41은 성수동의 450평 규모 철강 공장을 리모델링한 대형 복합 스튜디오입니다. 공장 건축 특유의 높은 층고와 구조미를 살린 공간으로, A·B·C 세 개의 파트로 구성되어 있습니다. 메인 공간인 A파트는 층고 9m, 약 250평 규모 이며, 복층 구조의 B파트와 입체적으로 연결됩니다. 3층의 C파트는 층고 4m, 약 150평 규모의 독립적인 공간으로 옥상까지 연계해 활용할 수 있습니다. 모든 공간은 내부 계단을 통해 유기적으로 이어지며, 촬영은 물론 전시, 팝업, 공연 및 다양한 형태의 이벤트에 맞춰 폭넓게 구성할 수 있습니다.</p>
+        <p class="ko">레이어41은 성수동의 450평 규모 철강 공장을 리모델링한 대형 복합 스튜디오입니다. 공장 건축 특유의 높은 층고와 구조미를 살린 공간으로, A·B·C 세 개의 파트로 구성되어 있습니다. 메인 공간인 A파트는 층고 9m, 약 250평 규모 이며, 복층 구조의 B파트와 입체적으로 연결됩니다. 3층의 C파트는 층고 4m, 약 150평 규모의 독립적인 공간으로 옥상까지 연계해 활용할 수 있습니다. 모든 공간은 내부 계단을 통해 유기적으로 이어지며, 촬영은 물론 전시, 팝업, 공연 및 다양한 형태의 이벤트에 맞춰 폭넓게 구성할 수 있습니다.</p>
+        <p class="en">Layer 41 is a large multi-purpose studio converted from a 1,500㎡ steel factory in Seongsu-dong. It keeps the high ceilings and structural character of factory architecture and is divided into three parts. Part A, the main hall, has a 9m ceiling and about 830㎡, and connects three-dimensionally to the split-level Part B. Part C on the third floor is an independent 500㎡ space with a 4m ceiling and access to the rooftop. All parts are linked by internal stairs and can be configured for shoots, exhibitions, pop-ups, performances and events of every kind.</p>
       </div>
       <aside class="sinfo__side">
         <div class="sinfo__block">
-            <h3 class="sinfo__h">Location</h3>
+            <h3 class="sinfo__h"><span class="en">Location</span><span class="ko">위치</span></h3>
             <p class="sinfo__ko">서울 성동구 성수동2가 277-4 (아차산로9길 41)</p>
             <p>41, Achasan-ro 9-gil, Seongdong-gu, Seoul</p>
-            <a class="sinfo__link" href="http://naver.me/xhHVxnku" target="_blank" rel="noopener">View Map ↗</a>
+            <a class="sinfo__link" href="http://naver.me/xhHVxnku" target="_blank" rel="noopener"><span class="en">View Map ↗</span><span class="ko">지도 보기 ↗</span></a>
           </div>
         
-        <div class="sinfo__block"><h3 class="sinfo__h">Information</h3><ul class="sinfo__list"><li><a href="https://rentalfee.vercel.app/layer41" target="_blank" rel="noopener">Rental Fee ↗</a></li><li><a href="https://drive.google.com/file/d/1T4C38E1e2JJD7oLHgj_PlI38gS9noQns/view?usp=sharing" target="_blank" rel="noopener">Main Information (PDF) ↗</a></li><li><a href="https://rentalfee.cargo.site/41_info1" target="_blank" rel="noopener">Parking &amp; More Information ↗</a></li></ul></div>
-        <a class="sinfo__cta" href="#">Make a Reservation</a>
+        <div class="sinfo__block"><h3 class="sinfo__h"><span class="en">Information</span><span class="ko">안내</span></h3><ul class="sinfo__list"><li><a href="https://rentalfee.vercel.app/layer41" target="_blank" rel="noopener"><span class="en">Rental Fee ↗</span><span class="ko">견적표 ↗</span></a></li><li><a href="https://drive.google.com/file/d/1T4C38E1e2JJD7oLHgj_PlI38gS9noQns/view?usp=sharing" target="_blank" rel="noopener"><span class="en">Main Information (PDF) ↗</span><span class="ko">기본 안내 (PDF) ↗</span></a></li><li><a href="https://rentalfee.cargo.site/41_info1" target="_blank" rel="noopener"><span class="en">Parking &amp; More Information ↗</span><span class="ko">주차 및 추가 안내 ↗</span></a></li></ul></div>
+        <a class="sinfo__cta" href="#"><span class="en">Make a Reservation</span><span class="ko">예약하기</span></a>
       </aside>
     </section>
 
@@ -103,10 +107,10 @@
         <div class="part__head">
           <h2 class="part__title">A</h2>
           <div class="part__ui">
-            <a class="part__floormap" href="https://plusjun.com/web/upload/category/editor/2023/02/24/70095906b58420fcec831bb5187149be.jpg" target="_blank" rel="noopener">Floor Map ↗</a>
+            <a class="part__floormap" href="https://plusjun.com/web/upload/category/editor/2023/02/24/70095906b58420fcec831bb5187149be.jpg" target="_blank" rel="noopener"><span class="en">Floor Map ↗</span><span class="ko">평면도 ↗</span></a>
             <span class="part__counter" data-counter>01 / 12</span>
-            <button type="button" class="part__btn" data-prev aria-label="이전 이미지">←</button>
-            <button type="button" class="part__btn" data-next aria-label="다음 이미지">→</button>
+            <button type="button" class="part__btn" data-prev aria-label="Prev">←</button>
+            <button type="button" class="part__btn" data-next aria-label="Next">→</button>
           </div>
         </div>
         <ul class="gallery" data-gallery><li class="gallery__item"><img src="../assets/img/8cb3617915-960.webp" srcset="../assets/img/8cb3617915-960.webp 960w" sizes="(max-width: 767px) 90vw, 60vw" width="1000" height="667" alt="A 1" loading="lazy"></li><li class="gallery__item"><img src="../assets/img/4cc6eb8298-960.webp" srcset="../assets/img/4cc6eb8298-960.webp 960w" sizes="(max-width: 767px) 90vw, 60vw" width="1000" height="667" alt="A 2" loading="lazy"></li><li class="gallery__item"><img src="../assets/img/fdf103447b-960.webp" srcset="../assets/img/fdf103447b-960.webp 960w" sizes="(max-width: 767px) 90vw, 60vw" width="1000" height="667" alt="A 3" loading="lazy"></li><li class="gallery__item"><img src="../assets/img/6dda68911d-960.webp" srcset="../assets/img/6dda68911d-960.webp 960w, ../assets/img/6dda68911d-1920.webp 1920w" sizes="(max-width: 767px) 90vw, 60vw" width="4520" height="3014" alt="A 4" loading="lazy"></li><li class="gallery__item"><img src="../assets/img/a9bcb36b82-960.webp" srcset="../assets/img/a9bcb36b82-960.webp 960w, ../assets/img/a9bcb36b82-1920.webp 1920w" sizes="(max-width: 767px) 90vw, 60vw" width="4520" height="3014" alt="A 5" loading="lazy"></li><li class="gallery__item"><img src="../assets/img/3c617f6ee0-960.webp" srcset="../assets/img/3c617f6ee0-960.webp 960w" sizes="(max-width: 767px) 90vw, 60vw" width="1000" height="667" alt="A 6" loading="lazy"></li><li class="gallery__item"><img src="../assets/img/8ccd3816f8-960.webp" srcset="../assets/img/8ccd3816f8-960.webp 960w, ../assets/img/8ccd3816f8-1920.webp 1920w" sizes="(max-width: 767px) 90vw, 60vw" width="4520" height="3014" alt="A 7" loading="lazy"></li><li class="gallery__item"><img src="../assets/img/279b5ea81b-960.webp" srcset="../assets/img/279b5ea81b-960.webp 960w" sizes="(max-width: 767px) 90vw, 60vw" width="1000" height="667" alt="A 8" loading="lazy"></li><li class="gallery__item"><img src="../assets/img/7cf537588a-960.webp" srcset="../assets/img/7cf537588a-960.webp 960w" sizes="(max-width: 767px) 90vw, 60vw" width="1000" height="667" alt="A 9" loading="lazy"></li><li class="gallery__item"><img src="../assets/img/49e2dd0d8d-960.webp" srcset="../assets/img/49e2dd0d8d-960.webp 960w" sizes="(max-width: 767px) 90vw, 60vw" width="1000" height="667" alt="A 10" loading="lazy"></li><li class="gallery__item"><img src="../assets/img/41d5e31635-960.webp" srcset="../assets/img/41d5e31635-960.webp 960w" sizes="(max-width: 767px) 90vw, 60vw" width="1633" height="1089" alt="A 11" loading="lazy"></li><li class="gallery__item"><img src="../assets/img/c120555069-960.webp" srcset="../assets/img/c120555069-960.webp 960w" sizes="(max-width: 767px) 90vw, 60vw" width="1633" height="1089" alt="A 12" loading="lazy"></li></ul>
@@ -115,10 +119,10 @@
         <div class="part__head">
           <h2 class="part__title">B</h2>
           <div class="part__ui">
-            <a class="part__floormap" href="https://plusjun.com/images/studios/layer41/layer41_floormaps_b_20211029-2.jpg" target="_blank" rel="noopener">Floor Map ↗</a>
+            <a class="part__floormap" href="https://plusjun.com/images/studios/layer41/layer41_floormaps_b_20211029-2.jpg" target="_blank" rel="noopener"><span class="en">Floor Map ↗</span><span class="ko">평면도 ↗</span></a>
             <span class="part__counter" data-counter>01 / 06</span>
-            <button type="button" class="part__btn" data-prev aria-label="이전 이미지">←</button>
-            <button type="button" class="part__btn" data-next aria-label="다음 이미지">→</button>
+            <button type="button" class="part__btn" data-prev aria-label="Prev">←</button>
+            <button type="button" class="part__btn" data-next aria-label="Next">→</button>
           </div>
         </div>
         <ul class="gallery" data-gallery><li class="gallery__item"><img src="../assets/img/8d61de167c-960.webp" srcset="../assets/img/8d61de167c-960.webp 960w" sizes="(max-width: 767px) 90vw, 60vw" width="1000" height="667" alt="B 1" loading="lazy"></li><li class="gallery__item"><img src="../assets/img/dafa3e0cbc-960.webp" srcset="../assets/img/dafa3e0cbc-960.webp 960w" sizes="(max-width: 767px) 90vw, 60vw" width="1000" height="667" alt="B 2" loading="lazy"></li><li class="gallery__item"><img src="../assets/img/5cdda5650a-960.webp" srcset="../assets/img/5cdda5650a-960.webp 960w" sizes="(max-width: 767px) 90vw, 60vw" width="1000" height="667" alt="B 3" loading="lazy"></li><li class="gallery__item"><img src="../assets/img/a4547d419b-960.webp" srcset="../assets/img/a4547d419b-960.webp 960w" sizes="(max-width: 767px) 90vw, 60vw" width="1000" height="667" alt="B 4" loading="lazy"></li><li class="gallery__item"><img src="../assets/img/4a84d26533-960.webp" srcset="../assets/img/4a84d26533-960.webp 960w" sizes="(max-width: 767px) 90vw, 60vw" width="1000" height="667" alt="B 5" loading="lazy"></li><li class="gallery__item"><img src="../assets/img/667cec674f-960.webp" srcset="../assets/img/667cec674f-960.webp 960w" sizes="(max-width: 767px) 90vw, 60vw" width="1000" height="667" alt="B 6" loading="lazy"></li></ul>
@@ -127,10 +131,10 @@
         <div class="part__head">
           <h2 class="part__title">C</h2>
           <div class="part__ui">
-            <a class="part__floormap" href="https://plusjun.com/images/studios/layer41/layer41_floormaps_c_20211029-1.jpg" target="_blank" rel="noopener">Floor Map ↗</a>
+            <a class="part__floormap" href="https://plusjun.com/images/studios/layer41/layer41_floormaps_c_20211029-1.jpg" target="_blank" rel="noopener"><span class="en">Floor Map ↗</span><span class="ko">평면도 ↗</span></a>
             <span class="part__counter" data-counter>01 / 12</span>
-            <button type="button" class="part__btn" data-prev aria-label="이전 이미지">←</button>
-            <button type="button" class="part__btn" data-next aria-label="다음 이미지">→</button>
+            <button type="button" class="part__btn" data-prev aria-label="Prev">←</button>
+            <button type="button" class="part__btn" data-next aria-label="Next">→</button>
           </div>
         </div>
         <ul class="gallery" data-gallery><li class="gallery__item"><img src="../assets/img/c26cb91d07-960.webp" srcset="../assets/img/c26cb91d07-960.webp 960w" sizes="(max-width: 767px) 90vw, 60vw" width="1000" height="667" alt="C 1" loading="lazy"></li><li class="gallery__item"><img src="../assets/img/aad7329cef-960.webp" srcset="../assets/img/aad7329cef-960.webp 960w" sizes="(max-width: 767px) 90vw, 60vw" width="1000" height="667" alt="C 2" loading="lazy"></li><li class="gallery__item"><img src="../assets/img/787b3d6619-960.webp" srcset="../assets/img/787b3d6619-960.webp 960w" sizes="(max-width: 767px) 90vw, 60vw" width="1000" height="667" alt="C 3" loading="lazy"></li><li class="gallery__item"><img src="../assets/img/0f6695daf7-960.webp" srcset="../assets/img/0f6695daf7-960.webp 960w" sizes="(max-width: 767px) 90vw, 60vw" width="1000" height="667" alt="C 4" loading="lazy"></li><li class="gallery__item"><img src="../assets/img/a7629090ae-960.webp" srcset="../assets/img/a7629090ae-960.webp 960w" sizes="(max-width: 767px) 90vw, 60vw" width="1000" height="667" alt="C 5" loading="lazy"></li><li class="gallery__item"><img src="../assets/img/8a99da7f3d-960.webp" srcset="../assets/img/8a99da7f3d-960.webp 960w" sizes="(max-width: 767px) 90vw, 60vw" width="1000" height="667" alt="C 6" loading="lazy"></li><li class="gallery__item"><img src="../assets/img/edeb649dcb-960.webp" srcset="../assets/img/edeb649dcb-960.webp 960w" sizes="(max-width: 767px) 90vw, 60vw" width="1000" height="667" alt="C 7" loading="lazy"></li><li class="gallery__item"><img src="../assets/img/db2e0fd037-960.webp" srcset="../assets/img/db2e0fd037-960.webp 960w" sizes="(max-width: 767px) 90vw, 60vw" width="1000" height="667" alt="C 8" loading="lazy"></li><li class="gallery__item"><img src="../assets/img/9cabff0f77-960.webp" srcset="../assets/img/9cabff0f77-960.webp 960w" sizes="(max-width: 767px) 90vw, 60vw" width="1000" height="667" alt="C 9" loading="lazy"></li><li class="gallery__item"><img src="../assets/img/9b795aac31-960.webp" srcset="../assets/img/9b795aac31-960.webp 960w" sizes="(max-width: 767px) 90vw, 60vw" width="1000" height="667" alt="C 10" loading="lazy"></li><li class="gallery__item"><img src="../assets/img/e53108a785-960.webp" srcset="../assets/img/e53108a785-960.webp 960w" sizes="(max-width: 767px) 90vw, 60vw" width="1633" height="1089" alt="C 11" loading="lazy"></li><li class="gallery__item"><img src="../assets/img/84c62591e3-960.webp" srcset="../assets/img/84c62591e3-960.webp 960w" sizes="(max-width: 767px) 90vw, 60vw" width="1633" height="1089" alt="C 12" loading="lazy"></li></ul>
@@ -139,51 +143,51 @@
     
     <section class="related" aria-label="관련 작업">
       <div class="related__head">
-        <h2 class="related__title">Shot at Layer 41</h2>
-        <a class="related__more" href="../archives.html">All Archives →</a>
+        <h2 class="related__title"><span class="en">Shot at Layer 41</span><span class="ko">Layer 41 촬영 작업</span></h2>
+        <a class="related__more" href="../archives.html"><span class="en">All Archives →</span><span class="ko">전체 아카이브 →</span></a>
       </div>
       <ul class="related__grid"><li class="acard"><a href="../archives.html#item-1605" class="acard__link"><span class="acard__img"><img src="../assets/img/828e318af1-960.webp" srcset="../assets/img/828e318af1-960.webp 960w" sizes="(max-width: 767px) 100vw, (max-width: 1023px) 50vw, 33vw" alt="VOGUE" loading="lazy"></span><span class="acard__meta"><span class="acard__type">Magazine · 2024.12</span><span class="acard__title">VOGUE</span><span class="acard__studio">Archive</span></span></a></li><li class="acard"><a href="../journal.html#item-1619" class="acard__link"><span class="acard__img"><img src="../assets/img/90a5196b43-960.webp" srcset="../assets/img/90a5196b43-960.webp 720w" sizes="(max-width: 767px) 100vw, (max-width: 1023px) 50vw, 33vw" alt="Ceiling Service vol.10" loading="lazy"></span><span class="acard__meta"><span class="acard__type">Journal · 2026</span><span class="acard__title">Ceiling Service vol.10</span><span class="acard__studio">Journal</span></span></a></li><li class="acard"><a href="../journal.html#item-1613" class="acard__link"><span class="acard__img"><img src="../assets/img/a4e7ae8533-960.webp" srcset="../assets/img/a4e7ae8533-960.webp 960w, ../assets/img/a4e7ae8533-1920.webp 1920w" sizes="(max-width: 767px) 100vw, (max-width: 1023px) 50vw, 33vw" alt="BIO POP (THE ORIGIN)" loading="lazy"></span><span class="acard__meta"><span class="acard__type">Journal · 2025</span><span class="acard__title">BIO POP (THE ORIGIN)</span><span class="acard__studio">Journal</span></span></a></li><li class="acard"><a href="../journal.html#item-1609" class="acard__link"><span class="acard__img"><img src="../assets/img/4b116f4c24-960.webp" srcset="../assets/img/4b116f4c24-960.webp 960w" sizes="(max-width: 767px) 100vw, (max-width: 1023px) 50vw, 33vw" alt="Ceiling Service Vol.6" loading="lazy"></span><span class="acard__meta"><span class="acard__type">Journal · 2025</span><span class="acard__title">Ceiling Service Vol.6</span><span class="acard__studio">Journal</span></span></a></li><li class="acard"><a href="../journal.html#item-1606" class="acard__link"><span class="acard__img"><img src="../assets/img/62f87b98e2-960.webp" srcset="../assets/img/62f87b98e2-960.webp 960w" sizes="(max-width: 767px) 100vw, (max-width: 1023px) 50vw, 33vw" alt="Performance ‘흰(白)’ / BLACK TOE 10" loading="lazy"></span><span class="acard__meta"><span class="acard__type">Journal · 2024</span><span class="acard__title">Performance ‘흰(白)’ / BLACK TOE 10</span><span class="acard__studio">Journal</span></span></a></li><li class="acard"><a href="../journal.html#item-1570" class="acard__link"><span class="acard__img"><img src="../assets/img/71e5a8f1be-960.webp" srcset="../assets/img/71e5a8f1be-960.webp 960w" sizes="(max-width: 767px) 100vw, (max-width: 1023px) 50vw, 33vw" alt="Gentle Monster : Bold Collection Pop-Up" loading="lazy"></span><span class="acard__meta"><span class="acard__type">Journal · 2023</span><span class="acard__title">Gentle Monster : Bold Collection Pop-Up</span><span class="acard__studio">Journal</span></span></a></li></ul>
     </section>
 
     <section class="snext">
-      <a class="snext__link" href="horizon.html"><span class="snext__label">← Previous</span><span class="snext__title">Horizon</span></a>
-      <a class="snext__link snext__link--all" href="../index.html#studios"><span class="snext__label">All</span><span class="snext__title">Studios</span></a>
-      <a class="snext__link snext__link--next" href="layer-20.html"><span class="snext__label">Next →</span><span class="snext__title">Layer 20</span></a>
+      <a class="snext__link" href="horizon.html"><span class="snext__label"><span class="en">← Previous</span><span class="ko">← 이전</span></span><span class="snext__title">Horizon</span></a>
+      <a class="snext__link snext__link--all" href="../index.html#studios"><span class="snext__label"><span class="en">All</span><span class="ko">전체</span></span><span class="snext__title">Studios</span></a>
+      <a class="snext__link snext__link--next" href="layer-20.html"><span class="snext__label"><span class="en">Next →</span><span class="ko">다음 →</span></span><span class="snext__title">Layer 20</span></a>
     </section>
   </main>
 
   <footer class="footer">
     <div class="footer__cols">
       <div class="footer__col">
-        <h3 class="footer__h">Location</h3>
-        <p>743-27, Hannam-dong<br>Yongsan-gu, Seoul</p>
-        <a href="../index.html#studios" class="footer__arrow-link">Find Studios</a>
+        <h3 class="footer__h"><span class="en">Location</span><span class="ko">위치</span></h3>
+        <p class="en">743-27, Hannam-dong<br>Yongsan-gu, Seoul</p><p class="ko">서울 용산구 한남동 743-27</p>
+        <a href="../index.html#studios" class="footer__arrow-link"><span class="en">Find Studios</span><span class="ko">스튜디오 보기</span></a>
       </div>
       <div class="footer__col">
-        <h3 class="footer__h">Contact</h3>
+        <h3 class="footer__h"><span class="en">Contact</span><span class="ko">연락처</span></h3>
         <p><a href="tel:0233567750">02.336.7750</a><br><a href="mailto:contact@plusjun.com">contact@plusjun.com</a></p>
-        <a href="#" class="footer__arrow-link">Reservation</a>
+        <a href="#" class="footer__arrow-link"><span class="en">Reservation</span><span class="ko">예약</span></a>
       </div>
       <div class="footer__col">
-        <h3 class="footer__h">Legal</h3>
+        <h3 class="footer__h"><span class="en">Legal</span><span class="ko">법적 고지</span></h3>
         <ul class="footer__links">
-          <li><a href="#">Terms</a></li>
-          <li><a href="#">Privacy</a></li>
-          <li><a href="../guide.html">Guide</a></li>
-          <li><a href="#">Careers</a></li>
+          <li><a href="#"><span class="en">Terms</span><span class="ko">이용약관</span></a></li>
+          <li><a href="#"><span class="en">Privacy</span><span class="ko">개인정보처리방침</span></a></li>
+          <li><a href="../guide.html"><span class="en">Guide</span><span class="ko">가이드</span></a></li>
+          <li><a href="#"><span class="en">Careers</span><span class="ko">채용</span></a></li>
         </ul>
       </div>
       <div class="footer__col">
-        <h3 class="footer__h">Newsletter</h3>
+        <h3 class="footer__h"><span class="en">Newsletter</span><span class="ko">뉴스레터</span></h3>
         <form class="footer__form" onsubmit="return false">
-          <label for="nl" class="visually-hidden">이메일</label>
-          <input id="nl" type="email" placeholder="Email" autocomplete="off">
+          <label for="nl" class="visually-hidden" data-i18n="email">이메일</label>
+          <input id="nl" type="email" placeholder="Email" data-i18n-attr="placeholder:email" autocomplete="off">
           <button type="submit" aria-label="구독">→</button>
         </form>
       </div>
     </div>
     <div class="footer__bottom">
-      <p class="footer__legal">Layer Studios · Founder Heo Jun-sung · Business No. 837-87-01038 · Mail-order License 2018-서울성동-0310</p>
+      <p class="footer__legal en">Layer Studios · Founder Heo Jun-sung · Business No. 837-87-01038 · Mail-order License 2018-서울성동-0310</p><p class="footer__legal ko">주식회사 레이어스튜디오 · 대표 허준성 · 사업자등록번호 837-87-01038 · 통신판매업신고 2018-서울성동-0310</p>
       <p class="footer__copy">© 2009 — 2026 Layer Studios</p>
     </div>
   </footer>

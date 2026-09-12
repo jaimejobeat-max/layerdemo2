@@ -24,7 +24,7 @@
       return { '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;' }[c];
     });
   }
-  function typeLabel(t) { return t || 'Project'; }
+  function typeLabel(x) { return window.typeKey ? window.typeKey(x) : (x || 'Project'); }
   function pad(n) { return (n < 10 ? '0' : '') + n; }
 
   /* ---------- filtering + rendering ---------- */
@@ -55,7 +55,7 @@
     var next = state.list.slice(state.shown, state.shown + PAGE);
     grid.insertAdjacentHTML('beforeend', next.map(card).join(''));
     state.shown += next.length;
-    countEl.textContent = state.list.length + (state.list.length === 1 ? ' Project' : ' Projects');
+    countEl.textContent = state.list.length === 1 ? t('archive.count1') : t('archive.count', { n: state.list.length });
     moreBtn.hidden = state.shown >= state.list.length;
     emptyEl.hidden = state.list.length > 0;
   }
@@ -84,7 +84,7 @@
     b.addEventListener('click', function () {
       studioItems.forEach(function (x) { x.classList.toggle('is-active', x === b); });
       state.studio = b.getAttribute('data-studio');
-      studioLabel.textContent = b.textContent;
+      studioLabel.textContent = b.textContent; studioLabel.removeAttribute('data-i18n'); if (!state.studio) studioLabel.setAttribute('data-i18n', 'filter.studios');
       toggleStudio(false);
       filter();
     });
@@ -117,7 +117,7 @@
 
     dMeta.textContent = typeLabel(d.type) + (d.date ? ' · ' + d.date : '');
     dTitle.textContent = d.title;
-    dStudio.textContent = d.studios.length ? 'Shot at ' + d.studios.join(' · ') : '';
+    dStudio.textContent = d.studios.length ? t('shotat') + ' ' + d.studios.join(' · ') : '';
     var imgs = d.images.length ? d.images : [d.thumb];
     dImages.innerHTML = imgs.map(function (src, i) {
       var set = d.imagesSet && d.imagesSet[i];
@@ -179,6 +179,13 @@
   menuToggles.forEach(function (b) { b.addEventListener('click', function () { toggleMenu(); }); });
   document.addEventListener('keydown', function (e) {
     if (e.key === 'Escape' && !menu.hidden) toggleMenu(false);
+  });
+
+  /* ---------- language change: re-render labels ---------- */
+  document.addEventListener('langchange', function () {
+    var keep = state.shown; state.shown = 0; grid.innerHTML = '';
+    state.list = state.list; renderMore(); while (state.shown < keep && state.shown < state.list.length) renderMore();
+    if (!detail.hidden && currentIdx > -1) openDetail(state.list[currentIdx].id, true);
   });
 
   /* ---------- init ---------- */

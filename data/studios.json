@@ -80,7 +80,10 @@
     ]
    }
   ],
-  "source": "https://plusjun.com/product/studio-41.html"
+  "source": "https://plusjun.com/product/studio-41.html",
+  "area_ko": "성수동 · 서울",
+  "tag_ko": "옛 철강 공장 · 층고 9m",
+  "desc_en": "Layer 41 is a large multi-purpose studio converted from a 1,500㎡ steel factory in Seongsu-dong. It keeps the high ceilings and structural character of factory architecture and is divided into three parts. Part A, the main hall, has a 9m ceiling and about 830㎡, and connects three-dimensionally to the split-level Part B. Part C on the third floor is an independent 500㎡ space with a 4m ceiling and access to the rooftop. All parts are linked by internal stairs and can be configured for shoots, exhibitions, pop-ups, performances and events of every kind."
  },
  {
   "key": "layer-20",
@@ -193,7 +196,10 @@
     ]
    }
   ],
-  "source": "https://plusjun.com/product/studio-20.html"
+  "source": "https://plusjun.com/product/studio-20.html",
+  "area_ko": "원효로 · 용산",
+  "tag_ko": "옛 변전소 · 카라반",
+  "desc_en": "Layer 20 reinterprets an industrial building on Wonhyo-ro, Yongsan, completed in 1939 and once used as an electrical substation. Around 1,300㎡ across four floors, its aged concrete and solid column structure give the space its particular atmosphere. The first and second floors are open spaces with a 6.2m ceiling; the third floor, with a 4m ceiling, opens onto an outdoor terrace filled with natural light. Suitable for shoots, brand events, exhibitions and pop-ups."
  },
  {
   "key": "layer-11",
@@ -270,7 +276,10 @@
     ]
    }
   ],
-  "source": "https://plusjun.com/product/11_info.html"
+  "source": "https://plusjun.com/product/11_info.html",
+  "area_ko": "신수동 · 마포",
+  "tag_ko": "철골 트러스 홀 · 층고 8m",
+  "desc_en": "Layer 11 is a multi-purpose studio of about 1,000㎡ near the Gyeongui Line Forest Park in Sinsu-dong, Mapo. An open structure up to 8m high and 60m long, steel trusses and daylight through tall windows create a distinctive sense of space. It combines a main hall with an area that can be used as a cafe, and works for shoots, exhibitions, brand events and pop-ups."
  },
  {
   "key": "layer-26",
@@ -340,7 +349,10 @@
     ]
    }
   ],
-  "source": "https://plusjun.com/product/studio-26.html"
+  "source": "https://plusjun.com/product/studio-26.html",
+  "area_ko": "성수동 · 서울",
+  "tag_ko": "철강 공장 · 자연광 호리존",
+  "desc_en": "Layer 26 is a converted 330㎡ steel factory in Seongsu-dong. An awning covering half the studio can be opened or closed, and a daylight cyclorama allows shoots of many different concepts. It has recently been used as an exhibition space as well."
  },
  {
   "key": "layer-27",
@@ -410,7 +422,10 @@
     ]
    }
   ],
-  "source": "https://plusjun.com/js/27_info.html"
+  "source": "https://plusjun.com/js/27_info.html",
+  "area_ko": "성수동 · 서울",
+  "tag_ko": "스튜디오 & 오피스",
+  "desc_en": "Layer 27 is a 400㎡ studio in Seongsu-dong with a 6m ceiling. It consists of Part A, a split-level space with a daylit ceiling connected by a spiral staircase, and a second-floor Office part with wide windows. Together the two parts host shoots, exhibitions and events."
  },
  {
   "key": "layer-7",
@@ -507,7 +522,10 @@
     ]
    }
   ],
-  "source": "https://plusjun.com/product/studio-ys.html"
+  "source": "https://plusjun.com/product/studio-ys.html",
+  "area_ko": "갈월동 · 용산",
+  "tag_ko": "60년 된 교회 · 층고 8m",
+  "desc_en": "Layer 7 is a converted 60-year-old church building where the light falls beautifully. It consists of Part A, about 330㎡ with an 8m ceiling, and Parts B and C of about 200㎡ each, with an outdoor terrace also available. Many events and exhibitions have been held here."
  },
  {
   "key": "layer-10",
@@ -632,7 +650,10 @@
     ]
    }
   ],
-  "source": "https://plusjun.com/product/studio-10.html"
+  "source": "https://plusjun.com/product/studio-10.html",
+  "area_ko": "성수동 · 서울",
+  "tag_ko": "옛 방직 공장 · 카페",
+  "desc_en": "Layer 10, in front of Ttukseom Station in Seongsu-dong, is a converted 1,300㎡ textile factory. It runs a studio and a cafe together, and has hosted a wide range of pop-up events since opening."
  },
  {
   "key": "layer-hannam",
@@ -711,7 +732,10 @@
     ]
    }
   ],
-  "source": "https://plusjun.com/product/studio-hannam.html"
+  "source": "https://plusjun.com/product/studio-hannam.html",
+  "area_ko": "한남동 · 용산",
+  "tag_ko": "2층 단독 주택 · 리움 옆",
+  "desc_en": "Layer Hannam is a detached house right next to the Leeum Museum, a five-minute walk from Hangangjin Station. On a 500㎡ plot with two floors, it suits a wide range of shoots and exhibitions."
  },
  {
   "key": "hongdae",
@@ -821,7 +845,10 @@
     ]
    }
   ],
-  "source": "https://plusjun.com/product/studio-hd.html"
+  "source": "https://plusjun.com/product/studio-hd.html",
+  "area_ko": "성산동 · 마포",
+  "tag_ko": "주택 스튜디오 · 가든 & 온실",
+  "desc_en": "Hongdae is a studio converted from a 1,000㎡ detached house in Seongsan-dong. The two-storey interior holds three rooms of different concepts, and a 660㎡ garden outside is also used for outdoor weddings and events."
  },
  {
   "key": "faust",
@@ -864,7 +891,10 @@
     ]
    }
   ],
-  "source": "https://plusjun.com/product/studio-ft.html"
+  "source": "https://plusjun.com/product/studio-ft.html",
+  "area_ko": "이태원 · 용산",
+  "tag_ko": "테크노 클럽 · 공간 음향",
+  "desc_en": "Faust is Korea's first techno club designed around spatial sound. Beyond photo and video shoots, it is available for brand parties and performances."
  },
  {
   "key": "layer-57",
@@ -914,7 +944,10 @@
    "3F — 396m² / 120py / H4.5m",
    "4F — 396m² / 120py / H8m",
    "5F — 212m² / 65py / H5m"
-  ]
+  ],
+  "area_ko": "성수동 · 서울",
+  "tag_ko": "문화 공간 · 26.11.01 오픈",
+  "desc_en": "Layer Studios 57 — opening 26.11.01. A new cultural space by Layer Studios in Seongsu-dong."
  },
  {
   "key": "horizon",
@@ -967,6 +1000,9 @@
     ]
    }
   ],
-  "source": "https://plusjun.com/product/studio-hz.html"
+  "source": "https://plusjun.com/product/studio-hz.html",
+  "area_ko": "루프씬 스튜디오",
+  "tag_ko": "루프씬 운영",
+  "desc_en": "From 1 September 2025, Horizon Studio operates at a new location. Enquiries: 010-9094-8205 / loopscene75@gmail.com"
  }
 ]

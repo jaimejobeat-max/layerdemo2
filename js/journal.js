@@ -20,7 +20,7 @@
     });
   }
   function pad(n) { return (n < 10 ? '0' : '') + n; }
-  function kindLabel(d) { return d.kinds.indexOf('event') > -1 && d.kinds.length === 1 ? 'Layer Events' : 'Journal'; }
+  function kindLabel(d) { return d.kinds.indexOf('event') > -1 && d.kinds.length === 1 ? t('kind.events') : t('kind.journal'); }
 
   /* ---------- year menu (built from data) ---------- */
   var years = DATA.map(function (d) { return d.year; }).filter(function (y, i, a) { return y && a.indexOf(y) === i; }).sort().reverse();
@@ -36,7 +36,7 @@
       return true;
     });
     grid.innerHTML = state.list.map(card).join('');
-    countEl.textContent = state.list.length + (state.list.length === 1 ? ' Entry' : ' Entries');
+    countEl.textContent = state.list.length === 1 ? t('journal.count1') : t('journal.count', { n: state.list.length });
     emptyEl.hidden = state.list.length > 0;
   }
 
@@ -47,7 +47,7 @@
         '<span class="jcard__meta">' +
           '<span class="jcard__date">' + esc(d.date || '') + '</span>' +
           '<span class="jcard__title">' + esc(d.title) + '</span>' +
-          '<span class="jcard__sub">' + esc(d.meta || kindLabel(d)) + '</span>' +
+          '<span class="jcard__sub">' + esc(d.meta && d.meta !== 'Layer Events' ? d.meta : kindLabel(d)) + '</span>' +
         '</span>' +
       '</a></li>';
   }
@@ -73,7 +73,7 @@
     b.addEventListener('click', function () {
       yearItems.forEach(function (x) { x.classList.toggle('is-active', x === b); });
       state.year = b.getAttribute('data-year');
-      yearLabel.textContent = b.textContent;
+      yearLabel.textContent = b.textContent; yearLabel.removeAttribute('data-i18n'); if (!state.year) yearLabel.setAttribute('data-i18n', 'filter.years');
       toggleYear(false);
       filter();
     });
@@ -170,6 +170,12 @@
   menuToggles.forEach(function (b) { b.addEventListener('click', function () { toggleMenu(); }); });
   document.addEventListener('keydown', function (e) {
     if (e.key === 'Escape' && !menu.hidden) toggleMenu(false);
+  });
+
+  /* ---------- language change ---------- */
+  document.addEventListener('langchange', function () {
+    filter();
+    if (!detail.hidden && currentIdx > -1) openDetail(state.list[currentIdx].id, true);
   });
 
   /* ---------- init ---------- */

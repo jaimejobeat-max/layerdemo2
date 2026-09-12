@@ -1007,3 +1007,21 @@ a:focus-visible, button:focus-visible { outline: 2px solid currentColor; outline
   .related { padding-top: 72px; }
   .related__grid { grid-template-columns: 1fr; gap: 32px; }
 }
+
+/* =========================================================
+   KO / EN language toggle
+   ========================================================= */
+html[data-lang="ko"] .en, html[data-lang="en"] .ko { display: none !important; }
+.header__lang {
+  display: inline-flex; align-items: center; gap: 5px;
+  font-size: var(--fs-ui); letter-spacing: .04em; padding: 4px 0;
+}
+.header__lang [data-lang-opt] { opacity: .45; transition: opacity .2s var(--ease); }
+html[data-lang="ko"] .header__lang [data-lang-opt="ko"],
+html[data-lang="en"] .header__lang [data-lang-opt="en"] { opacity: 1; }
+.header__lang-sep { opacity: .45; }
+.header__link--ko .en { text-transform: uppercase; }
+.menu__lang { display: flex; gap: 14px; margin-top: 40px; font-size: var(--fs-ui); letter-spacing: .04em; }
+.menu__lang a { opacity: .45; }
+html[data-lang="ko"] .menu__lang a[data-lang-set="ko"],
+html[data-lang="en"] .menu__lang a[data-lang-set="en"] { opacity: 1; }
