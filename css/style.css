@@ -838,7 +838,23 @@ body.page-studio.past-hero .header__logo img { filter: invert(1); }
   .part { padding-top: 48px; }
   .part__head { flex-direction: column; align-items: flex-start; gap: 12px; }
   .part__title { font-size: 36px; }
-  .gallery__item { height: 56vh; }
+  /* Mobile: one photo per screen, whole photo visible (width-based, not height-based) */
+  .gallery { gap: 12px; scroll-snap-type: x mandatory; }
+  .gallery__item {
+    width: calc(100vw - 2 * var(--gutter));
+    min-width: 0;
+    height: auto;
+    max-height: none;
+    background: transparent;
+  }
+  .gallery__item img {
+    width: 100%;
+    height: auto;
+    min-width: 0;
+    max-height: 72vh;
+    object-fit: contain;
+    object-position: left top;
+  }
   .floormap__grid { grid-template-columns: 1fr; }
   .snext { grid-template-columns: 1fr 1fr; padding-top: 96px; }
   .snext__link--all { display: none; }
