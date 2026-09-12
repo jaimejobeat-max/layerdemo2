@@ -89,7 +89,7 @@
     "label_ko": "면적",
     "label_en": "Area",
     "value_ko": "450평 (약 1,490㎡) · A 250평 · C 150평",
-    "value_en": "1,490㎡ (450py) · A 830㎡ · C 500㎡"
+    "value_en": "1,490㎡ (450py) · A 830㎡ (250py) · C 500㎡ (150py)"
    },
    {
     "label_ko": "층고",
@@ -243,7 +243,7 @@
     "label_ko": "면적",
     "label_en": "Area",
     "value_ko": "연면적 400평 (약 1,320㎡) · 4개 층",
-    "value_en": "1,320㎡ across 4 floors"
+    "value_en": "1,320㎡ (400py) across 4 floors"
    },
    {
     "label_ko": "층고",
@@ -721,7 +721,7 @@
     "label_ko": "면적",
     "label_en": "Area",
     "value_ko": "A 100평 (330㎡) · B/C 각 60평 (200㎡)",
-    "value_en": "A 330㎡ · B and C 200㎡ each"
+    "value_en": "A 330㎡ (100py) · B and C 200㎡ (60py) each"
    },
    {
     "label_ko": "층고",
@@ -1001,7 +1001,7 @@
     "label_ko": "면적",
     "label_en": "Area",
     "value_ko": "대지 150평 (약 500㎡) · 2층",
-    "value_en": "500㎡ plot · 2 floors"
+    "value_en": "500㎡ (150py) plot · 2 floors"
    },
    {
     "label_ko": "구성",
@@ -1146,7 +1146,7 @@
     "label_ko": "면적",
     "label_en": "Area",
     "value_ko": "주택 300평 (약 990㎡) · 가든 200평 (660㎡)",
-    "value_en": "990㎡ house · 660㎡ garden"
+    "value_en": "990㎡ (300py) house · 660㎡ (200py) garden"
    },
    {
     "label_ko": "구성",
