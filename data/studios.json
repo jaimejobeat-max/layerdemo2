@@ -12,7 +12,7 @@
   "links": [
    {
     "label": "Rental Fee",
-    "href": "https://rentalfee.cargo.site/fortyone"
+    "href": "https://rentalfee.vercel.app/layer41"
    },
    {
     "label": "Main Information (PDF)",
@@ -95,7 +95,7 @@
   "links": [
    {
     "label": "Rental Fee",
-    "href": "https://rentalfee.cargo.site/twenty"
+    "href": "https://rentalfee.vercel.app/layer20"
    },
    {
     "label": "Main Information (PDF)",
@@ -208,7 +208,7 @@
   "links": [
    {
     "label": "Rental Fee",
-    "href": "https://rentalfee.cargo.site/eleven"
+    "href": "https://rentalfee.vercel.app/layer11"
    },
    {
     "label": "Main Information (PDF)",
@@ -285,7 +285,7 @@
   "links": [
    {
     "label": "Rental Fee",
-    "href": "https://rentalfee.cargo.site/twentysix"
+    "href": "https://rentalfee.vercel.app/layer26"
    },
    {
     "label": "Main Information (PDF)",
@@ -355,7 +355,7 @@
   "links": [
    {
     "label": "Rental Fee",
-    "href": "https://rentalfee.cargo.site/twentyseven"
+    "href": "https://rentalfee.vercel.app/layer27"
    },
    {
     "label": "Main Information (PDF)",
@@ -425,7 +425,7 @@
   "links": [
    {
     "label": "Rental Fee",
-    "href": "https://rentalfee.cargo.site/seven"
+    "href": "https://rentalfee.vercel.app/layer7"
    },
    {
     "label": "Main Information (PDF)",
@@ -647,7 +647,7 @@
   "links": [
    {
     "label": "Rental Fee",
-    "href": "https://rentalfee.cargo.site/hannam"
+    "href": "https://rentalfee.vercel.app/hannam"
    },
    {
     "label": "Main Information (PDF)",
@@ -724,6 +724,10 @@
   "location_en": "46-1, Sungsan-dong, Mapo-gu, Seoul",
   "map": "https://map.naver.com/v5/search/%ED%94%8C%EB%9F%AC%EC%8A%A4%EC%A4%80%EC%8A%A4%ED%8A%9C%EB%94%94%EC%98%A4%20%ED%99%8D%EB%8C%80%EC%A0%90/place/36449066?c=14127388.9554794,4517865.4959094,15,0,0,0,dh",
   "links": [
+   {
+    "label": "Rental Fee",
+    "href": "https://rentalfee.vercel.app/hongdae"
+   },
    {
     "label": "View Calendar",
     "href": "http://raysoda.cafe24.com/zeroboard/zboard.php?id=hong_schedule&page=1&page_num=500&select_arrange=headnum&desc=&sn=off&ss=on&sc=on&keyword=&no=8712&category=1%20%20%20"
