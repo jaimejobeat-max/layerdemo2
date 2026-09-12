@@ -165,9 +165,9 @@ def page(o, prev, nxt):
       {hero}
       <div class="slide__overlay"></div>
       <div class="slide__caption">
-        <p class="slide__eyebrow"><span class="en">{e(o['area'])}</span><span class="ko">{e(o.get('area_ko', o['area']))}</span></p>
+        <p class="slide__eyebrow">{e(o['area'])}</p>
         <h1 class="slide__title">{e(o['title'])}</h1>
-        <p class="slide__type"><span class="en">{e(o['tag'])}</span><span class="ko">{e(o.get('tag_ko', o['tag']))}</span></p>
+        <p class="slide__type">{e(o['tag'])}</p>
       </div>
       <a class="shero__arrow" href="#info" aria-label="아래로">
         <svg width="12" height="8" viewBox="0 0 12 8" fill="none" stroke="currentColor" stroke-width="1.4"><path d="M1 1l5 5 5-5"/></svg>
