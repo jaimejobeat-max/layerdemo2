@@ -29,7 +29,34 @@ def pad(n): return f'{n:02d}'
 
 MENU = [('Reservation', '#'), ('Archives', '../archives.html')]
 STUDIO_MENU = [(o['title'], f"{o['key']}.html") for o in DATA if o['key'] != 'horizon']
-UTIL = [('Journal', '../journal.html'), ('Q&A', '#'), ('Guide', '#'), ('About', '#')]
+UTIL = [('Journal', '../journal.html'), ('Q&A', '../qna.html'), ('Guide', '../guide.html'), ('About', '../about.html')]
+ARCHIVE = json.loads(open(ROOT / 'js' / 'archive-data.js', encoding='utf-8').read().split('=', 1)[1].strip().rstrip(';'))
+JOURNAL = json.loads(open(ROOT / 'js' / 'journal-data.js', encoding='utf-8').read().split('=', 1)[1].strip().rstrip(';'))
+
+def related_html(o):
+    """Archive + journal entries shot at this studio (max 6)."""
+    title = o['title']
+    items = []
+    for d in ARCHIVE:
+        if title in d['studios']:
+            items.append(dict(kind='Archive', label=(d['type'] or 'Project') + (' · ' + d['date'] if d.get('date') else ''), title=d['title'], img=d['thumb'], set=d.get('thumbSet', ''), href=f"../archives.html#item-{d['id']}"))
+    for d in JOURNAL:
+        if title.lower().replace(' ', '') in (d.get('meta') or '').lower().replace(' ', '') or title.lower().replace(' ', '') in d['title'].lower().replace(' ', ''):
+            items.append(dict(kind='Journal', label='Journal' + (' · ' + d['date'] if d.get('date') else ''), title=d['title'], img=d['cover'], set=d.get('coverSet', ''), href=f"../journal.html#item-{d['id']}"))
+    if not items: return ''
+    cards = ''.join(
+        f'<li class="acard"><a href="{e(i["href"])}" class="acard__link">'
+        f'<span class="acard__img"><img src="../{e(i["img"])}"' + (f' srcset="{e(", ".join("../" + p.strip() for p in i["set"].split(",")))}" sizes="(max-width: 767px) 100vw, (max-width: 1023px) 50vw, 33vw"' if i['set'] else '') + f' alt="{e(i["title"])}" loading="lazy"></span>'
+        f'<span class="acard__meta"><span class="acard__type">{e(i["label"])}</span><span class="acard__title">{e(i["title"])}</span><span class="acard__studio">{e(i["kind"])}</span></span></a></li>'
+        for i in items[:6])
+    return f'''
+    <section class="related" aria-label="관련 작업">
+      <div class="related__head">
+        <h2 class="related__title">Shot at {e(title)}</h2>
+        <a class="related__more" href="../archives.html">All Archives →</a>
+      </div>
+      <ul class="related__grid">{cards}</ul>
+    </section>'''
 
 def menu_html():
     items = [f'<li><a href="{h}">{e(t)}</a></li>' for t, h in MENU]
@@ -108,10 +135,10 @@ def page(o, prev, nxt):
       <span class="header__page">{e(o['title'])}</span>
     </a>
     <nav class="header__nav" aria-label="유틸리티 메뉴">
-      <a href="#" class="header__link">Guide</a>
-      <a href="#" class="header__link">About</a>
+      <a href="../guide.html" class="header__link">Guide</a>
+      <a href="../about.html" class="header__link">About</a>
       <a href="../journal.html" class="header__link">Journal</a>
-      <a href="#" class="header__link">Q&amp;A</a>
+      <a href="../qna.html" class="header__link">Q&amp;A</a>
       <a href="#" class="header__link header__link--ko">로그인</a>
       <a href="#" class="header__link header__link--ko">고객 서비스</a>
       <button class="header__icon header__menu-btn" type="button" aria-label="메뉴 열기" aria-expanded="false" data-menu-toggle>
@@ -161,6 +188,7 @@ def page(o, prev, nxt):
 
     <div class="parts">{parts}</div>
     {floor}
+    {related_html(o)}
 
     <section class="snext">
       <a class="snext__link" href="{prev['key']}.html"><span class="snext__label">← Previous</span><span class="snext__title">{e(prev['title'])}</span></a>
@@ -186,7 +214,7 @@ def page(o, prev, nxt):
         <ul class="footer__links">
           <li><a href="#">Terms</a></li>
           <li><a href="#">Privacy</a></li>
-          <li><a href="#">Guide</a></li>
+          <li><a href="../guide.html">Guide</a></li>
           <li><a href="#">Careers</a></li>
         </ul>
       </div>

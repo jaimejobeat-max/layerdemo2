@@ -108,13 +108,14 @@
     dMeta.textContent = kindLabel(d) + (d.date ? ' · ' + d.date : '');
     dTitle.textContent = d.title;
     dStudio.textContent = d.meta && d.meta !== 'Layer Events' ? d.meta : '';
-    dCover.innerHTML = '<img src="' + esc(d.cover) + '" alt="' + esc(d.title) + '">';
+    dCover.innerHTML = '<img src="' + esc(d.cover) + '"' + (d.coverSet ? ' srcset="' + esc(d.coverSet) + '" sizes="(max-width: 1100px) 100vw, 1100px"' : '') + ' alt="' + esc(d.title) + '">';
     dBody.innerHTML = d.paras.map(function (p) { return '<p>' + esc(p) + '</p>'; }).join('') +
       d.embeds.map(function (u) {
         return '<div class="detail__embed"><iframe src="' + esc(u) + '" title="' + esc(d.title) + '" allow="autoplay; fullscreen; picture-in-picture" allowfullscreen loading="lazy"></iframe></div>';
       }).join('');
-    dImages.innerHTML = d.images.map(function (src) {
-      return '<figure class="detail__fig"><img src="' + esc(src) + '" alt="' + esc(d.title) + '" loading="lazy"></figure>';
+    dImages.innerHTML = d.images.map(function (src, i) {
+      var set = d.imagesSet && d.imagesSet[i];
+      return '<figure class="detail__fig"><img src="' + esc(src) + '"' + (set ? ' srcset="' + esc(set) + '" sizes="(max-width: 1100px) 100vw, 1100px"' : '') + ' alt="' + esc(d.title) + '" loading="lazy"></figure>';
     }).join('');
     dIndex.textContent = pad(idx + 1) + ' / ' + pad(state.list.length);
     dPrev.disabled = idx === 0;

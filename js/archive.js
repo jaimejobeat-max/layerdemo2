@@ -119,8 +119,9 @@
     dTitle.textContent = d.title;
     dStudio.textContent = d.studios.length ? 'Shot at ' + d.studios.join(' · ') : '';
     var imgs = d.images.length ? d.images : [d.thumb];
-    dImages.innerHTML = imgs.map(function (src) {
-      return '<figure class="detail__fig"><img src="' + esc(src) + '" alt="' + esc(d.title) + '" loading="lazy"></figure>';
+    dImages.innerHTML = imgs.map(function (src, i) {
+      var set = d.imagesSet && d.imagesSet[i];
+      return '<figure class="detail__fig"><img src="' + esc(src) + '"' + (set ? ' srcset="' + esc(set) + '" sizes="(max-width: 1100px) 100vw, 1100px"' : '') + ' alt="' + esc(d.title) + '" loading="lazy"></figure>';
     }).join('');
     dCredits.innerHTML = d.credits.map(function (c) { return '<p>' + esc(c) + '</p>'; }).join('');
     dIndex.textContent = pad(idx + 1) + ' / ' + pad(state.list.length);
