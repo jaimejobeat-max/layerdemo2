@@ -42,16 +42,14 @@ function validate(b) {
     purpose: PURPOSE[clean(b.purpose, 20)] || clean(b.purpose, 200), people: clean(b.people, 20), vehicles: clean(b.vehicles, 20), note: clean(b.note, 1000), lang: b.lang === 'en' ? 'en' : 'ko' };
 }
 
-/** Provisional-booking rank for this day/part: existing ++ posts + 1 → W1, W2, … */
-function provisionalRank(labels, part) {
-  const mine = labels.filter((l) => l.includes('++') && (part === '-' || new RegExp('^' + part.replace(/[.*+?^${}()|[\]\\]/g, '\\$&') + '(?=\\s|$)', 'i').test(l)));
-  return mine.length + 1;
+/** Provisional-booking rank for this day: existing ++ posts on the board that day + 1 → W1, W2, … */
+function provisionalRank(labels) {
+  return labels.filter((l) => l.includes('++')).length + 1;
 }
 
 function buildPost(r, rank = 1) {
   const d = r.date; const y = d.getUTCFullYear(), m = d.getUTCMonth() + 1, day = d.getUTCDate();
-  const initial = r.company.replace(/\s+/g, '')[0] || '?';
-  const label = `${r.part === '-' ? '' : r.part + ' '}${pad2(r.start)}-${pad2(r.end)} ${initial}* ++(W${rank})`;
+  const label = `++(W${rank})`; // calendar label follows the staff convention; details live in the body
   const memo = [
     `* ${r.part === '-' ? '' : r.part + ' '}${pad2(r.start)}-${pad2(r.end)} 홈페이지 예약 신청 (가부킹 W${rank}, 미확정)`,
     '',
@@ -109,7 +107,7 @@ module.exports = async (req, res) => {
     try {
       const cookie = await login(process.env.RAYSODA_ID, process.env.RAYSODA_PW);
       let rank = 1;
-      try { rank = provisionalRank(await dayLabels({ cookie, boardId, y: r.date.getUTCFullYear(), m: r.date.getUTCMonth() + 1, d: r.date.getUTCDate() }), r.part); } catch (e) { console.error('rank lookup failed', e.message); }
+      try { rank = provisionalRank(await dayLabels({ cookie, boardId, y: r.date.getUTCFullYear(), m: r.date.getUTCMonth() + 1, d: r.date.getUTCDate() })); } catch (e) { console.error('rank lookup failed', e.message); }
       post = buildPost(r, rank);
       boardResult = await writePost({ cookie, boardId, date: r.date, label: post.label, memo: post.memo, name: process.env.RESERVE_AUTHOR || '홈페이지', password: process.env.RESERVE_POST_PW || 'layer' });
       if (!boardResult.ok) console.error('board write failed', boardResult);
