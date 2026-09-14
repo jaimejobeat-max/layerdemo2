@@ -23,10 +23,12 @@
             <label class="rform__field"><span class="rform__label"><span class="ko">파트</span><span class="en">Part</span></span>
               <select name="part" id="rPart" required><option value="" data-ko="선택" data-en="Select">선택 / Select</option></select></label>
           </div>
-          <div class="rform__row rform__row--3">
+          <div class="rform__row rform__row--2">
             <label class="rform__field"><span class="rform__label"><span class="ko">날짜</span><span class="en">Date</span></span><input type="date" name="date" id="rDate" required></label>
+            <div class="rform__pair">
             <label class="rform__field"><span class="rform__label"><span class="ko">시작</span><span class="en">Start</span></span><select name="start" id="rStart" required><option value="6">06:00</option><option value="7">07:00</option><option value="8">08:00</option><option value="9">09:00</option><option value="10">10:00</option><option value="11">11:00</option><option value="12">12:00</option><option value="13">13:00</option><option value="14">14:00</option><option value="15">15:00</option><option value="16">16:00</option><option value="17">17:00</option><option value="18">18:00</option><option value="19">19:00</option><option value="20">20:00</option><option value="21">21:00</option><option value="22">22:00</option><option value="23">23:00</option></select></label>
             <label class="rform__field"><span class="rform__label"><span class="ko">종료</span><span class="en">End</span></span><select name="end" id="rEnd" required><option value="7">07:00</option><option value="8">08:00</option><option value="9">09:00</option><option value="10">10:00</option><option value="11">11:00</option><option value="12">12:00</option><option value="13">13:00</option><option value="14">14:00</option><option value="15">15:00</option><option value="16">16:00</option><option value="17">17:00</option><option value="18">18:00</option><option value="19">19:00</option><option value="20">20:00</option><option value="21">21:00</option><option value="22">22:00</option><option value="23">23:00</option><option value="24">24:00</option></select></label>
+            </div>
           </div>
           <p class="rform__notice" id="rNotice" hidden><span class="ko">Faust는 온라인 신청을 받지 않습니다. 전화로 문의해 주세요. <a href="tel:0233567750">02-336-7750</a></span><span class="en">Faust is not bookable online. Please call us at <a href="tel:0233567750">+82-2-336-7750</a>.</span></p>
           <p class="rform__hint" id="rHint"><span class="ko">최소 대관 시간: 레이어 4시간 / 홍대 2시간. 세팅과 철수 시간을 포함해 주세요.</span><span class="en">Minimum booking: Layer studios 4 hours / Hongdae 2 hours. Include set-up and strike.</span></p>
@@ -57,7 +59,7 @@
             <label class="rform__field"><span class="rform__label"><span class="ko">전화</span><span class="en">Phone</span></span><input type="tel" name="phone" maxlength="40" required></label>
             <label class="rform__field"><span class="rform__label"><span class="ko">이메일 (선택)</span><span class="en">Email (optional)</span></span><input type="email" name="email" maxlength="100"></label>
           </div>
-          <label class="rform__field"><span class="rform__label"><span class="ko">요청사항 (선택)</span><span class="en">Notes (optional)</span></span><textarea name="note" rows="4" maxlength="1000"></textarea></label>
+          <label class="rform__field"><span class="rform__label"><span class="ko">요청사항 (선택)</span><span class="en">Notes (optional)</span></span><textarea name="note" rows="3" maxlength="1000"></textarea></label>
         </fieldset>
 
         <label class="rform__consent"><input type="checkbox" name="consent" required> <span><span class="ko">예약 확인을 위해 위 정보를 수집·이용하는 데 동의합니다.</span><span class="en">I agree to the use of this information to process the booking.</span></span></label>

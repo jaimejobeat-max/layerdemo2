@@ -1254,3 +1254,36 @@ body.search-open { overflow: hidden; }
 .rform__label { font-size: 11px; letter-spacing: .04em; }
 .rform { gap: 52px; }
 @media (max-width: 767px) { .rform { gap: 40px; } .rform__legend { font-size: 16px; } }
+
+/* ---- Reservation form: tightened proportions ---- */
+.rform { gap: 48px; }
+.rform__group { gap: 24px; }
+.rform__legend { font-size: 16px; padding-bottom: 12px; margin-bottom: 0; }
+.rform__row { gap: 24px 32px; }
+.rform__row--3 { grid-template-columns: 1.4fr 1fr 1fr; }
+.rform__field { gap: 4px; }
+.rform__label { font-size: 12px; letter-spacing: .02em; color: #6f6f6f; }
+.rform input:not([type=checkbox]), .rform select, .rform textarea {
+  font-size: 16px; line-height: 1.3; padding: 9px 0; height: 42px; box-sizing: border-box;
+}
+.rform textarea { height: auto; min-height: 84px; padding: 10px 0; }
+.rform input::placeholder, .rform textarea::placeholder { color: #b0b0b0; }
+.rform input[type=date] { color: var(--black); }
+.rform input[type=date]::-webkit-datetime-edit { padding: 0; }
+.rform input[type=date]::-webkit-calendar-picker-indicator { opacity: .6; cursor: pointer; }
+.rform select { background-size: 10px 6px; background-position: right 2px center; padding-right: 22px; }
+.rform__hint { margin-top: -6px; }
+.rform__notice { margin-top: -4px; }
+.rform__consent { font-size: 14px; }
+.rform__actions { gap: 12px; }
+.rform__submit { font-size: 17px; }
+@media (max-width: 767px) {
+  .rform { gap: 40px; }
+  .rform__row { gap: 20px; }
+  .rform__row--3 { grid-template-columns: 1fr; }
+  .rform__row--3 > .rform__field:nth-child(2), .rform__row--3 > .rform__field:nth-child(3) { grid-column: auto; }
+}
+
+.rform__pair { display: grid; grid-template-columns: 1fr 1fr; gap: 24px 20px; }
+
+.rform__legend { margin-bottom: 6px; }
