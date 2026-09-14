@@ -99,6 +99,7 @@ module.exports = async (req, res) => {
     } catch (e) { console.error('board error', e.message); boardResult = { ok: false, error: e.message }; }
   }
   await slack(r, post, boardId, boardResult);
-  res.status(200).json({ ok: true, recorded: !!(boardResult && boardResult.ok), label: post.label });
+  const reason = !boardId ? 'no-board' : process.env.RESERVE_DRY_RUN === '1' ? 'dry-run' : (boardResult && boardResult.ok) ? null : (boardResult && (boardResult.error || boardResult.status)) || 'unknown';
+  res.status(200).json({ ok: true, recorded: !!(boardResult && boardResult.ok), label: post.label, reason });
 };
 module.exports.buildPost = buildPost; module.exports.validate = validate;
