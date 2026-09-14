@@ -1247,9 +1247,10 @@ body.search-open { overflow: hidden; }
 .rform__group { gap: 22px; }
 .rform__legend {
   display: flex; align-items: baseline; gap: 14px;
-  font-size: 28px; font-weight: 700; letter-spacing: -0.02em; line-height: 1; color: var(--black);
-  text-transform: none; border-bottom: 1px solid var(--black); padding-bottom: 14px; margin-bottom: 4px;
+  font-size: 17px; font-weight: 700; letter-spacing: -0.01em; line-height: 1; color: var(--black);
+  text-transform: none; border-bottom: 1px solid var(--black); padding-bottom: 12px; margin-bottom: 2px;
 }
-.rform__legend-num { font-size: var(--fs-ui); font-weight: 400; color: var(--grey); letter-spacing: .06em; }
+.rform__legend-num { font-size: 11px; font-weight: 400; color: var(--grey); letter-spacing: .06em; }
 .rform__label { font-size: 11px; letter-spacing: .04em; }
-@media (max-width: 767px) { .rform { gap: 48px; } .rform__legend { font-size: 22px; } }
+.rform { gap: 52px; }
+@media (max-width: 767px) { .rform { gap: 40px; } .rform__legend { font-size: 16px; } }
