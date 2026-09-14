@@ -8,13 +8,14 @@ const iconv = require('iconv-lite');
 const HOST = 'raysoda.cafe24.com';
 const BASE = '/zeroboard';
 
-function rawRequest(method, path, { body = null, cookie = null, contentType = 'application/x-www-form-urlencoded' } = {}) {
+function rawRequest(method, path, { body = null, cookie = null, contentType = 'application/x-www-form-urlencoded', headers: extra = {} } = {}) {
   return new Promise((resolve, reject) => {
     const socket = tls.connect(443, HOST, { rejectUnauthorized: false }, () => {
       const lines = [`${method} ${path} HTTP/1.1`, `Host: ${HOST}`, 'Connection: close',
         'User-Agent: Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 Chrome/120 Safari/537.36',
         `Content-Type: ${contentType}`];
       if (cookie) lines.push(`Cookie: ${cookie}`);
+      for (const [k, v] of Object.entries(extra)) lines.push(`${k}: ${v}`);
       if (body) lines.push(`Content-Length: ${body.length}`);
       lines.push('\r\n');
       socket.write(lines.join('\r\n'));
@@ -87,14 +88,14 @@ function multipart(fields) {
  * @param {object} p
  * @param {string} p.cookie   session cookie from login()
  * @param {string} p.boardId  e.g. 'Layer41'
- * @param {Date}   p.date     booking date (KST calendar day)
+ * @param {Date}   p.date     booking calendar day as Date.UTC(y, m-1, d)
  * @param {string} p.label    calendar label shown on the month grid (sitelink1)
  * @param {string} p.memo     post body
  * @param {string} p.name     author name shown on the post
  * @param {string} p.password post password (needed to edit/delete without login)
  */
 async function writePost({ cookie, boardId, date, label, memo, name, password }) {
-  const y = date.getFullYear(), m = date.getMonth() + 1, d = date.getDate();
+  const y = date.getUTCFullYear(), m = date.getUTCMonth() + 1, d = date.getUTCDate(); // date is a UTC calendar day
   const fields = {
     page: '', id: boardId, no: '', select_arrange: '', desc: '', page_num: '', keyword: '', category: '', sn: '', ss: '', sc: '',
     mode: 'write', name, password, email: '', homepage: '', subject: `${y}/${m}/${d}`, sitelink1: label, memo, sitelink2: '',

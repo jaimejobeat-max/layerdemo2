@@ -26,10 +26,11 @@ function validate(b) {
   if (NO_ONLINE[studio]) return 'studio-offline';
   const part = clean(b.part, 20) || '-';
   if (!/^\d{4}-\d{2}-\d{2}$/.test(b.date || '')) return 'date';
-  const date = new Date(b.date + 'T00:00:00+09:00');
-  if (Number.isNaN(date.getTime())) return 'date';
+  const [yy, mm, dd] = b.date.split('-').map(Number);
+  const date = new Date(Date.UTC(yy, mm - 1, dd)); // calendar day, timezone-independent (use getUTC* only)
+  if (Number.isNaN(date.getTime()) || date.getUTCMonth() !== mm - 1) return 'date';
   const todayKst = new Date(Date.now() + 9 * 3600e3); todayKst.setUTCHours(0, 0, 0, 0);
-  if (date.getTime() < todayKst.getTime() - 9 * 3600e3) return 'date-past';
+  if (date.getTime() < todayKst.getTime()) return 'date-past';
   const start = parseInt(b.start, 10), end = parseInt(b.end, 10);
   if (!(start >= 0 && start <= 23 && end >= 1 && end <= 24 && end > start)) return 'time';
   if (end - start < (MIN_HOURS[studio] || 4)) return 'min-hours';
@@ -42,14 +43,14 @@ function validate(b) {
 }
 
 function buildPost(r) {
-  const d = r.date; const y = d.getFullYear(), m = d.getMonth() + 1, day = d.getDate();
+  const d = r.date; const y = d.getUTCFullYear(), m = d.getUTCMonth() + 1, day = d.getUTCDate();
   const initial = r.company.replace(/\s+/g, '')[0] || '?';
   const label = `${r.part === '-' ? '' : r.part + ' '}${pad2(r.start)}-${pad2(r.end)} ${initial}* ++`;
   const memo = [
     `* ${r.part === '-' ? '' : r.part + ' '}${pad2(r.start)}-${pad2(r.end)} 홈페이지 예약 신청 (미확정)`,
     '',
     '====',
-    `* 대관 날짜 : ${y}년 ${m}월 ${day}일(${WEEKDAYS[d.getDay()]})`,
+    `* 대관 날짜 : ${y}년 ${m}월 ${day}일(${WEEKDAYS[d.getUTCDay()]})`,
     `* 대관 지점 : ${NAMES[r.studio]}`,
     `* 대관 파트 : ${r.part}`,
     `* 대관 시간 : ${pad2(r.start)}:00 - ${pad2(r.end)}:00 (${r.end - r.start}h)`,
@@ -72,7 +73,7 @@ async function slack(r, post, boardId, boardResult) {
   const d = r.date;
   const text = [
     `:inbox_tray: *홈페이지 예약 신청* — ${NAMES[r.studio]}${r.part !== '-' ? ' ' + r.part : ''}`,
-    `• ${d.getFullYear()}.${pad2(d.getMonth() + 1)}.${pad2(d.getDate())}(${WEEKDAYS[d.getDay()]}) ${pad2(r.start)}:00–${pad2(r.end)}:00 · ${r.purpose || '-'} · ${r.people || '-'}명 · 차량 ${r.vehicles || '-'}`,
+    `• ${d.getUTCFullYear()}.${pad2(d.getUTCMonth() + 1)}.${pad2(d.getUTCDate())}(${WEEKDAYS[d.getUTCDay()]}) ${pad2(r.start)}:00–${pad2(r.end)}:00 · ${r.purpose || '-'} · ${r.people || '-'}명 · 차량 ${r.vehicles || '-'}`,
     `• ${r.company} / ${r.contact} / ${r.phone}${r.email ? ' / ' + r.email : ''}`,
     r.note ? `• 요청: ${r.note}` : null,
     boardId ? (boardResult && boardResult.ok ? `• 스케줄표에 가부킹으로 기록됨 → \`${post.label}\`` : `• :warning: 게시판 기록 실패 — 수동 등록 필요`) : `• :warning: 이 지점은 스케줄 게시판이 없어 수동 등록 필요`,
