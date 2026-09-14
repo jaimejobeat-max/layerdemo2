@@ -20,8 +20,9 @@
           <div class="rform__row rform__row--2">
             <label class="rform__field"><span class="rform__label"><span class="ko">지점</span><span class="en">Studio</span></span>
               <select name="studio" id="rStudio" required><option value="" data-ko="선택" data-en="Select">선택 / Select</option><option value="layer-41">Layer 41</option><option value="layer-20">Layer 20</option><option value="layer-11">Layer 11</option><option value="layer-26">Layer 26</option><option value="layer-27">Layer 27</option><option value="layer-7">Layer 7</option><option value="layer-10">Layer 10</option><option value="layer-hannam">Layer Hannam</option><option value="hongdae">Hongdae</option><option value="faust">Faust</option><option value="layer-57">Layer 57</option></select></label>
-            <label class="rform__field"><span class="rform__label"><span class="ko">파트</span><span class="en">Part</span></span>
-              <select name="part" id="rPart" required><option value="" data-ko="선택" data-en="Select">선택 / Select</option></select></label>
+            <div class="rform__field"><span class="rform__label"><span class="ko">파트 (복수 선택 가능)</span><span class="en">Part (select one or more)</span></span>
+              <div class="rform__parts" id="rParts" role="group"><span class="rform__parts-empty" data-ko="지점을 먼저 선택해 주세요" data-en="Choose a studio first">지점을 먼저 선택해 주세요</span></div>
+              <input type="hidden" name="part" id="rPart" value=""></div>
           </div>
           <div class="rform__row rform__row--2">
             <label class="rform__field"><span class="rform__label"><span class="ko">날짜</span><span class="en">Date</span></span><input type="date" name="date" id="rDate" required></label>

@@ -17,18 +17,24 @@
   function relabel() {
     Array.prototype.slice.call(form.querySelectorAll('option[data-ko]')).forEach(function (o) { o.textContent = window.LANG === 'en' ? o.getAttribute('data-en') : o.getAttribute('data-ko'); });
   }
-  var PLACEHOLDER = '<option value="" data-ko="선택" data-en="Select">선택</option>';
-  var notices = Array.prototype.slice.call(document.querySelectorAll('.rform__notice[data-for]'));
-  var NO_ONLINE = { faust: true, 'layer-10': true };
+  var partsBox = document.getElementById('rParts');
+  function partsEmptyText() { return window.LANG === 'en' ? 'Choose a studio first' : '지점을 먼저 선택해 주세요'; }
+  function selectedParts() { return Array.prototype.slice.call(partsBox.querySelectorAll('input:checked')).map(function (i) { return i.value; }); }
+  function syncPart() { sPart.value = selectedParts().join('+'); }
   function fillParts(key) {
     var s = studios.filter(function (x) { return x.key === key; })[0];
-    sPart.innerHTML = '';
-    if (!s) { sPart.innerHTML = PLACEHOLDER; relabel(); return; }
-    var parts = s.parts.length ? s.parts : ['-'];
-    if (parts.length > 1) sPart.insertAdjacentHTML('beforeend', PLACEHOLDER);
-    parts.forEach(function (p) { sPart.insertAdjacentHTML('beforeend', '<option value="' + p + '">' + p + '</option>'); });
-    sPart.disabled = false; relabel();
+    partsBox.innerHTML = '';
+    if (!s) { partsBox.innerHTML = '<span class="rform__parts-empty">' + partsEmptyText() + '</span>'; sPart.value = ''; return; }
+    var parts = s.parts.length ? s.parts : [];
+    if (!parts.length) { partsBox.innerHTML = '<span class="rform__parts-empty">' + (window.LANG === 'en' ? 'Whole studio' : '전체 공간') + '</span>'; sPart.value = '-'; return; }
+    parts.forEach(function (p, i) {
+      partsBox.insertAdjacentHTML('beforeend', '<label class="rform__chip"><input type="checkbox" value="' + p + '"' + (parts.length === 1 ? ' checked' : '') + '><span>' + p + '</span></label>');
+    });
+    syncPart();
   }
+  partsBox.addEventListener('change', syncPart);
+  var notices = Array.prototype.slice.call(document.querySelectorAll('.rform__notice[data-for]'));
+  var NO_ONLINE = { faust: true, 'layer-10': true };
   function applyStudioRules(key) {
     var blocked = !!NO_ONLINE[key];
     notices.forEach(function (n) { n.hidden = n.getAttribute('data-for') !== key; });
@@ -41,7 +47,7 @@
   fillParts(sStudio.value); applyStudioRules(sStudio.value); relabel();
   var today = new Date(Date.now() + 9 * 3600e3).toISOString().slice(0, 10); dDate.min = today;
   sStart.value = '9'; sEnd.value = '18';
-  document.addEventListener('langchange', function () { relabel(); document.getElementById('rLang').value = window.LANG; });
+  document.addEventListener('langchange', function () { relabel(); var e = partsBox.querySelector('.rform__parts-empty'); if (e && !sStudio.value) e.textContent = partsEmptyText(); document.getElementById('rLang').value = window.LANG; });
   document.getElementById('rLang').value = window.LANG;
 
   function showError(code) { err.textContent = t(code); err.hidden = false; err.scrollIntoView({ block: 'center', behavior: 'smooth' }); }
@@ -52,17 +58,17 @@
     var s = studios.filter(function (x) { return x.key === data.studio; })[0];
     if (!s) return showError('studio');
     if (NO_ONLINE[s.key]) return;
-    if (!data.purpose) return showError('purpose');
-    if (s.parts.length > 1 && !data.part) return showError('part');
+    syncPart(); data.part = sPart.value;
+    if (s.parts.length && !data.part) return showError('part');
     if (!data.date) return showError('date');
     if (data.date < today) return showError('date-past');
     if (+data.end <= +data.start) return showError('time');
     if (+data.end - +data.start < s.min) return showError('min-hours');
+    if (!data.purpose) return showError('purpose');
     if (!data.company.trim()) return showError('company');
     if (!data.contact.trim()) return showError('contact');
     if (data.phone.replace(/\D/g, '').length < 7) return showError('phone');
     if (!form.consent.checked) return showError('consent');
-    if (!data.part) data.part = s.parts[0] || '-';
     submit.disabled = true; var label = submit.innerHTML; submit.textContent = t('sending');
     fetch('/api/reserve', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(data) })
       .then(function (r) { return r.json().then(function (j) { return { status: r.status, body: j }; }); })

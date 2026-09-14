@@ -1293,3 +1293,12 @@ body.search-open { overflow: hidden; }
 .rform__legend .ko, .rform__legend .en { font-weight: 600; letter-spacing: -0.01em; }
 .rform__legend-num { font-size: 11px; color: #9a9a9a; letter-spacing: .04em; font-family: var(--sans); }
 @media (max-width: 767px) { .rform__legend { font-size: 15px; } }
+
+/* Reservation: part chips (multi-select) */
+.rform__parts { display: flex; flex-wrap: wrap; gap: 8px; padding: 6px 0 8px; border-bottom: 1px solid var(--black); min-height: 42px; align-items: center; }
+.rform__parts-empty { font-size: 15px; color: #b0b0b0; text-transform: none; }
+.rform__chip { position: relative; }
+.rform__chip input { position: absolute; opacity: 0; width: 1px; height: 1px; }
+.rform__chip span { display: inline-block; padding: 6px 12px; border: 1px solid var(--black); font-size: 13px; line-height: 1; cursor: pointer; user-select: none; transition: background .15s var(--ease), color .15s var(--ease); }
+.rform__chip input:checked + span { background: var(--black); color: var(--white); }
+.rform__chip input:focus-visible + span { outline: 2px solid var(--black); outline-offset: 2px; }

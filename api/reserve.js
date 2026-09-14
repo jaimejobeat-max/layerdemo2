@@ -24,7 +24,8 @@ function validate(b) {
   const studio = clean(b.studio, 30);
   if (!(studio in BOARDS)) return 'studio';
   if (NO_ONLINE[studio]) return 'studio-offline';
-  const part = clean(b.part, 20) || '-';
+  const part = clean(b.part, 40).replace(/\s*\+\s*/g, '+') || '-';
+  if (!/^[A-Za-z0-9가-힣][A-Za-z0-9가-힣 \-]{0,18}(\+[A-Za-z0-9가-힣][A-Za-z0-9가-힣 \-]{0,18}){0,7}$|^-$/.test(part)) return 'part';
   if (!/^\d{4}-\d{2}-\d{2}$/.test(b.date || '')) return 'date';
   const [yy, mm, dd] = b.date.split('-').map(Number);
   const date = new Date(Date.UTC(yy, mm - 1, dd)); // calendar day, timezone-independent (use getUTC* only)
