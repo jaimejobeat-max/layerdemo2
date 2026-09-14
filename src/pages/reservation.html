@@ -19,22 +19,29 @@
           <legend class="rform__legend"><span class="ko">공간</span><span class="en">Space</span></legend>
           <div class="rform__row rform__row--2">
             <label class="rform__field"><span class="rform__label"><span class="ko">지점</span><span class="en">Studio</span></span>
-              <select name="studio" id="rStudio" required><option value=""><span class="ko">선택</span><span class="en">Select</span></option><option value="layer-41">Layer 41</option><option value="layer-20">Layer 20</option><option value="layer-11">Layer 11</option><option value="layer-26">Layer 26</option><option value="layer-27">Layer 27</option><option value="layer-7">Layer 7</option><option value="layer-10">Layer 10</option><option value="layer-hannam">Layer Hannam</option><option value="hongdae">Hongdae</option><option value="faust">Faust</option><option value="layer-57">Layer 57</option></select></label>
+              <select name="studio" id="rStudio" required><option value="" data-ko="선택" data-en="Select">선택 / Select</option><option value="layer-41">Layer 41</option><option value="layer-20">Layer 20</option><option value="layer-11">Layer 11</option><option value="layer-26">Layer 26</option><option value="layer-27">Layer 27</option><option value="layer-7">Layer 7</option><option value="layer-10">Layer 10</option><option value="layer-hannam">Layer Hannam</option><option value="hongdae">Hongdae</option><option value="faust">Faust</option><option value="layer-57">Layer 57</option></select></label>
             <label class="rform__field"><span class="rform__label"><span class="ko">파트</span><span class="en">Part</span></span>
-              <select name="part" id="rPart" required><option value=""><span class="ko">지점을 먼저 선택</span><span class="en">Choose a studio first</span></option></select></label>
+              <select name="part" id="rPart" required><option value="" data-ko="선택" data-en="Select">선택 / Select</option></select></label>
           </div>
           <div class="rform__row rform__row--3">
             <label class="rform__field"><span class="rform__label"><span class="ko">날짜</span><span class="en">Date</span></span><input type="date" name="date" id="rDate" required></label>
             <label class="rform__field"><span class="rform__label"><span class="ko">시작</span><span class="en">Start</span></span><select name="start" id="rStart" required><option value="6">06:00</option><option value="7">07:00</option><option value="8">08:00</option><option value="9">09:00</option><option value="10">10:00</option><option value="11">11:00</option><option value="12">12:00</option><option value="13">13:00</option><option value="14">14:00</option><option value="15">15:00</option><option value="16">16:00</option><option value="17">17:00</option><option value="18">18:00</option><option value="19">19:00</option><option value="20">20:00</option><option value="21">21:00</option><option value="22">22:00</option><option value="23">23:00</option></select></label>
             <label class="rform__field"><span class="rform__label"><span class="ko">종료</span><span class="en">End</span></span><select name="end" id="rEnd" required><option value="7">07:00</option><option value="8">08:00</option><option value="9">09:00</option><option value="10">10:00</option><option value="11">11:00</option><option value="12">12:00</option><option value="13">13:00</option><option value="14">14:00</option><option value="15">15:00</option><option value="16">16:00</option><option value="17">17:00</option><option value="18">18:00</option><option value="19">19:00</option><option value="20">20:00</option><option value="21">21:00</option><option value="22">22:00</option><option value="23">23:00</option><option value="24">24:00</option></select></label>
           </div>
+          <p class="rform__notice" id="rNotice" hidden><span class="ko">Faust는 온라인 신청을 받지 않습니다. 전화로 문의해 주세요. <a href="tel:0233567750">02-336-7750</a></span><span class="en">Faust is not bookable online. Please call us at <a href="tel:0233567750">+82-2-336-7750</a>.</span></p>
           <p class="rform__hint" id="rHint"><span class="ko">최소 대관 시간: 레이어 4시간 / 홍대 2시간. 세팅과 철수 시간을 포함해 주세요.</span><span class="en">Minimum booking: Layer studios 4 hours / Hongdae 2 hours. Include set-up and strike.</span></p>
         </fieldset>
 
         <fieldset class="rform__group">
           <legend class="rform__legend"><span class="ko">촬영</span><span class="en">Shoot</span></legend>
           <div class="rform__row rform__row--3">
-            <label class="rform__field rform__field--wide"><span class="rform__label"><span class="ko">촬영 내용</span><span class="en">What are you shooting</span></span><input type="text" name="purpose" maxlength="200" placeholder="ex) 룩북 촬영, 브랜드 행사"></label>
+            <label class="rform__field rform__field--wide"><span class="rform__label"><span class="ko">촬영 내용</span><span class="en">Type of use</span></span>
+              <select name="purpose" id="rPurpose" required>
+                <option value="" data-ko="선택" data-en="Select">선택 / Select</option>
+                <option value="photo" data-ko="사진" data-en="Photo">사진 / Photo</option>
+                <option value="video" data-ko="영상" data-en="Video">영상 / Video</option>
+                <option value="event" data-ko="행사" data-en="Event">행사 / Event</option>
+              </select></label>
             <label class="rform__field"><span class="rform__label"><span class="ko">인원</span><span class="en">People</span></span><input type="text" name="people" inputmode="numeric" maxlength="20" placeholder="ex) 15"></label>
             <label class="rform__field"><span class="rform__label"><span class="ko">차량</span><span class="en">Vehicles</span></span><input type="text" name="vehicles" inputmode="numeric" maxlength="20" placeholder="ex) 2"></label>
           </div>

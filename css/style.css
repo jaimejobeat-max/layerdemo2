@@ -1238,3 +1238,6 @@ body.search-open { overflow: hidden; }
 }
 
 .rform[hidden], .rform__done[hidden] { display: none; }
+
+.rform__notice { font-size: 14px; line-height: 1.6; text-transform: none; padding: 12px 14px; border: 1px solid var(--black); }
+.rform__notice a { font-weight: 700; }

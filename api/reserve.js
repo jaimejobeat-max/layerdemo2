@@ -12,6 +12,8 @@ const NAMES = {
   'layer-7': 'LAYER 7', 'layer-10': 'LAYER 10', 'layer-hannam': 'LAYER HANNAM', 'hongdae': 'HONGDAE', 'faust': 'FAUST', 'layer-57': 'LAYER 57',
 };
 const MIN_HOURS = { hongdae: 2 };
+const PURPOSE = { photo: '사진 촬영', video: '영상 촬영', event: '행사' };
+const NO_ONLINE = { faust: true };
 const WEEKDAYS = ['일', '월', '화', '수', '목', '금', '토'];
 
 function bad(res, msg, code = 400) { res.status(code).json({ ok: false, error: msg }); }
@@ -21,6 +23,7 @@ function clean(s, max = 200) { return String(s ?? '').replace(/[\r\n\t]+/g, ' ')
 function validate(b) {
   const studio = clean(b.studio, 30);
   if (!(studio in BOARDS)) return 'studio';
+  if (NO_ONLINE[studio]) return 'studio-offline';
   const part = clean(b.part, 20) || '-';
   if (!/^\d{4}-\d{2}-\d{2}$/.test(b.date || '')) return 'date';
   const date = new Date(b.date + 'T00:00:00+09:00');
@@ -35,7 +38,7 @@ function validate(b) {
   const phone = clean(b.phone, 40); if (!/[\d]{7,}/.test(phone.replace(/\D/g, ''))) return 'phone';
   const email = clean(b.email, 100); if (email && !/^[^@\s]+@[^@\s]+\.[^@\s]+$/.test(email)) return 'email';
   return { studio, part, date, start, end, company, contact, phone, email,
-    purpose: clean(b.purpose, 200), people: clean(b.people, 20), vehicles: clean(b.vehicles, 20), note: clean(b.note, 1000), lang: b.lang === 'en' ? 'en' : 'ko' };
+    purpose: PURPOSE[clean(b.purpose, 20)] || clean(b.purpose, 200), people: clean(b.people, 20), vehicles: clean(b.vehicles, 20), note: clean(b.note, 1000), lang: b.lang === 'en' ? 'en' : 'ko' };
 }
 
 function buildPost(r) {
