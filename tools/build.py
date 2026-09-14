@@ -206,7 +206,7 @@ ROOT_PAGES = [
     dict(src='about', out='about.html', title='About — Layer Studios', desc='Spaces that begin with a scene. 2009년 사진가의 작업실에서 시작해 서울 곳곳의 공간을 스튜디오로 되살려 온 레이어 스튜디오.', path='/about', og='https://plusjun1.cafe24.com/images/mainslide/main_ys_01.jpg', body_class='page-studio page-about', label='About', scripts=('studio.js',)),
     dict(src='guide', out='guide.html', title='Guide — Layer Studios', desc='레이어 스튜디오 예약 방법, 이용 안내, 예약금과 환불 기준.', path='/guide', og='https://plusjun1.cafe24.com/images/mainslide/main_41_06-2.jpg', body_class='page-light', label='Guide', scripts=('page.js',)),
     dict(src='qna', out='qna.html', title='Q&A — Layer Studios', desc='레이어 스튜디오 자주 묻는 질문과 문의 양식.', path='/qna', og='https://plusjun1.cafe24.com/images/mainslide/main_41_06-2.jpg', body_class='page-light', label='Q&A', scripts=('page.js',)),
-    dict(src='reservation', out='reservation.html', title='Reservation — Layer Studios', desc='레이어 스튜디오 대관 예약 신청. 지점, 파트, 날짜와 시간을 보내주시면 담당자가 확인 후 안내드립니다.', path='/reservation', og='https://plusjun1.cafe24.com/images/mainslide/main_41_06-2.jpg', body_class='page-light', label='Reservation', scripts=('reservation.js',)),
+    dict(src='reservation', out='reservation.html', title='Reservation — Layer Studios', desc='레이어 스튜디오 대관 예약 신청. 지점, 파트, 날짜와 시간을 보내주시면 담당자가 확인 후 안내드립니다.', path='/reservation', og='https://plusjun1.cafe24.com/images/mainslide/main_41_06-2.jpg', body_class='page-light page-rsv', label='Reservation', scripts=('reservation.js',)),
     dict(src='404', out='404.html', title='Page Not Found — Layer Studios', desc='Page not found.', path='/404', og='https://plusjun1.cafe24.com/images/mainslide/main_41_06-2.jpg', body_class='page-light', label='', scripts=('page.js',), robots='noindex', P='/'),
 ]
 

@@ -1302,3 +1302,54 @@ body.search-open { overflow: hidden; }
 .rform__chip span { display: inline-block; padding: 6px 12px; border: 1px solid var(--black); font-size: 13px; line-height: 1; cursor: pointer; user-select: none; transition: background .15s var(--ease), color .15s var(--ease); }
 .rform__chip input:checked + span { background: var(--black); color: var(--white); }
 .rform__chip input:focus-visible + span { outline: 2px solid var(--black); outline-offset: 2px; }
+
+/* =========================================================
+   Reservation — stepper layout (SevenRooms-like)
+   ========================================================= */
+.rsv { padding: calc(var(--header-h) + 56px) var(--gutter) 120px; background: var(--white); max-width: 720px; margin: 0 auto; }
+.rsv__title { font-size: 52px; font-weight: 700; letter-spacing: -0.02em; line-height: .9; text-align: center; margin-bottom: 28px; }
+.rsv__intro { font-size: 14px; line-height: 1.6; text-transform: none; text-align: center; color: #444; max-width: 560px; margin: 0 auto 48px; word-break: keep-all; }
+.rsv__form[hidden], .rsv__step[hidden], .rsv__done[hidden] { display: none; }
+.rsv__step { display: grid; gap: 36px; }
+.stp { display: grid; grid-template-columns: 48px 1fr 48px; align-items: center; text-align: center; }
+.stp__btn { font-size: 34px; line-height: 1; color: var(--black); padding: 8px 0; font-weight: 300; }
+.stp__btn:hover { color: var(--grey); }
+.stp__btn:disabled { color: #ccc; cursor: default; }
+.stp__body { display: grid; gap: 6px; justify-items: center; }
+.stp__value { font-size: 32px; font-weight: 700; letter-spacing: -0.02em; line-height: 1.05; text-transform: none; cursor: default; }
+.stp[data-field="date"] .stp__value { cursor: pointer; }
+.stp__label { font-size: 12px; color: var(--grey); letter-spacing: .04em; text-transform: uppercase; }
+.stp__date { position: absolute; width: 1px; height: 1px; opacity: 0; pointer-events: none; }
+.stp__parts { display: flex; flex-wrap: wrap; justify-content: center; gap: 8px; margin-top: 12px; min-height: 0; }
+.stp-row { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; }
+.stp-row .stp { grid-template-columns: 40px 1fr 40px; }
+.stp-row .stp__value { font-size: 28px; }
+.rsv__hint { font-size: var(--fs-ui); color: var(--grey); text-align: center; text-transform: none; margin-top: -16px; }
+.rsv__notice { margin: -12px auto 0; max-width: 520px; text-align: center; }
+.rsv__error { text-align: center; margin-top: -12px; }
+.rsv__cta {
+  display: block; width: 100%; height: 60px; background: var(--black); color: var(--white);
+  font-size: 15px; font-weight: 700; letter-spacing: .08em; text-transform: uppercase;
+  transition: background .2s var(--ease);
+}
+.rsv__cta:hover { background: #222; }
+.rsv__cta:disabled { background: #bbb; cursor: default; }
+.rsv__back { justify-self: start; font-size: var(--fs-ui); font-weight: 700; }
+.rsv__summary { text-align: center; font-size: 15px; font-weight: 700; letter-spacing: -0.01em; text-transform: none; border-top: 1px solid var(--black); border-bottom: 1px solid var(--black); padding: 16px 0; }
+.rsv__fields { display: grid; grid-template-columns: 1fr 1fr; gap: 22px 28px; }
+.rsv__fields-wide { grid-column: 1 / -1; }
+.rsv__done { text-align: center; padding-top: 24px; }
+.rsv__actions { justify-content: center; }
+@media (max-width: 767px) {
+  .rsv { padding-top: calc(var(--header-h) + 32px); padding-bottom: 80px; }
+  .rsv__title { font-size: 36px; }
+  .rsv__intro { margin-bottom: 36px; }
+  .rsv__step { gap: 30px; }
+  .stp__value { font-size: 26px; }
+  .stp-row .stp__value { font-size: 22px; }
+  .stp-row { gap: 8px; }
+  .rsv__fields { grid-template-columns: 1fr; }
+}
+
+.rsv .rform { gap: 0; }
+.rsv .rform[hidden] { display: none; }

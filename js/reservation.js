@@ -1,89 +1,143 @@
-/* Layer Studios — reservation request form */
+/* Layer Studios — reservation request (stepper UI, two steps) */
 (function () {
   'use strict';
   var form = document.getElementById('rform'); if (!form) return;
   var studios = window.RESERVE_STUDIOS || [];
-  var sStudio = document.getElementById('rStudio'), sPart = document.getElementById('rPart'), dDate = document.getElementById('rDate');
-  var sStart = document.getElementById('rStart'), sEnd = document.getElementById('rEnd');
-  var err = document.getElementById('rError'), done = document.getElementById('rDone'), doneMeta = document.getElementById('rDoneMeta'), submit = document.getElementById('rSubmit');
-  var MSG = {
-    ko: { studio: '지점을 선택해 주세요.', purpose: '촬영 내용을 선택해 주세요.', part: '파트를 선택해 주세요.', date: '날짜를 확인해 주세요.', 'date-past': '지난 날짜는 신청할 수 없습니다.', time: '시작 시간이 종료 시간보다 앞서야 합니다.', 'min-hours': '최소 대관 시간보다 짧습니다.', company: '업체명(예약자명)을 입력해 주세요.', contact: '담당자를 입력해 주세요.', phone: '연락 가능한 전화번호를 입력해 주세요.', email: '이메일 형식을 확인해 주세요.', consent: '정보 수집에 동의해 주세요.', network: '전송에 실패했습니다. 잠시 후 다시 시도하거나 02-336-7750으로 연락해 주세요.', sending: '보내는 중…' },
-    en: { studio: 'Please choose a studio.', purpose: 'Please choose the type of use.', part: 'Please choose a part.', date: 'Please check the date.', 'date-past': 'The date has already passed.', time: 'Start must be before end.', 'min-hours': 'Shorter than the minimum booking.', company: 'Please enter your company or name.', contact: 'Please enter a contact person.', phone: 'Please enter a phone number.', email: 'Please check the email address.', consent: 'Please agree to the data use.', network: 'Could not send. Please try again or call +82-2-336-7750.', sending: 'Sending…' }
-  };
-  function t(k) { return (MSG[window.LANG] || MSG.ko)[k] || k; }
-
-  /* parts per studio + prefill from ?studio= */
-  /* option labels follow the language: <option data-ko data-en> */
-  function relabel() {
-    Array.prototype.slice.call(form.querySelectorAll('option[data-ko]')).forEach(function (o) { o.textContent = window.LANG === 'en' ? o.getAttribute('data-en') : o.getAttribute('data-ko'); });
-  }
-  var partsBox = document.getElementById('rParts');
-  function partsEmptyText() { return window.LANG === 'en' ? 'Choose a studio first' : '지점을 먼저 선택해 주세요'; }
-  function selectedParts() { return Array.prototype.slice.call(partsBox.querySelectorAll('input:checked')).map(function (i) { return i.value; }); }
-  function syncPart() { sPart.value = selectedParts().join('+'); }
-  function fillParts(key) {
-    var s = studios.filter(function (x) { return x.key === key; })[0];
-    partsBox.innerHTML = '';
-    if (!s) { partsBox.innerHTML = '<span class="rform__parts-empty">' + partsEmptyText() + '</span>'; sPart.value = ''; return; }
-    var parts = s.parts.length ? s.parts : [];
-    if (!parts.length) { partsBox.innerHTML = '<span class="rform__parts-empty">' + (window.LANG === 'en' ? 'Whole studio' : '전체 공간') + '</span>'; sPart.value = '-'; return; }
-    parts.forEach(function (p, i) {
-      partsBox.insertAdjacentHTML('beforeend', '<label class="rform__chip"><input type="checkbox" value="' + p + '"' + (parts.length === 1 ? ' checked' : '') + '><span>' + p + '</span></label>');
-    });
-    syncPart();
-  }
-  partsBox.addEventListener('change', syncPart);
-  var notices = Array.prototype.slice.call(document.querySelectorAll('.rform__notice[data-for]'));
   var NO_ONLINE = { faust: true, 'layer-10': true };
-  function applyStudioRules(key) {
-    var blocked = !!NO_ONLINE[key];
-    notices.forEach(function (n) { n.hidden = n.getAttribute('data-for') !== key; });
-    submit.disabled = blocked;
-    if (blocked) err.hidden = true;
-  }
-  sStudio.addEventListener('change', function () { fillParts(sStudio.value); applyStudioRules(sStudio.value); });
+  var $ = function (id) { return document.getElementById(id); };
+  var hidden = { studio: $('rStudio'), part: $('rPart'), start: $('rStart'), end: $('rEnd'), purpose: $('rPurpose'), people: $('rPeople'), vehicles: $('rVehicles') };
+  var dateInput = $('rDate'), partsBox = $('rParts'), step1 = $('step1'), step2 = $('step2'), err1 = $('rError1'), err = $('rError'), done = $('rDone');
+  var MSG = {
+    ko: { studio: '지점을 선택해 주세요.', part: '파트를 선택해 주세요.', date: '날짜를 선택해 주세요.', 'date-past': '지난 날짜는 신청할 수 없습니다.', time: '시작 시간이 종료 시간보다 앞서야 합니다.', 'min-hours': '최소 대관 시간보다 짧습니다.', company: '업체명(예약자명)을 입력해 주세요.', contact: '담당자를 입력해 주세요.', phone: '연락 가능한 전화번호를 입력해 주세요.', email: '이메일 형식을 확인해 주세요.', consent: '정보 수집에 동의해 주세요.', network: '전송에 실패했습니다. 잠시 후 다시 시도하거나 02-336-7750으로 연락해 주세요.', sending: '보내는 중…', offline: '이 지점은 온라인 신청을 받지 않습니다.' },
+    en: { studio: 'Please choose a studio.', part: 'Please choose a part.', date: 'Please choose a date.', 'date-past': 'The date has already passed.', time: 'Start must be before end.', 'min-hours': 'Shorter than the minimum booking.', company: 'Please enter your company or name.', contact: 'Please enter a contact person.', phone: 'Please enter a phone number.', email: 'Please check the email address.', consent: 'Please agree to the data use.', network: 'Could not send. Please try again or call +82-2-336-7750.', sending: 'Sending…', offline: 'This studio is not bookable online.' }
+  };
+  var PURPOSE = { photo: { ko: '사진', en: 'Photo' }, video: { ko: '영상', en: 'Video' }, event: { ko: '행사', en: 'Event' } };
+  var DAYS = { ko: ['일', '월', '화', '수', '목', '금', '토'], en: ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'] };
+  var MONTHS_EN = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
+  function L() { return window.LANG === 'en' ? 'en' : 'ko'; }
+  function t(k) { return MSG[L()][k] || k; }
+  function pad(n) { return String(n).padStart(2, '0'); }
+
+  /* ---------- state ---------- */
+  var todayKst = new Date(Date.now() + 9 * 3600e3); var today = todayKst.toISOString().slice(0, 10);
+  var state = { studioIdx: -1, date: '', start: 9, end: 18, purpose: 'photo', people: 10, vehicles: 1 };
   var pre = new URLSearchParams(location.search).get('studio');
-  if (pre && studios.some(function (s) { return s.key === pre; })) { sStudio.value = pre; }
-  fillParts(sStudio.value); applyStudioRules(sStudio.value); relabel();
-  var today = new Date(Date.now() + 9 * 3600e3).toISOString().slice(0, 10); dDate.min = today;
-  sStart.value = '9'; sEnd.value = '18';
-  document.addEventListener('langchange', function () { relabel(); var e = partsBox.querySelector('.rform__parts-empty'); if (e && !sStudio.value) e.textContent = partsEmptyText(); document.getElementById('rLang').value = window.LANG; });
-  document.getElementById('rLang').value = window.LANG;
+  var preIdx = studios.findIndex(function (s) { return s.key === pre; });
+  state.studioIdx = preIdx > -1 ? preIdx : 0;
+  state.date = today;
 
-  function showError(code) { err.textContent = t(code); err.hidden = false; err.scrollIntoView({ block: 'center', behavior: 'smooth' }); }
+  function studio() { return studios[state.studioIdx]; }
+  function fmtDate(iso) {
+    if (!iso) return '—';
+    var p = iso.split('-').map(Number); var d = new Date(Date.UTC(p[0], p[1] - 1, p[2])); var wd = d.getUTCDay();
+    return L() === 'en' ? DAYS.en[wd] + ', ' + p[2] + ' ' + MONTHS_EN[p[1] - 1] : p[1] + '월 ' + p[2] + '일 (' + DAYS.ko[wd] + ')';
+  }
+  function shiftDate(iso, n) { var p = iso.split('-').map(Number); var d = new Date(Date.UTC(p[0], p[1] - 1, p[2] + n)); return d.toISOString().slice(0, 10); }
 
+  /* ---------- render ---------- */
+  function val(field, text) { document.querySelector('.stp[data-field="' + field + '"] [data-value]').textContent = text; }
+  function renderParts() {
+    var s = studio(); partsBox.innerHTML = '';
+    if (!s.parts.length) { hidden.part.value = '-'; return; }
+    var keep = hidden.part.value.split('+').filter(Boolean);
+    s.parts.forEach(function (p) {
+      var on = keep.indexOf(p) > -1 || (s.parts.length === 1);
+      partsBox.insertAdjacentHTML('beforeend', '<label class="rform__chip"><input type="checkbox" value="' + p + '"' + (on ? ' checked' : '') + '><span>' + p + '</span></label>');
+    });
+    syncParts();
+  }
+  function syncParts() { hidden.part.value = Array.prototype.slice.call(partsBox.querySelectorAll('input:checked')).map(function (i) { return i.value; }).join('+'); }
+  function render() {
+    var s = studio();
+    hidden.studio.value = s.key; val('studio', s.title);
+    Array.prototype.slice.call(document.querySelectorAll('.rsv__notice[data-for]')).forEach(function (n) { n.hidden = n.getAttribute('data-for') !== s.key; });
+    $('toStep2').disabled = !!NO_ONLINE[s.key];
+    dateInput.value = state.date; dateInput.min = today; val('date', fmtDate(state.date));
+    hidden.start.value = state.start; hidden.end.value = state.end; val('start', pad(state.start) + ':00'); val('end', pad(state.end) + ':00');
+    hidden.purpose.value = state.purpose; val('purpose', PURPOSE[state.purpose][L()]);
+    hidden.people.value = state.people; val('people', state.people + (L() === 'en' ? '' : '명'));
+    hidden.vehicles.value = state.vehicles; val('vehicles', state.vehicles + (L() === 'en' ? '' : '대'));
+    $('rLang').value = L();
+  }
+
+  /* ---------- steppers ---------- */
+  var PURPOSES = ['photo', 'video', 'event'];
+  function step(field, dir) {
+    var s = studio();
+    if (field === 'studio') { state.studioIdx = (state.studioIdx + dir + studios.length) % studios.length; hidden.part.value = ''; renderParts(); }
+    else if (field === 'date') { var n = shiftDate(state.date, dir); if (n >= today) state.date = n; }
+    else if (field === 'start') { state.start = Math.min(23, Math.max(6, state.start + dir)); if (state.end <= state.start) state.end = Math.min(24, state.start + s.min); }
+    else if (field === 'end') { state.end = Math.min(24, Math.max(7, state.end + dir)); if (state.end <= state.start) state.start = Math.max(6, state.end - s.min); }
+    else if (field === 'purpose') { state.purpose = PURPOSES[(PURPOSES.indexOf(state.purpose) + dir + 3) % 3]; }
+    else if (field === 'people') { state.people = Math.min(300, Math.max(1, state.people + dir)); }
+    else if (field === 'vehicles') { state.vehicles = Math.min(50, Math.max(0, state.vehicles + dir)); }
+    err1.hidden = true; render();
+  }
+  document.addEventListener('click', function (e) {
+    var b = e.target.closest('.stp__btn'); if (!b) return;
+    step(b.closest('.stp').getAttribute('data-field'), +b.getAttribute('data-dir'));
+  });
+  /* hold-to-repeat for arrows */
+  var holdTimer, holdInt;
+  document.addEventListener('pointerdown', function (e) {
+    var b = e.target.closest('.stp__btn'); if (!b) return; var f = b.closest('.stp').getAttribute('data-field'), d = +b.getAttribute('data-dir');
+    holdTimer = setTimeout(function () { holdInt = setInterval(function () { step(f, d); }, 90); }, 450);
+  });
+  ['pointerup', 'pointerleave', 'pointercancel'].forEach(function (ev) { document.addEventListener(ev, function () { clearTimeout(holdTimer); clearInterval(holdInt); }); });
+  /* date value → native picker */
+  document.querySelector('.stp[data-field="date"] [data-value]').addEventListener('click', function () { try { dateInput.showPicker(); } catch (e) { dateInput.focus(); } });
+  dateInput.addEventListener('change', function () { if (dateInput.value && dateInput.value >= today) { state.date = dateInput.value; render(); } });
+  partsBox.addEventListener('change', syncParts);
+  document.addEventListener('langchange', render);
+
+  /* ---------- step 1 → 2 ---------- */
+  function check1() {
+    var s = studio();
+    if (NO_ONLINE[s.key]) return 'offline';
+    syncParts(); if (s.parts.length && !hidden.part.value) return 'part';
+    if (!state.date) return 'date'; if (state.date < today) return 'date-past';
+    if (state.end <= state.start) return 'time'; if (state.end - state.start < s.min) return 'min-hours';
+    return null;
+  }
+  function summary() {
+    var s = studio(); var parts = hidden.part.value && hidden.part.value !== '-' ? ' · ' + hidden.part.value : '';
+    return s.title + parts + ' · ' + fmtDate(state.date) + ' · ' + pad(state.start) + ':00–' + pad(state.end) + ':00 · ' + PURPOSE[state.purpose][L()];
+  }
+  $('toStep2').addEventListener('click', function () {
+    var c = check1(); if (c) { err1.textContent = t(c); err1.hidden = false; return; }
+    $('rSummary').textContent = summary(); step1.hidden = true; step2.hidden = false; window.scrollTo({ top: 0, behavior: 'smooth' });
+    setTimeout(function () { form.company.focus(); }, 300);
+  });
+  $('toStep1').addEventListener('click', function () { step2.hidden = true; step1.hidden = false; err.hidden = true; window.scrollTo({ top: 0, behavior: 'smooth' }); });
+
+  /* ---------- submit ---------- */
+  function showError(code) { err.textContent = t(code); err.hidden = false; }
   form.addEventListener('submit', function (e) {
     e.preventDefault(); err.hidden = true;
+    var c = check1(); if (c) { step2.hidden = true; step1.hidden = false; err1.textContent = t(c); err1.hidden = false; return; }
     var fd = new FormData(form); var data = {}; fd.forEach(function (v, k) { data[k] = v; });
-    var s = studios.filter(function (x) { return x.key === data.studio; })[0];
-    if (!s) return showError('studio');
-    if (NO_ONLINE[s.key]) return;
-    syncPart(); data.part = sPart.value;
-    if (s.parts.length && !data.part) return showError('part');
-    if (!data.date) return showError('date');
-    if (data.date < today) return showError('date-past');
-    if (+data.end <= +data.start) return showError('time');
-    if (+data.end - +data.start < s.min) return showError('min-hours');
-    if (!data.purpose) return showError('purpose');
     if (!data.company.trim()) return showError('company');
     if (!data.contact.trim()) return showError('contact');
     if (data.phone.replace(/\D/g, '').length < 7) return showError('phone');
+    if (data.email && !/^[^@\s]+@[^@\s]+\.[^@\s]+$/.test(data.email)) return showError('email');
     if (!form.consent.checked) return showError('consent');
-    submit.disabled = true; var label = submit.innerHTML; submit.textContent = t('sending');
+    var submit = $('rSubmit'); submit.disabled = true; var label = submit.innerHTML; submit.textContent = t('sending');
     fetch('/api/reserve', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(data) })
       .then(function (r) { return r.json().then(function (j) { return { status: r.status, body: j }; }); })
       .then(function (res) {
         if (!res.body || !res.body.ok) throw new Error(res.body && res.body.error || 'network');
-        form.hidden = true; done.hidden = false;
-        doneMeta.textContent = s.title + ' · ' + data.date + ' · ' + String(data.start).padStart(2, '0') + ':00–' + String(data.end).padStart(2, '0') + ':00';
-        done.scrollIntoView({ block: 'start', behavior: 'smooth' });
+        form.hidden = true; done.hidden = false; $('rDoneMeta').textContent = summary();
+        window.scrollTo({ top: 0, behavior: 'smooth' });
       })
       .catch(function (e) { showError(MSG.ko[e.message] ? e.message : 'network'); submit.disabled = false; submit.innerHTML = label; });
   });
 
-  /* menu */
-  var menu = document.getElementById('menu'), toggles = Array.prototype.slice.call(document.querySelectorAll('[data-menu-toggle]'));
+  /* ---------- menu ---------- */
+  var menu = $('menu'), toggles = Array.prototype.slice.call(document.querySelectorAll('[data-menu-toggle]'));
   function toggleMenu(force) { var open = typeof force === 'boolean' ? force : menu.hidden; menu.hidden = !open; document.body.classList.toggle('menu-open', open); toggles.forEach(function (b) { b.setAttribute('aria-expanded', String(open)); }); }
   toggles.forEach(function (b) { b.addEventListener('click', function () { toggleMenu(); }); });
   document.addEventListener('keydown', function (e) { if (e.key === 'Escape' && !menu.hidden) toggleMenu(false); });
+
+  /* ---------- init ---------- */
+  renderParts(); render();
 })();
