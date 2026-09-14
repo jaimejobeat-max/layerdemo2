@@ -169,7 +169,7 @@ def studio_page(o, prev, nxt):
       <aside class="sinfo__side">
         {loc}
         {f'<div class="sinfo__block"><h3 class="sinfo__h"><span class="en">Information</span><span class="ko">안내</span></h3><ul class="sinfo__list">{links}</ul></div>' if links else ''}
-        <a class="sinfo__cta" href="#"><span class="en">Make a Reservation</span><span class="ko">예약하기</span></a>
+        <a class="sinfo__cta" href="../reservation.html?studio={o['key']}"><span class="en">Make a Reservation</span><span class="ko">예약하기</span></a>
       </aside>
     </section>
 
@@ -206,6 +206,7 @@ ROOT_PAGES = [
     dict(src='about', out='about.html', title='About — Layer Studios', desc='Spaces that begin with a scene. 2009년 사진가의 작업실에서 시작해 서울 곳곳의 공간을 스튜디오로 되살려 온 레이어 스튜디오.', path='/about', og='https://plusjun1.cafe24.com/images/mainslide/main_ys_01.jpg', body_class='page-studio page-about', label='About', scripts=('studio.js',)),
     dict(src='guide', out='guide.html', title='Guide — Layer Studios', desc='레이어 스튜디오 예약 방법, 이용 안내, 예약금과 환불 기준.', path='/guide', og='https://plusjun1.cafe24.com/images/mainslide/main_41_06-2.jpg', body_class='page-light', label='Guide', scripts=('page.js',)),
     dict(src='qna', out='qna.html', title='Q&A — Layer Studios', desc='레이어 스튜디오 자주 묻는 질문과 문의 양식.', path='/qna', og='https://plusjun1.cafe24.com/images/mainslide/main_41_06-2.jpg', body_class='page-light', label='Q&A', scripts=('page.js',)),
+    dict(src='reservation', out='reservation.html', title='Reservation — Layer Studios', desc='레이어 스튜디오 대관 예약 신청. 지점, 파트, 날짜와 시간을 보내주시면 담당자가 확인 후 안내드립니다.', path='/reservation', og='https://plusjun1.cafe24.com/images/mainslide/main_41_06-2.jpg', body_class='page-light', label='Reservation', scripts=('reservation.js',)),
     dict(src='404', out='404.html', title='Page Not Found — Layer Studios', desc='Page not found.', path='/404', og='https://plusjun1.cafe24.com/images/mainslide/main_41_06-2.jpg', body_class='page-light', label='', scripts=('page.js',), robots='noindex', P='/'),
 ]
 
@@ -228,7 +229,7 @@ def main():
         (ROOT / pg['out']).write_text(shell(body, title=pg['title'], desc=pg['desc'], path=pg['path'], og=og_image(pg['og']), P=pg.get('P', ''), body_class=pg['body_class'], page_label=pg['label'], scripts=pg['scripts'], ld=pg.get('ld'), robots=pg.get('robots', '')), encoding='utf-8')
     (ROOT / 'js' / 'search-index.js').write_text(search_index(), encoding='utf-8')
     today = datetime.date.today().isoformat()
-    urls = ['/', '/archives', '/journal', '/about', '/guide', '/qna'] + [f"/studios/{o['key']}" for o in DATA]
+    urls = ['/', '/archives', '/journal', '/about', '/guide', '/qna', '/reservation'] + [f"/studios/{o['key']}" for o in DATA]
     (ROOT / 'sitemap.xml').write_text('<?xml version="1.0" encoding="UTF-8"?>\n<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">\n' + ''.join(f'  <url><loc>{SITE}{u}</loc><lastmod>{today}</lastmod></url>\n' for u in urls) + '</urlset>\n', encoding='utf-8')
     print(f'built {n} studio pages, {len(ROOT_PAGES)} root pages, search index, sitemap')
 

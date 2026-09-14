@@ -1,0 +1,209 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Reservation — Layer Studios</title>
+  <meta name="description" content="레이어 스튜디오 대관 예약 신청. 지점, 파트, 날짜와 시간을 보내주시면 담당자가 확인 후 안내드립니다.">
+  <link rel="canonical" href="https://layerdemo2.vercel.app/reservation">
+  <meta property="og:type" content="website">
+  <meta property="og:site_name" content="Layer Studios">
+  <meta property="og:locale" content="ko_KR">
+  <meta property="og:locale:alternate" content="en_US">
+  <meta property="og:title" content="Reservation — Layer Studios">
+  <meta property="og:description" content="레이어 스튜디오 대관 예약 신청. 지점, 파트, 날짜와 시간을 보내주시면 담당자가 확인 후 안내드립니다.">
+  <meta property="og:image" content="https://layerdemo2.vercel.app/assets/img/a468e3e22d-1920.webp">
+  <meta property="og:url" content="https://layerdemo2.vercel.app/reservation">
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="theme-color" content="#000000">
+  <link rel="preconnect" href="https://cdn.jsdelivr.net" crossorigin>
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/static/pretendard.min.css">
+  <link rel="icon" type="image/svg+xml" href="assets/favicon.svg">
+  <script src="js/i18n.js"></script>
+  <link rel="stylesheet" href="css/style.css">
+</head>
+<body class="page-light">
+  <a class="skip-link" href="#main" data-i18n="skip">본문으로 건너뛰기</a>
+
+  <header class="header" id="header">
+    <a class="header__logo header__logo--stack" href="index.html" aria-label="Layer Studios">
+      <img src="assets/logo-white.png" alt="Layer Studios">
+      <span class="header__page">Reservation</span>
+    </a>
+    <nav class="header__nav" aria-label="Utility">
+      <a href="guide.html" class="header__link">Guide</a>
+      <a href="about.html" class="header__link">About</a>
+      <a href="journal.html" class="header__link">Journal</a>
+      <a href="archives.html" class="header__link">Archives</a>
+      <a href="qna.html" class="header__link">Q&amp;A</a>
+      <a href="#" class="header__link header__link--ko"><span class="ko">로그인</span><span class="en">Login</span></a>
+      <a href="#" class="header__link header__link--ko"><span class="ko">고객 서비스</span><span class="en">Client Service</span></a>
+      <button type="button" class="header__lang" data-lang-toggle aria-label="KO / EN"><span data-lang-opt="ko">KO</span><span class="header__lang-sep">/</span><span data-lang-opt="en">EN</span></button>
+      <button class="header__icon header__search-btn" type="button" data-i18n-attr="aria-label:search" data-search-toggle>
+        <svg width="16" height="16" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.4"><circle cx="7" cy="7" r="5.2"/><path d="M11 11l3.8 3.8"/></svg>
+      </button>
+      <button class="header__icon header__menu-btn" type="button" data-i18n-attr="aria-label:menu.open" aria-expanded="false" data-menu-toggle>
+        <svg width="18" height="14" viewBox="0 0 18 14" fill="none" stroke="currentColor" stroke-width="1.4"><path d="M0 1h18M0 7h18M0 13h18"/></svg>
+      </button>
+    </nav>
+  </header>
+
+  <div class="menu" id="menu" hidden>
+    <div class="menu__inner">
+      <button class="menu__close" type="button" data-i18n-attr="aria-label:menu.close" data-menu-toggle data-i18n="close">Close</button>
+      <ul class="menu__list">
+        <li><a href="reservation.html">Reservation</a></li>
+        <li><a href="archives.html">Archives</a></li>
+        <li class="menu__gap"><a href="studios/layer-41.html">Layer 41</a></li>
+        <li><a href="studios/layer-20.html">Layer 20</a></li>
+        <li><a href="studios/layer-11.html">Layer 11</a></li>
+        <li><a href="studios/layer-26.html">Layer 26</a></li>
+        <li><a href="studios/layer-27.html">Layer 27</a></li>
+        <li><a href="studios/layer-7.html">Layer 7</a></li>
+        <li><a href="studios/layer-10.html">Layer 10</a></li>
+        <li><a href="studios/layer-hannam.html">Layer Hannam</a></li>
+        <li><a href="studios/hongdae.html">Hongdae</a></li>
+        <li><a href="studios/faust.html">Faust</a></li>
+        <li><a href="studios/layer-57.html">Layer 57</a></li>
+        <li class="menu__gap"><a href="journal.html">Journal</a></li>
+        <li><a href="qna.html">Q&amp;A</a></li>
+        <li><a href="guide.html">Guide</a></li>
+        <li><a href="about.html">About</a></li>
+      </ul>
+      <div class="menu__lang"><a href="#" data-lang-set="ko">KO</a><a href="#" data-lang-set="en">EN</a></div>
+    </div>
+  </div>
+
+  <div class="search" id="search" hidden role="dialog" aria-modal="true" aria-label="Search">
+    <div class="search__bar">
+      <svg class="search__icon" width="16" height="16" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.4"><circle cx="7" cy="7" r="5.2"/><path d="M11 11l3.8 3.8"/></svg>
+      <input class="search__input" id="searchInput" type="search" autocomplete="off" spellcheck="false" placeholder="Search" data-i18n-attr="placeholder:search.placeholder,aria-label:search">
+      <button type="button" class="search__close" data-search-toggle data-i18n="close">Close</button>
+    </div>
+    <div class="search__body">
+      <p class="search__hint" id="searchHint" data-i18n="search.hint">Studios, archives, journal</p>
+      <div class="search__results" id="searchResults"></div>
+    </div>
+  </div>
+
+
+<main class="doc doc--form" id="main">
+    <div class="archive__head">
+      <nav class="archive__tabs" aria-label="Sections">
+        <a href="#form" class="archive__tab is-active"><span class="ko">예약 신청</span><span class="en">Request</span></a>
+        <a href="guide.html" class="archive__tab archive__tab--link"><span class="ko">이용 안내 →</span><span class="en">Guide →</span></a>
+      </nav>
+      <h1 class="archive__title">Reservation</h1>
+      <span></span>
+    </div>
+
+    <section class="doc__section" id="form">
+      <p class="doc__p"><span class="ko">아래 내용을 보내주시면 담당자가 확인 후 전화 또는 메일로 안내드립니다. 신청은 예약 확정이 아니며, 예약금 입금이 확인되면 확정됩니다.</span><span class="en">Send us the details below and we will get back to you by phone or email. A request is not a confirmed booking; it is confirmed once the deposit arrives.</span></p>
+
+      <form class="rform" id="rform" novalidate>
+        <input type="text" name="website" class="rform__hp" tabindex="-1" autocomplete="off" aria-hidden="true">
+        <input type="hidden" name="lang" id="rLang" value="ko">
+
+        <fieldset class="rform__group">
+          <legend class="rform__legend"><span class="ko">공간</span><span class="en">Space</span></legend>
+          <div class="rform__row rform__row--2">
+            <label class="rform__field"><span class="rform__label"><span class="ko">지점</span><span class="en">Studio</span></span>
+              <select name="studio" id="rStudio" required><option value=""><span class="ko">선택</span><span class="en">Select</span></option><option value="layer-41">Layer 41</option><option value="layer-20">Layer 20</option><option value="layer-11">Layer 11</option><option value="layer-26">Layer 26</option><option value="layer-27">Layer 27</option><option value="layer-7">Layer 7</option><option value="layer-10">Layer 10</option><option value="layer-hannam">Layer Hannam</option><option value="hongdae">Hongdae</option><option value="faust">Faust</option><option value="layer-57">Layer 57</option></select></label>
+            <label class="rform__field"><span class="rform__label"><span class="ko">파트</span><span class="en">Part</span></span>
+              <select name="part" id="rPart" required><option value=""><span class="ko">지점을 먼저 선택</span><span class="en">Choose a studio first</span></option></select></label>
+          </div>
+          <div class="rform__row rform__row--3">
+            <label class="rform__field"><span class="rform__label"><span class="ko">날짜</span><span class="en">Date</span></span><input type="date" name="date" id="rDate" required></label>
+            <label class="rform__field"><span class="rform__label"><span class="ko">시작</span><span class="en">Start</span></span><select name="start" id="rStart" required><option value="6">06:00</option><option value="7">07:00</option><option value="8">08:00</option><option value="9">09:00</option><option value="10">10:00</option><option value="11">11:00</option><option value="12">12:00</option><option value="13">13:00</option><option value="14">14:00</option><option value="15">15:00</option><option value="16">16:00</option><option value="17">17:00</option><option value="18">18:00</option><option value="19">19:00</option><option value="20">20:00</option><option value="21">21:00</option><option value="22">22:00</option><option value="23">23:00</option></select></label>
+            <label class="rform__field"><span class="rform__label"><span class="ko">종료</span><span class="en">End</span></span><select name="end" id="rEnd" required><option value="7">07:00</option><option value="8">08:00</option><option value="9">09:00</option><option value="10">10:00</option><option value="11">11:00</option><option value="12">12:00</option><option value="13">13:00</option><option value="14">14:00</option><option value="15">15:00</option><option value="16">16:00</option><option value="17">17:00</option><option value="18">18:00</option><option value="19">19:00</option><option value="20">20:00</option><option value="21">21:00</option><option value="22">22:00</option><option value="23">23:00</option><option value="24">24:00</option></select></label>
+          </div>
+          <p class="rform__hint" id="rHint"><span class="ko">최소 대관 시간: 레이어 4시간 / 홍대 2시간. 세팅과 철수 시간을 포함해 주세요.</span><span class="en">Minimum booking: Layer studios 4 hours / Hongdae 2 hours. Include set-up and strike.</span></p>
+        </fieldset>
+
+        <fieldset class="rform__group">
+          <legend class="rform__legend"><span class="ko">촬영</span><span class="en">Shoot</span></legend>
+          <div class="rform__row rform__row--3">
+            <label class="rform__field rform__field--wide"><span class="rform__label"><span class="ko">촬영 내용</span><span class="en">What are you shooting</span></span><input type="text" name="purpose" maxlength="200" placeholder="ex) 룩북 촬영, 브랜드 행사"></label>
+            <label class="rform__field"><span class="rform__label"><span class="ko">인원</span><span class="en">People</span></span><input type="text" name="people" inputmode="numeric" maxlength="20" placeholder="ex) 15"></label>
+            <label class="rform__field"><span class="rform__label"><span class="ko">차량</span><span class="en">Vehicles</span></span><input type="text" name="vehicles" inputmode="numeric" maxlength="20" placeholder="ex) 2"></label>
+          </div>
+        </fieldset>
+
+        <fieldset class="rform__group">
+          <legend class="rform__legend"><span class="ko">연락처</span><span class="en">Contact</span></legend>
+          <div class="rform__row rform__row--2">
+            <label class="rform__field"><span class="rform__label"><span class="ko">업체명 (예약자명)</span><span class="en">Company / name</span></span><input type="text" name="company" maxlength="60" required></label>
+            <label class="rform__field"><span class="rform__label"><span class="ko">담당자</span><span class="en">Contact person</span></span><input type="text" name="contact" maxlength="60" required></label>
+          </div>
+          <div class="rform__row rform__row--2">
+            <label class="rform__field"><span class="rform__label"><span class="ko">전화</span><span class="en">Phone</span></span><input type="tel" name="phone" maxlength="40" required></label>
+            <label class="rform__field"><span class="rform__label"><span class="ko">이메일 (선택)</span><span class="en">Email (optional)</span></span><input type="email" name="email" maxlength="100"></label>
+          </div>
+          <label class="rform__field"><span class="rform__label"><span class="ko">요청사항 (선택)</span><span class="en">Notes (optional)</span></span><textarea name="note" rows="4" maxlength="1000"></textarea></label>
+        </fieldset>
+
+        <label class="rform__consent"><input type="checkbox" name="consent" required> <span><span class="ko">예약 확인을 위해 위 정보를 수집·이용하는 데 동의합니다.</span><span class="en">I agree to the use of this information to process the booking.</span></span></label>
+
+        <div class="rform__actions">
+          <button type="submit" class="rform__submit" id="rSubmit"><span class="ko">예약 신청 보내기</span><span class="en">Send request</span></button>
+          <p class="rform__error" id="rError" hidden></p>
+        </div>
+      </form>
+
+      <div class="rform__done" id="rDone" hidden>
+        <p class="rform__done-title"><span class="ko">신청이 접수됐습니다.</span><span class="en">Request received.</span></p>
+        <p class="doc__p"><span class="ko">담당자가 스케줄을 확인한 뒤 전화 또는 메일로 안내드립니다. 예약금과 취소 기준은 이용 안내에서 확인하실 수 있습니다.</span><span class="en">Our team will check the schedule and get back to you by phone or email. Deposit and cancellation terms are in the Guide.</span></p>
+        <p class="rform__done-meta" id="rDoneMeta"></p>
+        <div class="doc__actions"><a class="sinfo__cta" href="guide.html"><span class="ko">이용 안내</span><span class="en">Booking guide</span></a><a class="doc__alt" href="index.html"><span class="ko">홈으로</span><span class="en">Home</span></a></div>
+      </div>
+    </section>
+  </main>
+  <script>window.RESERVE_STUDIOS = [{"key": "layer-41", "title": "Layer 41", "parts": ["A", "B", "C"], "min": 4}, {"key": "layer-20", "title": "Layer 20", "parts": ["1F", "2F", "3F", "Caravan"], "min": 4}, {"key": "layer-11", "title": "Layer 11", "parts": ["A", "B", "Cafe"], "min": 4}, {"key": "layer-26", "title": "Layer 26", "parts": ["A", "B"], "min": 4}, {"key": "layer-27", "title": "Layer 27", "parts": ["A", "Office"], "min": 4}, {"key": "layer-7", "title": "Layer 7", "parts": ["A", "B", "C"], "min": 4}, {"key": "layer-10", "title": "Layer 10", "parts": ["A", "B", "C", "D", "E", "Cafe"], "min": 4}, {"key": "layer-hannam", "title": "Layer Hannam", "parts": ["1F", "2F"], "min": 4}, {"key": "hongdae", "title": "Hongdae", "parts": ["A", "B", "D", "Back Garden", "Greenhouse", "Garden"], "min": 2}, {"key": "faust", "title": "Faust", "parts": ["Faust"], "min": 4}, {"key": "layer-57", "title": "Layer 57", "parts": ["Interior"], "min": 4}];</script>
+
+
+  <footer class="footer">
+    <div class="footer__cols">
+      <div class="footer__col">
+        <h3 class="footer__h"><span class="en">Location</span><span class="ko">위치</span></h3>
+        <p class="en">743-27, Hannam-dong<br>Yongsan-gu, Seoul</p><p class="ko">서울 용산구 한남동 743-27</p>
+        <a href="index.html#studios" class="footer__arrow-link"><span class="en">Find Studios</span><span class="ko">스튜디오 보기</span></a>
+      </div>
+      <div class="footer__col">
+        <h3 class="footer__h"><span class="en">Contact</span><span class="ko">연락처</span></h3>
+        <p><a href="tel:0233567750">02.336.7750</a><br><a href="mailto:contact@plusjun.com">contact@plusjun.com</a></p>
+        <a href="reservation.html" class="footer__arrow-link"><span class="en">Reservation</span><span class="ko">예약</span></a>
+      </div>
+      <div class="footer__col">
+        <h3 class="footer__h"><span class="en">Legal</span><span class="ko">법적 고지</span></h3>
+        <ul class="footer__links">
+          <li><a href="#"><span class="en">Terms</span><span class="ko">이용약관</span></a></li>
+          <li><a href="#"><span class="en">Privacy</span><span class="ko">개인정보처리방침</span></a></li>
+          <li><a href="guide.html"><span class="en">Guide</span><span class="ko">가이드</span></a></li>
+          <li><a href="#"><span class="en">Careers</span><span class="ko">채용</span></a></li>
+        </ul>
+      </div>
+      <div class="footer__col">
+        <h3 class="footer__h"><span class="en">Newsletter</span><span class="ko">뉴스레터</span></h3>
+        <form class="footer__form" onsubmit="return false">
+          <label for="nl" class="visually-hidden" data-i18n="email">이메일</label>
+          <input id="nl" type="email" placeholder="Email" data-i18n-attr="placeholder:email" autocomplete="off">
+          <button type="submit" aria-label="Subscribe">→</button>
+        </form>
+      </div>
+    </div>
+    <div class="footer__bottom">
+      <div class="footer__social">
+        <a href="#" aria-label="Instagram"><svg width="16" height="16" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.3"><rect x="1.5" y="1.5" width="13" height="13" rx="3.5"/><circle cx="8" cy="8" r="3"/><circle cx="11.8" cy="4.2" r=".6" fill="currentColor"/></svg></a>
+        <a href="#" aria-label="YouTube"><svg width="16" height="16" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.3"><rect x="1" y="3.5" width="14" height="9" rx="2.5"/><path d="M6.5 6v4l3.5-2z" fill="currentColor" stroke="none"/></svg></a>
+      </div>
+      <p class="footer__legal en">Layer Studios · Founder Heo Jun-sung · Business No. 837-87-01038 · Mail-order License 2018-서울성동-0310</p><p class="footer__legal ko">주식회사 레이어스튜디오 · 대표 허준성 · 사업자등록번호 837-87-01038 · 통신판매업신고 2018-서울성동-0310</p>
+      <p class="footer__copy">© 2009 — 2026 Layer Studios</p>
+    </div>
+  </footer>
+
+  <script src="js/common.js"></script>
+  <script src="js/search-index.js"></script>
+  <script src="js/search.js"></script>
+  <script src="js/reservation.js"></script>
+</body>
+</html>

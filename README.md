@@ -38,3 +38,21 @@ python3 tools/build.py
 ## 언어
 
 헤더의 KO / EN 토글. 긴 본문은 `class="ko"` / `class="en"` 두 벌, 짧은 라벨은 `js/i18n.js` 사전과 `data-i18n` 속성으로 관리합니다.
+
+## 예약 API (`api/reserve.js`)
+
+홈페이지 예약 폼(`/reservation`)의 신청을 받아 레이소다(제로보드) 스케줄 게시판에 가부킹(`++`) 글을 자동으로 쓰고 슬랙에 알립니다. Vercel 서버리스 함수로 동작하며 별도 서버가 없습니다.
+
+Vercel 프로젝트 → Settings → Environment Variables 에 아래를 넣어야 동작합니다.
+
+| 변수 | 내용 |
+|---|---|
+| `RAYSODA_ID` | 레이소다 게시판 로그인 아이디 |
+| `RAYSODA_PW` | 레이소다 게시판 비밀번호 |
+| `SLACK_WEBHOOK_URL` | (선택) 예약 알림 채널의 Incoming Webhook URL |
+| `RESERVE_AUTHOR` | (선택) 게시글 작성자명, 기본값 `홈페이지` |
+| `RESERVE_POST_PW` | (선택) 게시글 비밀번호, 기본값 `layer` |
+| `RESERVE_DRY_RUN` | `1`이면 게시판에 쓰지 않고 슬랙만 (테스트용) |
+
+게시글 형식: 제목 = 날짜(`2026/10/20`), 캘린더 라벨(`sitelink1`) = `A 09-18 테* ++`, 본문 = 기존 예약 양식(대관 날짜 / 지점 / 파트 / 시간 / 내용 / 인원 / 차량 / 연락처).
+Layer 10과 Faust는 스케줄 게시판이 없어 슬랙 알림만 갑니다.

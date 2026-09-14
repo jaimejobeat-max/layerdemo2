@@ -1,0 +1,72 @@
+<main class="doc doc--form" id="main">
+    <div class="archive__head">
+      <nav class="archive__tabs" aria-label="Sections">
+        <a href="#form" class="archive__tab is-active"><span class="ko">예약 신청</span><span class="en">Request</span></a>
+        <a href="guide.html" class="archive__tab archive__tab--link"><span class="ko">이용 안내 →</span><span class="en">Guide →</span></a>
+      </nav>
+      <h1 class="archive__title">Reservation</h1>
+      <span></span>
+    </div>
+
+    <section class="doc__section" id="form">
+      <p class="doc__p"><span class="ko">아래 내용을 보내주시면 담당자가 확인 후 전화 또는 메일로 안내드립니다. 신청은 예약 확정이 아니며, 예약금 입금이 확인되면 확정됩니다.</span><span class="en">Send us the details below and we will get back to you by phone or email. A request is not a confirmed booking; it is confirmed once the deposit arrives.</span></p>
+
+      <form class="rform" id="rform" novalidate>
+        <input type="text" name="website" class="rform__hp" tabindex="-1" autocomplete="off" aria-hidden="true">
+        <input type="hidden" name="lang" id="rLang" value="ko">
+
+        <fieldset class="rform__group">
+          <legend class="rform__legend"><span class="ko">공간</span><span class="en">Space</span></legend>
+          <div class="rform__row rform__row--2">
+            <label class="rform__field"><span class="rform__label"><span class="ko">지점</span><span class="en">Studio</span></span>
+              <select name="studio" id="rStudio" required><option value=""><span class="ko">선택</span><span class="en">Select</span></option><option value="layer-41">Layer 41</option><option value="layer-20">Layer 20</option><option value="layer-11">Layer 11</option><option value="layer-26">Layer 26</option><option value="layer-27">Layer 27</option><option value="layer-7">Layer 7</option><option value="layer-10">Layer 10</option><option value="layer-hannam">Layer Hannam</option><option value="hongdae">Hongdae</option><option value="faust">Faust</option><option value="layer-57">Layer 57</option></select></label>
+            <label class="rform__field"><span class="rform__label"><span class="ko">파트</span><span class="en">Part</span></span>
+              <select name="part" id="rPart" required><option value=""><span class="ko">지점을 먼저 선택</span><span class="en">Choose a studio first</span></option></select></label>
+          </div>
+          <div class="rform__row rform__row--3">
+            <label class="rform__field"><span class="rform__label"><span class="ko">날짜</span><span class="en">Date</span></span><input type="date" name="date" id="rDate" required></label>
+            <label class="rform__field"><span class="rform__label"><span class="ko">시작</span><span class="en">Start</span></span><select name="start" id="rStart" required><option value="6">06:00</option><option value="7">07:00</option><option value="8">08:00</option><option value="9">09:00</option><option value="10">10:00</option><option value="11">11:00</option><option value="12">12:00</option><option value="13">13:00</option><option value="14">14:00</option><option value="15">15:00</option><option value="16">16:00</option><option value="17">17:00</option><option value="18">18:00</option><option value="19">19:00</option><option value="20">20:00</option><option value="21">21:00</option><option value="22">22:00</option><option value="23">23:00</option></select></label>
+            <label class="rform__field"><span class="rform__label"><span class="ko">종료</span><span class="en">End</span></span><select name="end" id="rEnd" required><option value="7">07:00</option><option value="8">08:00</option><option value="9">09:00</option><option value="10">10:00</option><option value="11">11:00</option><option value="12">12:00</option><option value="13">13:00</option><option value="14">14:00</option><option value="15">15:00</option><option value="16">16:00</option><option value="17">17:00</option><option value="18">18:00</option><option value="19">19:00</option><option value="20">20:00</option><option value="21">21:00</option><option value="22">22:00</option><option value="23">23:00</option><option value="24">24:00</option></select></label>
+          </div>
+          <p class="rform__hint" id="rHint"><span class="ko">최소 대관 시간: 레이어 4시간 / 홍대 2시간. 세팅과 철수 시간을 포함해 주세요.</span><span class="en">Minimum booking: Layer studios 4 hours / Hongdae 2 hours. Include set-up and strike.</span></p>
+        </fieldset>
+
+        <fieldset class="rform__group">
+          <legend class="rform__legend"><span class="ko">촬영</span><span class="en">Shoot</span></legend>
+          <div class="rform__row rform__row--3">
+            <label class="rform__field rform__field--wide"><span class="rform__label"><span class="ko">촬영 내용</span><span class="en">What are you shooting</span></span><input type="text" name="purpose" maxlength="200" placeholder="ex) 룩북 촬영, 브랜드 행사"></label>
+            <label class="rform__field"><span class="rform__label"><span class="ko">인원</span><span class="en">People</span></span><input type="text" name="people" inputmode="numeric" maxlength="20" placeholder="ex) 15"></label>
+            <label class="rform__field"><span class="rform__label"><span class="ko">차량</span><span class="en">Vehicles</span></span><input type="text" name="vehicles" inputmode="numeric" maxlength="20" placeholder="ex) 2"></label>
+          </div>
+        </fieldset>
+
+        <fieldset class="rform__group">
+          <legend class="rform__legend"><span class="ko">연락처</span><span class="en">Contact</span></legend>
+          <div class="rform__row rform__row--2">
+            <label class="rform__field"><span class="rform__label"><span class="ko">업체명 (예약자명)</span><span class="en">Company / name</span></span><input type="text" name="company" maxlength="60" required></label>
+            <label class="rform__field"><span class="rform__label"><span class="ko">담당자</span><span class="en">Contact person</span></span><input type="text" name="contact" maxlength="60" required></label>
+          </div>
+          <div class="rform__row rform__row--2">
+            <label class="rform__field"><span class="rform__label"><span class="ko">전화</span><span class="en">Phone</span></span><input type="tel" name="phone" maxlength="40" required></label>
+            <label class="rform__field"><span class="rform__label"><span class="ko">이메일 (선택)</span><span class="en">Email (optional)</span></span><input type="email" name="email" maxlength="100"></label>
+          </div>
+          <label class="rform__field"><span class="rform__label"><span class="ko">요청사항 (선택)</span><span class="en">Notes (optional)</span></span><textarea name="note" rows="4" maxlength="1000"></textarea></label>
+        </fieldset>
+
+        <label class="rform__consent"><input type="checkbox" name="consent" required> <span><span class="ko">예약 확인을 위해 위 정보를 수집·이용하는 데 동의합니다.</span><span class="en">I agree to the use of this information to process the booking.</span></span></label>
+
+        <div class="rform__actions">
+          <button type="submit" class="rform__submit" id="rSubmit"><span class="ko">예약 신청 보내기</span><span class="en">Send request</span></button>
+          <p class="rform__error" id="rError" hidden></p>
+        </div>
+      </form>
+
+      <div class="rform__done" id="rDone" hidden>
+        <p class="rform__done-title"><span class="ko">신청이 접수됐습니다.</span><span class="en">Request received.</span></p>
+        <p class="doc__p"><span class="ko">담당자가 스케줄을 확인한 뒤 전화 또는 메일로 안내드립니다. 예약금과 취소 기준은 이용 안내에서 확인하실 수 있습니다.</span><span class="en">Our team will check the schedule and get back to you by phone or email. Deposit and cancellation terms are in the Guide.</span></p>
+        <p class="rform__done-meta" id="rDoneMeta"></p>
+        <div class="doc__actions"><a class="sinfo__cta" href="guide.html"><span class="ko">이용 안내</span><span class="en">Booking guide</span></a><a class="doc__alt" href="index.html"><span class="ko">홈으로</span><span class="en">Home</span></a></div>
+      </div>
+    </section>
+  </main>
+  <script>window.RESERVE_STUDIOS = [{"key": "layer-41", "title": "Layer 41", "parts": ["A", "B", "C"], "min": 4}, {"key": "layer-20", "title": "Layer 20", "parts": ["1F", "2F", "3F", "Caravan"], "min": 4}, {"key": "layer-11", "title": "Layer 11", "parts": ["A", "B", "Cafe"], "min": 4}, {"key": "layer-26", "title": "Layer 26", "parts": ["A", "B"], "min": 4}, {"key": "layer-27", "title": "Layer 27", "parts": ["A", "Office"], "min": 4}, {"key": "layer-7", "title": "Layer 7", "parts": ["A", "B", "C"], "min": 4}, {"key": "layer-10", "title": "Layer 10", "parts": ["A", "B", "C", "D", "E", "Cafe"], "min": 4}, {"key": "layer-hannam", "title": "Layer Hannam", "parts": ["1F", "2F"], "min": 4}, {"key": "hongdae", "title": "Hongdae", "parts": ["A", "B", "D", "Back Garden", "Greenhouse", "Garden"], "min": 2}, {"key": "faust", "title": "Faust", "parts": ["Faust"], "min": 4}, {"key": "layer-57", "title": "Layer 57", "parts": ["Interior"], "min": 4}];</script>

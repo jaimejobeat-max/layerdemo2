@@ -1,0 +1,9 @@
+{
+  "name": "layer-homepage",
+  "private": true,
+  "description": "Layer Studios homepage (static) + reservation API (Vercel function)",
+  "dependencies": {
+    "iconv-lite": "^0.6.3"
+  },
+  "engines": { "node": ">=18" }
+}
