@@ -1100,7 +1100,7 @@ body.search-open { overflow: hidden; }
 .about-hero::before { background: linear-gradient(180deg, rgba(0,0,0,.15), rgba(0,0,0,0) 40%); }
 
 .facts {
-  display: grid; grid-template-columns: repeat(4, 1fr);
+  display: grid; grid-template-columns: repeat(3, 1fr);
   padding: 56px var(--gutter);
   border-bottom: 1px solid var(--black);
   background: var(--white);
@@ -1148,14 +1148,14 @@ body.search-open { overflow: hidden; }
 
 @media (max-width: 1023px) {
   .what__grid { grid-template-columns: 1fr 1fr; }
-  .facts { grid-template-columns: repeat(2, 1fr); row-gap: 40px; }
-  .facts__item:nth-child(3) { border-left: 0; padding-left: 0; }
+  .facts { grid-template-columns: repeat(3, 1fr); }
 }
 @media (max-width: 767px) {
   .about-hero { height: 78vh; height: 78dvh; }
   .about-hero__title { font-size: 40px; }
   .facts { padding: 40px var(--gutter); }
-  .facts__num { font-size: 36px; }
+  .facts__num { font-size: 32px; }
+  .facts__item { padding: 0 12px; }
   .intro { padding: 72px var(--gutter); }
   .intro__text { font-size: 20px; text-align: left; }
   .what { padding-bottom: 72px; }
