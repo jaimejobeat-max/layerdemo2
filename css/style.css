@@ -1236,3 +1236,5 @@ body.search-open { overflow: hidden; }
   .rform__row--2, .rform__row--3 { grid-template-columns: 1fr; }
   .rform__row--3 > .rform__field:nth-child(2), .rform__row--3 > .rform__field:nth-child(3) { grid-column: auto; }
 }
+
+.rform[hidden], .rform__done[hidden] { display: none; }
