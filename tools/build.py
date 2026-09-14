@@ -11,7 +11,7 @@ SITE = 'https://layerdemo2.vercel.app'
 # ---- analytics: fill in to enable (empty = not injected) ----
 ANALYTICS = {'ga4': '', 'naver': ''}   # e.g. 'G-XXXXXXXXXX', 'wcs account id'
 
-DATA = json.load(open(ROOT / 'data' / 'studios.json', encoding='utf-8'))
+DATA = [o for o in json.load(open(ROOT / 'data' / 'studios.json', encoding='utf-8')) if o['key'] != 'horizon']  # Horizon is no longer a Layer studio
 IMAGES = json.load(open(ROOT / 'data' / 'images.json', encoding='utf-8'))
 ARCHIVE = json.loads(open(ROOT / 'js' / 'archive-data.js', encoding='utf-8').read().split('=', 1)[1].strip().rstrip(';'))
 JOURNAL = json.loads(open(ROOT / 'js' / 'journal-data.js', encoding='utf-8').read().split('=', 1)[1].strip().rstrip(';'))
