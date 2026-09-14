@@ -21565,5 +21565,27 @@
 "h": 540
 }
 }
+},
+"https://static.wixstatic.com/media/fe18dd_647f7183234f453c912cd85e50595644~mv2.png": {
+"w": 914,
+"h": 910,
+"sizes": {
+"960": {
+"src": "assets/img/7458e04b22-960.webp",
+"w": 914,
+"h": 910
+}
+}
+},
+"https://static.wixstatic.com/media/fe18dd_994efe98a8d743f5a65fab3bc57b2f7a~mv2_d_1200_1200_s_2.png": {
+"w": 1200,
+"h": 1200,
+"sizes": {
+"960": {
+"src": "assets/img/06f021846a-960.webp",
+"w": 960,
+"h": 960
+}
+}
 }
 }
