@@ -70,6 +70,22 @@ async function probeLogin(userId, password) {
   return { status: headers.split('\r\n')[0], cookieNames, hasBoardRedirect: text.includes('url=zboard.php'), bodyLen: body.length, bodyHint: text.replace(/<[^>]+>/g, ' ').replace(/\s+/g, ' ').trim().slice(0, 160) };
 }
 
+/**
+ * Labels (sitelink1) already posted on one calendar day of a board.
+ * The month grid marks each day cell with a write.php link whose subject is
+ * "Y/M/D"; everything up to the next day's link belongs to that day.
+ */
+async function dayLabels({ cookie, boardId, y, m, d }) {
+  const res = await rawRequest('GET', `${BASE}/zboard.php?id=${boardId}&year=${y}&month=${m}`, { cookie });
+  const html = iconv.decode(res.body, 'EUC-KR');
+  const start = html.indexOf(`subject=${y}/${m}/${d}'`);
+  if (start === -1) return [];
+  const rest = html.slice(start + 10);
+  const next = rest.search(/subject=\d{4}\/\d{1,2}\/\d{1,2}'/);
+  const cell = next === -1 ? rest : rest.slice(0, next);
+  return [...cell.matchAll(/short_msg_show\('((?:[^'\\]|\\.)*)'/g)].map((x) => x[1].trim()).filter(Boolean);
+}
+
 // Build a multipart/form-data body with EUC-KR encoded values.
 function multipart(fields) {
   const boundary = '----LayerForm' + Date.now().toString(16);
@@ -107,4 +123,4 @@ async function writePost({ cookie, boardId, date, label, memo, name, password })
   return { ok, status: res.headers.split('\r\n')[0], snippet: html.replace(/<[^>]+>/g, ' ').replace(/\s+/g, ' ').slice(0, 300) };
 }
 
-module.exports = { login, writePost, probeLogin, rawRequest, BASE, HOST };
+module.exports = { login, writePost, probeLogin, dayLabels, rawRequest, BASE, HOST };

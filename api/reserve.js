@@ -1,7 +1,7 @@
 // POST /api/reserve — reservation request from the homepage form.
 // 1) validates, 2) writes a provisional (++) post to the studio's Zeroboard schedule,
 // 3) pings Slack. Env: RAYSODA_ID, RAYSODA_PW, SLACK_WEBHOOK_URL (optional), RESERVE_DRY_RUN=1 (skip the board).
-const { login, writePost } = require('./_zeroboard');
+const { login, writePost, dayLabels } = require('./_zeroboard');
 
 const BOARDS = {
   'layer-41': 'Layer41', 'layer-20': 'Layer20', 'layer-11': 'Layer11', 'layer-26': 'Layer26', 'layer-27': 'Layer27',
@@ -13,7 +13,7 @@ const NAMES = {
 };
 const MIN_HOURS = { hongdae: 2 };
 const PURPOSE = { photo: '사진 촬영', video: '영상 촬영', event: '행사' };
-const NO_ONLINE = { faust: true };
+const NO_ONLINE = { faust: true, 'layer-10': true }; // faust: phone only · layer-10: long-term rental
 const WEEKDAYS = ['일', '월', '화', '수', '목', '금', '토'];
 
 function bad(res, msg, code = 400) { res.status(code).json({ ok: false, error: msg }); }
@@ -42,12 +42,18 @@ function validate(b) {
     purpose: PURPOSE[clean(b.purpose, 20)] || clean(b.purpose, 200), people: clean(b.people, 20), vehicles: clean(b.vehicles, 20), note: clean(b.note, 1000), lang: b.lang === 'en' ? 'en' : 'ko' };
 }
 
-function buildPost(r) {
+/** Provisional-booking rank for this day/part: existing ++ posts + 1 → W1, W2, … */
+function provisionalRank(labels, part) {
+  const mine = labels.filter((l) => l.includes('++') && (part === '-' || new RegExp('^' + part.replace(/[.*+?^${}()|[\]\\]/g, '\\$&') + '(?=\\s|$)', 'i').test(l)));
+  return mine.length + 1;
+}
+
+function buildPost(r, rank = 1) {
   const d = r.date; const y = d.getUTCFullYear(), m = d.getUTCMonth() + 1, day = d.getUTCDate();
   const initial = r.company.replace(/\s+/g, '')[0] || '?';
-  const label = `${r.part === '-' ? '' : r.part + ' '}${pad2(r.start)}-${pad2(r.end)} ${initial}* ++`;
+  const label = `${r.part === '-' ? '' : r.part + ' '}${pad2(r.start)}-${pad2(r.end)} ${initial}* ++(W${rank})`;
   const memo = [
-    `* ${r.part === '-' ? '' : r.part + ' '}${pad2(r.start)}-${pad2(r.end)} 홈페이지 예약 신청 (미확정)`,
+    `* ${r.part === '-' ? '' : r.part + ' '}${pad2(r.start)}-${pad2(r.end)} 홈페이지 예약 신청 (가부킹 W${rank}, 미확정)`,
     '',
     '====',
     `* 대관 날짜 : ${y}년 ${m}월 ${day}일(${WEEKDAYS[d.getUTCDay()]})`,
@@ -95,13 +101,16 @@ module.exports = async (req, res) => {
   if (b.website) return res.status(200).json({ ok: true }); // honeypot
   const r = validate(b);
   if (typeof r === 'string') return bad(res, r);
-  const post = buildPost(r);
   const boardId = BOARDS[r.studio];
+  let post = buildPost(r, 1);
   let boardResult = null;
   if (boardId && process.env.RESERVE_DRY_RUN !== '1') {
     if (!process.env.RAYSODA_ID || !process.env.RAYSODA_PW) return bad(res, 'server-config', 500);
     try {
       const cookie = await login(process.env.RAYSODA_ID, process.env.RAYSODA_PW);
+      let rank = 1;
+      try { rank = provisionalRank(await dayLabels({ cookie, boardId, y: r.date.getUTCFullYear(), m: r.date.getUTCMonth() + 1, d: r.date.getUTCDate() }), r.part); } catch (e) { console.error('rank lookup failed', e.message); }
+      post = buildPost(r, rank);
       boardResult = await writePost({ cookie, boardId, date: r.date, label: post.label, memo: post.memo, name: process.env.RESERVE_AUTHOR || '홈페이지', password: process.env.RESERVE_POST_PW || 'layer' });
       if (!boardResult.ok) console.error('board write failed', boardResult);
     } catch (e) { console.error('board error', e.message); boardResult = { ok: false, error: e.message }; }
@@ -110,4 +119,4 @@ module.exports = async (req, res) => {
   const reason = !boardId ? 'no-board' : process.env.RESERVE_DRY_RUN === '1' ? 'dry-run' : (boardResult && boardResult.ok) ? null : (boardResult && (boardResult.error || boardResult.status)) || 'unknown';
   res.status(200).json({ ok: true, recorded: !!(boardResult && boardResult.ok), label: post.label, reason });
 };
-module.exports.buildPost = buildPost; module.exports.validate = validate;
+module.exports.buildPost = buildPost; module.exports.validate = validate; module.exports.provisionalRank = provisionalRank;

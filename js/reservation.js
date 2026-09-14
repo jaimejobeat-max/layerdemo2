@@ -18,8 +18,8 @@
     Array.prototype.slice.call(form.querySelectorAll('option[data-ko]')).forEach(function (o) { o.textContent = window.LANG === 'en' ? o.getAttribute('data-en') : o.getAttribute('data-ko'); });
   }
   var PLACEHOLDER = '<option value="" data-ko="선택" data-en="Select">선택</option>';
-  var notice = document.getElementById('rNotice');
-  var NO_ONLINE = { faust: true };
+  var notices = Array.prototype.slice.call(document.querySelectorAll('.rform__notice[data-for]'));
+  var NO_ONLINE = { faust: true, 'layer-10': true };
   function fillParts(key) {
     var s = studios.filter(function (x) { return x.key === key; })[0];
     sPart.innerHTML = '';
@@ -31,7 +31,8 @@
   }
   function applyStudioRules(key) {
     var blocked = !!NO_ONLINE[key];
-    notice.hidden = !blocked; submit.disabled = blocked;
+    notices.forEach(function (n) { n.hidden = n.getAttribute('data-for') !== key; });
+    submit.disabled = blocked;
     if (blocked) err.hidden = true;
   }
   sStudio.addEventListener('change', function () { fillParts(sStudio.value); applyStudioRules(sStudio.value); });
