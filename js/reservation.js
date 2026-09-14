@@ -84,8 +84,44 @@
     holdTimer = setTimeout(function () { holdInt = setInterval(function () { step(f, d); }, 90); }, 450);
   });
   ['pointerup', 'pointerleave', 'pointercancel'].forEach(function (ev) { document.addEventListener(ev, function () { clearTimeout(holdTimer); clearInterval(holdInt); }); });
-  /* date value → native picker */
-  document.querySelector('.stp[data-field="date"] [data-value]').addEventListener('click', function () { try { dateInput.showPicker(); } catch (e) { dateInput.focus(); } });
+  /* ---------- pickers: click the value to choose directly ---------- */
+  function options(field) {
+    var s = studio(), L_ = L();
+    if (field === 'studio') return studios.map(function (x, i) { return { v: i, t: x.title, on: i === state.studioIdx }; });
+    if (field === 'start') { var a = []; for (var h = 6; h <= 23; h++) a.push({ v: h, t: pad(h) + ':00', on: h === state.start }); return a; }
+    if (field === 'end') { var b = []; for (var h2 = 7; h2 <= 24; h2++) b.push({ v: h2, t: pad(h2) + ':00', on: h2 === state.end }); return b; }
+    if (field === 'purpose') return PURPOSES.map(function (k) { return { v: k, t: PURPOSE[k][L_], on: k === state.purpose }; });
+    if (field === 'people') { var c = []; for (var n = 1; n <= 100; n++) c.push({ v: n, t: n + (L_ === 'en' ? '' : '명'), on: n === state.people }); return c; }
+    return null;
+  }
+  function pick(field, v) {
+    var s = studio();
+    if (field === 'studio') { state.studioIdx = v; hidden.part.value = ''; renderParts(); }
+    else if (field === 'start') { state.start = v; if (state.end <= state.start) state.end = Math.min(24, state.start + s.min); }
+    else if (field === 'end') { state.end = v; if (state.end <= state.start) state.start = Math.max(6, state.end - s.min); }
+    else if (field === 'purpose') state.purpose = v;
+    else if (field === 'people') state.people = v;
+    err1.hidden = true; render();
+  }
+  function closeMenus() { Array.prototype.slice.call(document.querySelectorAll('[data-menu]')).forEach(function (m) { m.hidden = true; }); }
+  function openMenu(stp) {
+    var field = stp.getAttribute('data-field'); var menu = stp.querySelector('[data-menu]'); if (!menu) return;
+    if (field === 'date') { try { dateInput.showPicker(); } catch (e) { dateInput.focus(); } return; }
+    var opts = options(field); if (!opts) return;
+    var wasOpen = !menu.hidden; closeMenus(); if (wasOpen) return;
+    menu.innerHTML = '<ul class="stp__list" role="listbox">' + opts.map(function (o) { return '<li><button type="button" role="option" aria-selected="' + o.on + '" data-pick="' + o.v + '"' + (o.on ? ' class="is-on"' : '') + '>' + o.t + '</button></li>'; }).join('') + '</ul>';
+    menu.hidden = false;
+    var on = menu.querySelector('.is-on'); if (on) on.scrollIntoView({ block: 'center' });
+  }
+  document.addEventListener('click', function (e) {
+    var pickBtn = e.target.closest('[data-pick]');
+    if (pickBtn) { var stp = pickBtn.closest('.stp'); var f = stp.getAttribute('data-field'); var raw = pickBtn.getAttribute('data-pick'); pick(f, f === 'purpose' ? raw : +raw); closeMenus(); return; }
+    var valBtn = e.target.closest('.stp__value:not(.stp__value--static)');
+    if (valBtn) { openMenu(valBtn.closest('.stp')); return; }
+    if (!e.target.closest('[data-menu]')) closeMenus();
+  });
+  document.addEventListener('keydown', function (e) { if (e.key === 'Escape') closeMenus(); });
+  /* date value → native picker (handled in openMenu) */
   dateInput.addEventListener('change', function () { if (dateInput.value && dateInput.value >= today) { state.date = dateInput.value; render(); } });
   partsBox.addEventListener('change', syncParts);
   document.addEventListener('langchange', render);

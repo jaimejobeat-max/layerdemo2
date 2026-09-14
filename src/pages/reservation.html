@@ -18,7 +18,7 @@
         
         <div class="stp" data-field="studio">
           <button type="button" class="stp__btn" data-dir="-1" aria-label="Previous">‹</button>
-          <div class="stp__body"><strong class="stp__value" data-value>—</strong><span class="stp__label"><span class="ko">지점</span><span class="en">Studio</span></span><div class="stp__parts" id="rParts" role="group" aria-label="Parts"></div></div>
+          <div class="stp__body"><button type="button" class="stp__value" data-value>—</button><div class="stp__menu" data-menu hidden></div><span class="stp__label"><span class="ko">지점</span><span class="en">Studio</span></span><div class="stp__parts" id="rParts" role="group" aria-label="Parts"></div></div>
           <button type="button" class="stp__btn" data-dir="1" aria-label="Next">›</button>
         </div>
         <p class="rform__notice rsv__notice" id="rNotice" hidden data-for="faust"><span class="ko">Faust는 온라인 신청을 받지 않습니다. 전화로 문의해 주세요. <a href="tel:0233567750">02-336-7750</a></span><span class="en">Faust is not bookable online. Please call us at <a href="tel:0233567750">+82-2-336-7750</a>.</span></p>
@@ -26,20 +26,20 @@
         
         <div class="stp" data-field="date">
           <button type="button" class="stp__btn" data-dir="-1" aria-label="Previous">‹</button>
-          <div class="stp__body"><strong class="stp__value" data-value>—</strong><span class="stp__label"><span class="ko">날짜</span><span class="en">Date</span></span><input type="date" name="date" id="rDate" class="stp__date" aria-label="Date"></div>
+          <div class="stp__body"><button type="button" class="stp__value" data-value>—</button><div class="stp__menu" data-menu hidden></div><span class="stp__label"><span class="ko">날짜</span><span class="en">Date</span></span><input type="date" name="date" id="rDate" class="stp__date" aria-label="Date"></div>
           <button type="button" class="stp__btn" data-dir="1" aria-label="Next">›</button>
         </div>
         <div class="stp-row">
           
         <div class="stp" data-field="start">
           <button type="button" class="stp__btn" data-dir="-1" aria-label="Previous">‹</button>
-          <div class="stp__body"><strong class="stp__value" data-value>—</strong><span class="stp__label"><span class="ko">시작</span><span class="en">Start</span></span></div>
+          <div class="stp__body"><button type="button" class="stp__value" data-value>—</button><div class="stp__menu" data-menu hidden></div><span class="stp__label"><span class="ko">시작</span><span class="en">Start</span></span></div>
           <button type="button" class="stp__btn" data-dir="1" aria-label="Next">›</button>
         </div>
           
         <div class="stp" data-field="end">
           <button type="button" class="stp__btn" data-dir="-1" aria-label="Previous">‹</button>
-          <div class="stp__body"><strong class="stp__value" data-value>—</strong><span class="stp__label"><span class="ko">종료</span><span class="en">End</span></span></div>
+          <div class="stp__body"><button type="button" class="stp__value" data-value>—</button><div class="stp__menu" data-menu hidden></div><span class="stp__label"><span class="ko">종료</span><span class="en">End</span></span></div>
           <button type="button" class="stp__btn" data-dir="1" aria-label="Next">›</button>
         </div>
         </div>
@@ -47,20 +47,20 @@
         
         <div class="stp" data-field="purpose">
           <button type="button" class="stp__btn" data-dir="-1" aria-label="Previous">‹</button>
-          <div class="stp__body"><strong class="stp__value" data-value>—</strong><span class="stp__label"><span class="ko">촬영 내용</span><span class="en">Type of use</span></span></div>
+          <div class="stp__body"><button type="button" class="stp__value" data-value>—</button><div class="stp__menu" data-menu hidden></div><span class="stp__label"><span class="ko">촬영 내용</span><span class="en">Type of use</span></span></div>
           <button type="button" class="stp__btn" data-dir="1" aria-label="Next">›</button>
         </div>
         <div class="stp-row">
           
         <div class="stp" data-field="people">
           <button type="button" class="stp__btn" data-dir="-1" aria-label="Previous">‹</button>
-          <div class="stp__body"><strong class="stp__value" data-value>—</strong><span class="stp__label"><span class="ko">인원</span><span class="en">People</span></span></div>
+          <div class="stp__body"><button type="button" class="stp__value" data-value>—</button><div class="stp__menu" data-menu hidden></div><span class="stp__label"><span class="ko">인원</span><span class="en">People</span></span></div>
           <button type="button" class="stp__btn" data-dir="1" aria-label="Next">›</button>
         </div>
           
         <div class="stp" data-field="vehicles">
           <button type="button" class="stp__btn" data-dir="-1" aria-label="Previous">‹</button>
-          <div class="stp__body"><strong class="stp__value" data-value>—</strong><span class="stp__label"><span class="ko">차량</span><span class="en">Vehicles</span></span></div>
+          <div class="stp__body"><strong class="stp__value stp__value--static" data-value>—</strong><span class="stp__label"><span class="ko">차량</span><span class="en">Vehicles</span></span></div>
           <button type="button" class="stp__btn" data-dir="1" aria-label="Next">›</button>
         </div>
         </div>
@@ -92,4 +92,4 @@
       <div class="doc__actions rsv__actions"><a class="sinfo__cta" href="guide.html"><span class="ko">이용 안내</span><span class="en">Booking guide</span></a><a class="doc__alt" href="index.html"><span class="ko">홈으로</span><span class="en">Home</span></a></div>
     </div>
   </main>
-  <script>window.RESERVE_STUDIOS = [{"key": "layer-41", "title": "Layer 41", "parts": ["A", "B", "C"], "min": 4}, {"key": "layer-20", "title": "Layer 20", "parts": ["1F", "2F", "3F", "Caravan"], "min": 4}, {"key": "layer-11", "title": "Layer 11", "parts": ["A", "B", "Cafe"], "min": 4}, {"key": "layer-26", "title": "Layer 26", "parts": ["A", "B"], "min": 4}, {"key": "layer-27", "title": "Layer 27", "parts": ["A", "Office"], "min": 4}, {"key": "layer-7", "title": "Layer 7", "parts": ["A", "B", "C"], "min": 4}, {"key": "layer-10", "title": "Layer 10", "parts": ["A", "B", "C", "D", "E", "Cafe"], "min": 4}, {"key": "layer-hannam", "title": "Layer Hannam", "parts": ["1F", "2F"], "min": 4}, {"key": "hongdae", "title": "Hongdae", "parts": ["A", "B", "D", "Back Garden", "Greenhouse", "Garden"], "min": 2}, {"key": "faust", "title": "Faust", "parts": ["Faust"], "min": 4}, {"key": "layer-57", "title": "Layer 57", "parts": ["Interior"], "min": 4}];</script>
+  <script>window.RESERVE_STUDIOS = [{"key": "layer-41", "title": "Layer 41", "parts": ["A", "B", "C"], "min": 4}, {"key": "layer-20", "title": "Layer 20", "parts": ["1F", "2F", "3F", "Caravan"], "min": 4}, {"key": "layer-11", "title": "Layer 11", "parts": ["A", "B", "Cafe"], "min": 4}, {"key": "layer-26", "title": "Layer 26", "parts": ["A", "B"], "min": 4}, {"key": "layer-27", "title": "Layer 27", "parts": ["A", "Office"], "min": 4}, {"key": "layer-7", "title": "Layer 7", "parts": ["A", "B", "C"], "min": 4}, {"key": "layer-10", "title": "Layer 10", "parts": ["A", "B", "C", "D", "E", "Cafe"], "min": 4}, {"key": "layer-hannam", "title": "Layer Hannam", "parts": ["1F", "2F"], "min": 4}, {"key": "hongdae", "title": "Hongdae", "parts": ["A", "B", "D", "Back Garden", "Greenhouse", "Garden"], "min": 2}, {"key": "faust", "title": "Faust", "parts": ["Faust"], "min": 4}, {"key": "layer-57", "title": "Layer 57", "parts": ["1F", "2F", "3F", "4F", "5F"], "min": 4}];</script>
