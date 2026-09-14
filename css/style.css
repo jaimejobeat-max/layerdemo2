@@ -1181,3 +1181,17 @@ body.search-open { overflow: hidden; }
 .tlcar__btn:hover { color: var(--grey); }
 .tl__month { font-size: var(--fs-ui); font-weight: 400; color: var(--grey); letter-spacing: .08em; text-transform: uppercase; margin-left: 12px; vertical-align: middle; }
 .tl__media.tlcar { aspect-ratio: auto; overflow: visible; background: none; }
+
+/* ---- Korean typography: Pretendard for whole runs (digits/Latin included), no negative tracking ---- */
+.ko, .ko * { font-family: Pretendard, "Helvetica Neue", Helvetica, Arial, sans-serif; letter-spacing: 0; }
+.ko { word-break: keep-all; }
+.intro__text { font-size: 26px; font-weight: 500; line-height: 1.6; letter-spacing: -0.01em; }
+.intro__text.ko { font-weight: 500; letter-spacing: -0.005em; }
+.doc__statement.ko { letter-spacing: -0.01em; }
+.tl__desc .ko, .what__desc .ko, .sinfo__desc .ko { font-weight: 400; }
+.sinfo__desc p.ko { font-size: 17px; line-height: 1.8; }
+@media (max-width: 767px) {
+  .intro__text { font-size: 19px; line-height: 1.65; }
+}
+
+.intro__text, .doc__statement { text-wrap: balance; }
