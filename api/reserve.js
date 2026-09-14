@@ -82,6 +82,13 @@ async function slack(r, post, boardId, boardResult) {
 }
 
 module.exports = async (req, res) => {
+  // GET /api/reserve?diag=1 — configuration self-check (no secrets returned)
+  if (req.method === 'GET' && req.query && req.query.diag === '1') {
+    const id = process.env.RAYSODA_ID || '', pw = process.env.RAYSODA_PW || '';
+    const out = { idSet: !!id, idLen: id.length, idTrimmedLen: id.trim().length, pwSet: !!pw, pwLen: pw.length, pwTrimmedLen: pw.trim().length, slack: !!process.env.SLACK_WEBHOOK_URL, node: process.version };
+    try { const { probeLogin } = require('./_zeroboard'); out.login = await probeLogin(id, pw); } catch (e) { out.login = { error: e.message }; }
+    return res.status(200).json(out);
+  }
   if (req.method !== 'POST') return bad(res, 'method', 405);
   const b = req.body || {};
   if (b.website) return res.status(200).json({ ok: true }); // honeypot

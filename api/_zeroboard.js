@@ -58,6 +58,17 @@ async function login(userId, password) {
   return cookie;
 }
 
+// Diagnostic login: reports what the board answered without throwing.
+async function probeLogin(userId, password) {
+  const form = new URLSearchParams();
+  form.append('user_id', userId); form.append('password', password);
+  form.append('id', 'hong_schedule'); form.append('auto_login', '1');
+  const { headers, body } = await rawRequest('POST', `${BASE}/login_check.php`, { body: Buffer.from(form.toString()) });
+  const cookieNames = headers.split('\n').filter((l) => /^set-cookie:/i.test(l)).map((l) => l.split(':')[1].trim().split('=')[0]);
+  const text = iconv.decode(body, 'EUC-KR');
+  return { status: headers.split('\r\n')[0], cookieNames, hasBoardRedirect: text.includes('url=zboard.php'), bodyLen: body.length, bodyHint: text.replace(/<[^>]+>/g, ' ').replace(/\s+/g, ' ').trim().slice(0, 160) };
+}
+
 // Build a multipart/form-data body with EUC-KR encoded values.
 function multipart(fields) {
   const boundary = '----LayerForm' + Date.now().toString(16);
@@ -95,4 +106,4 @@ async function writePost({ cookie, boardId, date, label, memo, name, password })
   return { ok, status: res.headers.split('\r\n')[0], snippet: html.replace(/<[^>]+>/g, ' ').replace(/\s+/g, ' ').slice(0, 300) };
 }
 
-module.exports = { login, writePost, rawRequest, BASE, HOST };
+module.exports = { login, writePost, probeLogin, rawRequest, BASE, HOST };
