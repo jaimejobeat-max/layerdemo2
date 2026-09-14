@@ -1087,3 +1087,83 @@ body.search-open { overflow: hidden; }
 @media (max-width: 1023px) {
   body.page-studio .header__link:first-child { display: none; }
 }
+
+
+/* =========================================================
+   About (photo-led)
+   ========================================================= */
+.about-hero { height: 88vh; height: 88dvh; }
+.about-hero .slide__caption > * { text-align: center; }
+.about-hero__title { font-size: 72px; line-height: .95; letter-spacing: -0.03em; text-transform: none; }
+.about-hero .slide__eyebrow { letter-spacing: .08em; font-size: var(--fs-ui); }
+.about-hero .slide__type { font-weight: 400; font-size: 14px; text-transform: none; }
+.about-hero::before { background: linear-gradient(180deg, rgba(0,0,0,.15), rgba(0,0,0,0) 40%); }
+
+.facts {
+  display: grid; grid-template-columns: repeat(4, 1fr);
+  padding: 56px var(--gutter);
+  border-bottom: 1px solid var(--black);
+  background: var(--white);
+}
+.facts__item { display: grid; gap: 8px; padding: 0 24px; border-left: 1px solid #e5e5e5; }
+.facts__item:first-child { border-left: 0; padding-left: 0; }
+.facts__num { font-size: 52px; font-weight: 700; letter-spacing: -0.03em; line-height: .9; }
+.facts__label { font-size: var(--fs-ui); color: var(--grey); }
+
+.intro { padding: 120px var(--gutter); background: var(--white); }
+.intro__text {
+  max-width: 900px; margin: 0 auto;
+  font-size: 28px; line-height: 1.45; letter-spacing: -0.02em;
+  text-transform: none; word-break: keep-all; text-align: center;
+}
+
+.what { padding: 0 var(--gutter) 120px; background: var(--white); }
+.what__grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 32px; }
+.what__link { display: block; }
+.what__media { display: block; aspect-ratio: 4 / 5; overflow: hidden; background: #f2f2f2; }
+.what__media img { width: 100%; height: 100%; object-fit: cover; transition: transform .8s var(--ease); }
+.what__link:hover .what__media img { transform: scale(1.03); }
+.what__title { display: block; margin-top: 16px; font-size: var(--fs-nav); font-weight: 700; letter-spacing: -0.02em; line-height: 1; }
+.what__desc { display: block; margin-top: 8px; font-size: 14px; line-height: 1.6; color: #444; text-transform: none; word-break: keep-all; }
+
+.tl { padding: 0 var(--gutter) 120px; background: var(--white); }
+.tl__list { display: grid; gap: 0; }
+.tl__item {
+  display: grid; grid-template-columns: 40% 1fr; gap: 48px; align-items: center;
+  padding: 40px 0; border-bottom: 1px solid #e5e5e5;
+}
+.tl__item:nth-child(even) .tl__media { order: 2; }
+.tl__media { aspect-ratio: 3 / 2; overflow: hidden; background: #f2f2f2; }
+.tl__media img { width: 100%; height: 100%; object-fit: cover; }
+.tl__year { display: block; font-size: 52px; font-weight: 700; letter-spacing: -0.03em; line-height: .9; margin-bottom: 16px; }
+.tl__title { font-size: var(--fs-nav); font-weight: 700; letter-spacing: -0.02em; line-height: 1.1; text-transform: none; }
+.tl__desc { margin-top: 10px; font-size: 15px; line-height: 1.6; color: #444; text-transform: none; word-break: keep-all; max-width: 480px; }
+
+.office {
+  display: grid; grid-template-columns: 1.2fr 1.2fr auto; gap: 32px; align-items: end;
+  padding: 0 var(--gutter) 40px; background: var(--white);
+}
+.office__col p { text-transform: none; line-height: 1.5; }
+.office__col--cta { justify-self: end; }
+
+@media (max-width: 1023px) {
+  .what__grid { grid-template-columns: 1fr 1fr; }
+  .facts { grid-template-columns: repeat(2, 1fr); row-gap: 40px; }
+  .facts__item:nth-child(3) { border-left: 0; padding-left: 0; }
+}
+@media (max-width: 767px) {
+  .about-hero { height: 78vh; height: 78dvh; }
+  .about-hero__title { font-size: 40px; }
+  .facts { padding: 40px var(--gutter); }
+  .facts__num { font-size: 36px; }
+  .intro { padding: 72px var(--gutter); }
+  .intro__text { font-size: 20px; text-align: left; }
+  .what { padding-bottom: 72px; }
+  .what__grid { grid-template-columns: 1fr; gap: 40px; }
+  .tl { padding-bottom: 72px; }
+  .tl__item, .tl__item:nth-child(even) { grid-template-columns: 1fr; gap: 20px; padding: 32px 0; }
+  .tl__item:nth-child(even) .tl__media { order: 0; }
+  .tl__year { font-size: 36px; margin-bottom: 10px; }
+  .office { grid-template-columns: 1fr; gap: 24px; }
+  .office__col--cta { justify-self: start; }
+}
