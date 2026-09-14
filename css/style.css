@@ -1287,3 +1287,9 @@ body.search-open { overflow: hidden; }
 .rform__pair { display: grid; grid-template-columns: 1fr 1fr; gap: 24px 20px; }
 
 .rform__legend { margin-bottom: 6px; }
+
+/* Reservation: section headings in the same voice as the form text */
+.rform__legend { font-size: 15px; font-weight: 600; letter-spacing: -0.01em; gap: 10px; padding-bottom: 10px; margin-bottom: 8px; }
+.rform__legend .ko, .rform__legend .en { font-weight: 600; letter-spacing: -0.01em; }
+.rform__legend-num { font-size: 11px; color: #9a9a9a; letter-spacing: .04em; font-family: var(--sans); }
+@media (max-width: 767px) { .rform__legend { font-size: 15px; } }
