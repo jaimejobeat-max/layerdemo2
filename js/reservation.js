@@ -8,8 +8,8 @@
   var hidden = { studio: $('rStudio'), part: $('rPart'), start: $('rStart'), end: $('rEnd'), purpose: $('rPurpose'), people: $('rPeople'), vehicles: $('rVehicles') };
   var dateInput = $('rDate'), partsBox = $('rParts'), step1 = $('step1'), step2 = $('step2'), err1 = $('rError1'), err = $('rError'), done = $('rDone');
   var MSG = {
-    ko: { studio: '지점을 선택해 주세요.', part: '파트를 선택해 주세요.', date: '날짜를 선택해 주세요.', 'date-past': '지난 날짜는 신청할 수 없습니다.', 'date-far': '온라인 예약은 오늘부터 3개월 이내만 가능합니다. 그 이후 일정은 02-336-7750으로 문의해 주세요.', time: '시작 시간이 종료 시간보다 앞서야 합니다.', 'min-hours': '최소 대관 시간보다 짧습니다.', company: '업체명(예약자명)을 입력해 주세요.', contact: '담당자를 입력해 주세요.', phone: '연락 가능한 전화번호를 입력해 주세요.', email: '이메일 형식을 확인해 주세요.', consent: '정보 수집에 동의해 주세요.', network: '전송에 실패했습니다. 잠시 후 다시 시도하거나 02-336-7750으로 연락해 주세요.', sending: '보내는 중…', offline: '이 지점은 온라인 신청을 받지 않습니다.' },
-    en: { studio: 'Please choose a studio.', part: 'Please choose a part.', date: 'Please choose a date.', 'date-past': 'The date has already passed.', 'date-far': 'Online booking is open up to 3 months ahead. For later dates please call +82-2-336-7750.', time: 'Start must be before end.', 'min-hours': 'Shorter than the minimum booking.', company: 'Please enter your company or name.', contact: 'Please enter a contact person.', phone: 'Please enter a phone number.', email: 'Please check the email address.', consent: 'Please agree to the data use.', network: 'Could not send. Please try again or call +82-2-336-7750.', sending: 'Sending…', offline: 'This studio is not bookable online.' }
+    ko: { studio: '지점을 선택해 주세요.', part: '파트를 선택해 주세요.', date: '날짜를 선택해 주세요.', 'date-past': '당일 및 지난 날짜는 온라인으로 신청할 수 없습니다. 당일 예약은 02-336-7750으로 문의해 주세요.', 'date-far': '온라인 예약은 오늘부터 3개월 이내만 가능합니다. 그 이후 일정은 02-336-7750으로 문의해 주세요.', time: '시작 시간이 종료 시간보다 앞서야 합니다.', 'min-hours': '최소 대관 시간보다 짧습니다.', company: '업체명(예약자명)을 입력해 주세요.', contact: '담당자를 입력해 주세요.', phone: '연락 가능한 전화번호를 입력해 주세요.', email: '이메일 형식을 확인해 주세요.', consent: '정보 수집에 동의해 주세요.', network: '전송에 실패했습니다. 잠시 후 다시 시도하거나 02-336-7750으로 연락해 주세요.', sending: '보내는 중…', offline: '이 지점은 온라인 신청을 받지 않습니다.' },
+    en: { studio: 'Please choose a studio.', part: 'Please choose a part.', date: 'Please choose a date.', 'date-past': 'Same-day and past dates cannot be booked online. For today please call +82-2-336-7750.', 'date-far': 'Online booking is open up to 3 months ahead. For later dates please call +82-2-336-7750.', time: 'Start must be before end.', 'min-hours': 'Shorter than the minimum booking.', company: 'Please enter your company or name.', contact: 'Please enter a contact person.', phone: 'Please enter a phone number.', email: 'Please check the email address.', consent: 'Please agree to the data use.', network: 'Could not send. Please try again or call +82-2-336-7750.', sending: 'Sending…', offline: 'This studio is not bookable online.' }
   };
   var PURPOSE = { photo: { ko: '사진', en: 'Photography' }, video: { ko: '영상', en: 'Filming' }, event: { ko: '행사', en: 'Event' } };
   var DAYS = { ko: ['일', '월', '화', '수', '목', '금', '토'], en: ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'] };
@@ -21,12 +21,13 @@
 
   /* ---------- state ---------- */
   var todayKst = new Date(Date.now() + 9 * 3600e3); var today = todayKst.toISOString().slice(0, 10);
+  var minDate = shiftDate(today, 1); // same-day booking is phone only: online starts tomorrow
   var maxD = new Date(todayKst); maxD.setUTCMonth(maxD.getUTCMonth() + 3); var maxDate = maxD.toISOString().slice(0, 10); // online booking window: 3 months
   var state = { studioIdx: -1, date: '', start: 9, end: 18, purpose: 'photo', people: 10, vehicles: 1 };
   var pre = new URLSearchParams(location.search).get('studio');
   var preIdx = studios.findIndex(function (s) { return s.key === pre; });
   state.studioIdx = preIdx > -1 ? preIdx : 0;
-  state.date = today;
+  state.date = minDate;
 
   function studio() { return studios[state.studioIdx]; }
   function fmtDate(iso) {
@@ -54,8 +55,8 @@
     hidden.studio.value = s.key; val('studio', s.title);
     Array.prototype.slice.call(document.querySelectorAll('.rsv__notice[data-for]')).forEach(function (n) { n.hidden = n.getAttribute('data-for') !== s.key; });
     $('toStep2').disabled = !!NO_ONLINE[s.key];
-    dateInput.value = state.date; dateInput.min = today; dateInput.max = maxDate; val('date', fmtDate(state.date));
-    var bs = document.querySelectorAll('.stp[data-field="date"] .stp__btn'); bs[0].disabled = state.date <= today; bs[1].disabled = state.date >= maxDate;
+    dateInput.value = state.date; dateInput.min = minDate; dateInput.max = maxDate; val('date', fmtDate(state.date));
+    var bs = document.querySelectorAll('.stp[data-field="date"] .stp__btn'); bs[0].disabled = state.date <= minDate; bs[1].disabled = state.date >= maxDate;
     $('rNoticeFar').hidden = state.date < maxDate;
     hidden.start.value = state.start; hidden.end.value = state.end; val('start', hm(state.start)); val('end', hm(state.end));
     hidden.purpose.value = state.purpose; val('purpose', PURPOSE[state.purpose][L()]);
@@ -69,7 +70,7 @@
   function step(field, dir) {
     var s = studio();
     if (field === 'studio') { state.studioIdx = (state.studioIdx + dir + studios.length) % studios.length; hidden.part.value = ''; renderParts(); }
-    else if (field === 'date') { var n = shiftDate(state.date, dir); if (n >= today && n <= maxDate) state.date = n; }
+    else if (field === 'date') { var n = shiftDate(state.date, dir); if (n >= minDate && n <= maxDate) state.date = n; }
     else if (field === 'start') { state.start = Math.min(23.5, Math.max(6, state.start + dir * 0.5)); if (state.end <= state.start) state.end = Math.min(24, state.start + s.min); }
     else if (field === 'end') { state.end = Math.min(24, Math.max(6.5, state.end + dir * 0.5)); if (state.end <= state.start) state.start = Math.max(6, state.end - s.min); }
     else if (field === 'purpose') { state.purpose = PURPOSES[(PURPOSES.indexOf(state.purpose) + dir + 3) % 3]; }
@@ -127,7 +128,8 @@
   document.addEventListener('keydown', function (e) { if (e.key === 'Escape') closeMenus(); });
   /* date value → native picker (handled in openMenu) */
   dateInput.addEventListener('change', function () {
-    if (!dateInput.value || dateInput.value < today) return;
+    if (!dateInput.value) return;
+    if (dateInput.value < minDate) { state.date = minDate; render(); err1.textContent = t('date-past'); err1.hidden = false; return; }
     if (dateInput.value > maxDate) { state.date = maxDate; render(); err1.textContent = t('date-far'); err1.hidden = false; return; }
     state.date = dateInput.value; render();
   });
@@ -139,7 +141,7 @@
     var s = studio();
     if (NO_ONLINE[s.key]) return 'offline';
     syncParts(); if (s.parts.length && !hidden.part.value) return 'part';
-    if (!state.date) return 'date'; if (state.date < today) return 'date-past'; if (state.date > maxDate) return 'date-far';
+    if (!state.date) return 'date'; if (state.date < minDate) return 'date-past'; if (state.date > maxDate) return 'date-far';
     if (state.end <= state.start) return 'time'; if (state.end - state.start < s.min) return 'min-hours';
     return null;
   }

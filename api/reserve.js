@@ -33,7 +33,7 @@ function validate(b) {
   const date = new Date(Date.UTC(yy, mm - 1, dd)); // calendar day, timezone-independent (use getUTC* only)
   if (Number.isNaN(date.getTime()) || date.getUTCMonth() !== mm - 1) return 'date';
   const todayKst = new Date(Date.now() + 9 * 3600e3); todayKst.setUTCHours(0, 0, 0, 0);
-  if (date.getTime() < todayKst.getTime()) return 'date-past';
+  if (date.getTime() <= todayKst.getTime()) return 'date-past'; // same-day bookings are phone only
   const maxKst = new Date(todayKst); maxKst.setUTCMonth(maxKst.getUTCMonth() + 3); // online window: 3 months ahead
   if (date.getTime() > maxKst.getTime()) return 'date-far';
   const start = parseFloat(b.start), end = parseFloat(b.end);
