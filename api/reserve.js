@@ -34,6 +34,8 @@ function validate(b) {
   if (Number.isNaN(date.getTime()) || date.getUTCMonth() !== mm - 1) return 'date';
   const todayKst = new Date(Date.now() + 9 * 3600e3); todayKst.setUTCHours(0, 0, 0, 0);
   if (date.getTime() < todayKst.getTime()) return 'date-past';
+  const maxKst = new Date(todayKst); maxKst.setUTCMonth(maxKst.getUTCMonth() + 3); // online window: 3 months ahead
+  if (date.getTime() > maxKst.getTime()) return 'date-far';
   const start = parseFloat(b.start), end = parseFloat(b.end);
   if (!(start >= 0 && start <= 23.5 && end >= 0.5 && end <= 24 && end > start && start % 0.5 === 0 && end % 0.5 === 0)) return 'time';
   if (end - start < (MIN_HOURS[studio] || 4)) return 'min-hours';

@@ -1330,7 +1330,7 @@ body.search-open { overflow: hidden; }
 .stp-row .stp__value { font-size: 21px; }
 /* hint sits tight under the time row: 12px below it, 20px above the next row (grid gap is 28) */
 .rsv__hint { font-size: var(--fs-ui); line-height: 1.4; color: var(--grey); text-align: center; text-transform: none; margin: -14px 0 -6px; }
-.rsv__notice { margin: -12px auto 0; max-width: 520px; text-align: center; }
+.rsv__notice { margin: -12px auto 0; max-width: 520px; text-align: center; line-height: 1.7; }
 .rsv__error { text-align: center; margin-top: -12px; }
 .rsv__cta {
   display: block; width: 100%; height: 44px; margin: 6px auto 0; border-radius: 4px; background: var(--black); color: var(--white);
