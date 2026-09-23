@@ -1306,35 +1306,41 @@ body.search-open { overflow: hidden; }
 /* =========================================================
    Reservation — stepper layout (SevenRooms-like)
    ========================================================= */
-.rsv { padding: calc(var(--header-h) + 56px) var(--gutter) 120px; background: var(--white); max-width: 720px; margin: 0 auto; }
-.rsv__title { font-size: 52px; font-weight: 700; letter-spacing: -0.02em; line-height: .9; text-align: center; margin-bottom: 28px; }
-.rsv__intro { font-size: 14px; line-height: 1.6; text-transform: none; text-align: center; color: #444; max-width: 560px; margin: 0 auto 48px; word-break: keep-all; }
+.rsv { padding: calc(var(--header-h) + 40px) var(--gutter) 96px; background: var(--white); max-width: 640px; margin: 0 auto; }
+.rsv__title { font-size: 40px; font-weight: 700; letter-spacing: -0.02em; line-height: .9; text-align: center; margin-bottom: 20px; }
+.rsv__intro { font-size: 13px; line-height: 1.5; text-transform: none; text-align: center; color: var(--black); margin: 0 0 28px; word-break: keep-all; }
 .rsv__form[hidden], .rsv__step[hidden], .rsv__done[hidden] { display: none; }
-.rsv__step { display: grid; gap: 36px; }
-.stp { display: grid; grid-template-columns: 48px 1fr 48px; align-items: center; text-align: center; }
-.stp__btn { font-size: 34px; line-height: 1; color: var(--black); padding: 8px 0; font-weight: 300; }
-.stp__btn:hover { color: var(--grey); }
-.stp__btn:disabled { color: #ccc; cursor: default; }
-.stp__body { display: grid; gap: 6px; justify-items: center; }
-.stp__value { font-size: 32px; font-weight: 700; letter-spacing: -0.02em; line-height: 1.05; text-transform: none; cursor: default; }
+.rsv__step { display: grid; gap: 18px; }
+.stp { display: grid; grid-template-columns: 32px 1fr 32px; align-items: start; text-align: center; max-width: 240px; width: 100%; margin: 0 auto; min-height: 44px; }
+.stp__btn { display: grid; place-items: center; width: 32px; height: 32px; margin-top: 6px; color: var(--black); transition: opacity .15s var(--ease); }
+.stp__btn svg { width: 18px; height: 18px; fill: none; stroke: currentColor; stroke-width: 1.8; stroke-linecap: round; stroke-linejoin: round; } /* centred on the 56px value+label block, not on part chips below */
+.stp__btn:hover { opacity: .5; }
+.stp__btn:disabled { opacity: .2; cursor: default; }
+.stp__body { display: grid; gap: 2px; justify-items: center; align-content: center; min-height: 44px; }
+.stp__value { font-size: 21px; font-weight: 400; letter-spacing: -0.01em; line-height: 1.15; text-transform: none; cursor: default; }
+.stp[data-field="studio"] .stp__value, .stp[data-field="studio"] .stp__list { text-transform: uppercase; }
 .stp[data-field="date"] .stp__value { cursor: pointer; }
-.stp__label { font-size: 12px; color: var(--grey); letter-spacing: .04em; text-transform: uppercase; }
+.stp__label { font-size: 14px; line-height: 1.3; color: var(--black); letter-spacing: 0; text-transform: none; }
 .stp__date { position: absolute; width: 1px; height: 1px; opacity: 0; pointer-events: none; }
-.stp__parts { display: flex; flex-wrap: wrap; justify-content: center; gap: 8px; margin-top: 12px; min-height: 0; }
-.stp-row { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; }
-.stp-row .stp { grid-template-columns: 40px 1fr 40px; }
-.stp-row .stp__value { font-size: 28px; }
-.rsv__hint { font-size: var(--fs-ui); color: var(--grey); text-align: center; text-transform: none; margin-top: -16px; }
+.stp__parts { display: flex; flex-wrap: wrap; justify-content: center; gap: 5px; margin-top: 6px; min-height: 0; }
+.stp__parts .rform__chip span { padding: 4px 9px; font-size: 12px; }
+.stp__parts:empty { display: none; }
+.stp-row { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; max-width: 496px; margin: 0 auto; width: 100%; }
+.stp-row .stp { grid-template-columns: 32px 1fr 32px; max-width: none; }
+.stp-row .stp__value { font-size: 21px; }
+/* hint sits tight under the time row: 12px below it, 20px above the next row (grid gap is 28) */
+.rsv__hint { font-size: var(--fs-ui); line-height: 1.4; color: var(--grey); text-align: center; text-transform: none; margin: -14px 0 -6px; }
 .rsv__notice { margin: -12px auto 0; max-width: 520px; text-align: center; }
 .rsv__error { text-align: center; margin-top: -12px; }
 .rsv__cta {
-  display: block; width: 100%; height: 60px; background: var(--black); color: var(--white);
-  font-size: 15px; font-weight: 700; letter-spacing: .08em; text-transform: uppercase;
+  display: block; width: 100%; height: 44px; margin: 6px auto 0; border-radius: 4px; background: var(--black); color: var(--white);
+  font-size: 14px; font-weight: 500; letter-spacing: .02em; text-transform: uppercase;
   transition: background .2s var(--ease);
 }
 .rsv__cta:hover { background: #222; }
 .rsv__cta:disabled { background: #bbb; cursor: default; }
-.rsv__back { justify-self: start; font-size: var(--fs-ui); font-weight: 700; }
+.rsv__back { justify-self: start; display: inline-flex; align-items: center; gap: 4px; font-size: 14px; text-transform: none; }
+.rsv__back svg { width: 16px; height: 16px; fill: none; stroke: currentColor; stroke-width: 1.8; stroke-linecap: round; stroke-linejoin: round; }
 .rsv__summary { text-align: center; font-size: 15px; font-weight: 700; letter-spacing: -0.01em; text-transform: none; border-top: 1px solid var(--black); border-bottom: 1px solid var(--black); padding: 16px 0; }
 .rsv__fields { display: grid; grid-template-columns: 1fr 1fr; gap: 22px 28px; }
 .rsv__fields-wide { grid-column: 1 / -1; }
@@ -1343,11 +1349,14 @@ body.search-open { overflow: hidden; }
 @media (max-width: 767px) {
   .rsv { padding-top: calc(var(--header-h) + 32px); padding-bottom: 80px; }
   .rsv__title { font-size: 36px; }
-  .rsv__intro { margin-bottom: 36px; }
-  .rsv__step { gap: 30px; }
-  .stp__value { font-size: 26px; }
-  .stp-row .stp__value { font-size: 22px; }
-  .stp-row { gap: 8px; }
+  .rsv__intro { margin-bottom: 28px; }
+  .rsv__step { gap: 16px; }
+  .stp__value { font-size: 24px; }
+  .stp__label { font-size: 15px; }
+  .rsv__intro { font-size: 15px; }
+  .rsv__cta { font-size: 17px; height: 56px; }
+  .stp-row .stp__value { font-size: 24px; }
+  .stp-row .stp { grid-template-columns: 32px 1fr 32px; }
   .rsv__fields { grid-template-columns: 1fr; }
 }
 
@@ -1356,13 +1365,13 @@ body.search-open { overflow: hidden; }
 
 /* Stepper pickers */
 .stp__body { position: relative; }
-button.stp__value { font: inherit; font-size: 32px; font-weight: 700; letter-spacing: -0.02em; line-height: 1.05; text-transform: none; color: var(--black); cursor: pointer; padding: 0 6px; border-bottom: 2px solid transparent; transition: border-color .2s var(--ease); }
+button.stp__value { font: inherit; font-size: 21px; font-weight: 400; letter-spacing: -0.01em; line-height: 1.15; text-transform: none; color: var(--black); cursor: pointer; padding: 0 6px; border-bottom: 2px solid transparent; transition: border-color .2s var(--ease); }
 button.stp__value:hover { border-bottom-color: var(--black); }
-.stp-row button.stp__value { font-size: 28px; }
+.stp-row button.stp__value { font-size: 21px; }
 .stp__menu { position: absolute; top: calc(100% + 8px); left: 50%; transform: translateX(-50%); z-index: 30; background: var(--white); border: 1px solid var(--black); min-width: 160px; max-height: 260px; overflow-y: auto; box-shadow: 0 12px 32px rgba(0,0,0,.08); }
 .stp__menu[hidden] { display: none; }
-.stp__list li button { display: block; width: 100%; text-align: center; padding: 10px 18px; font-size: 15px; text-transform: none; white-space: nowrap; }
+.stp__list li button { display: block; width: 100%; text-align: center; padding: 8px 16px; font-size: 14px; text-transform: none; white-space: nowrap; }
 .stp__list li button:hover { background: #f2f2f2; }
 .stp__list li button.is-on { background: var(--black); color: var(--white); }
 .stp[data-field="studio"] .stp__menu { top: auto; bottom: auto; margin-top: -8px; }
-@media (max-width: 767px) { button.stp__value { font-size: 26px; } .stp-row button.stp__value { font-size: 22px; } .stp__menu { max-height: 220px; } }
+@media (max-width: 767px) { button.stp__value { font-size: 26px; } .stp-row button.stp__value { font-size: 24px; } .stp__menu { max-height: 220px; } }

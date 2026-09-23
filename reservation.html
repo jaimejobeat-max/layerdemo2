@@ -86,8 +86,8 @@
 
 
 <main class="rsv" id="main">
-    <h1 class="rsv__title">Reservation</h1>
-    <p class="rsv__intro"><span class="ko">아래에서 공간과 일정을 고른 뒤 예약 신청을 보내주세요. 신청은 예약 확정이 아니며, 담당자 확인과 예약금 입금 후 확정됩니다.</span><span class="en">Choose the space and schedule below, then send your request. A request is not a confirmed booking; it is confirmed after our team checks it and the deposit arrives.</span></p>
+    <h1 class="rsv__title visually-hidden">Reservation</h1>
+    <p class="rsv__intro"><span class="ko">레이어 스튜디오의 모든 지점은 사진·영상 촬영과 행사 대관으로 이용하실 수 있습니다. 아래에서 지점과 파트, 날짜와 시간을 고른 뒤 예약 신청을 보내주세요. 신청은 예약 확정이 아니며, 담당자가 스케줄을 확인한 뒤 연락드리고 예약금 입금이 확인되면 확정됩니다. 최소 대관 시간은 레이어 4시간, 홍대 2시간이며 세팅과 철수 시간을 포함해 주세요.</span><span class="en">All Layer Studios locations are available for photo shoots, film productions and events. Choose the studio and part, pick a date and time below, and send us your request. A request is not a confirmed booking: our team checks the schedule and gets in touch, and the booking is confirmed once the deposit arrives. Minimum booking is 4 hours at Layer studios and 2 hours at Hongdae, including set-up and strike.</span></p>
 
     <form class="rsv__form rform" id="rform" novalidate>
       <input type="text" name="website" class="rform__hp" tabindex="-1" autocomplete="off" aria-hidden="true">
@@ -104,51 +104,50 @@
       <section class="rsv__step" id="step1">
         
         <div class="stp" data-field="studio">
-          <button type="button" class="stp__btn" data-dir="-1" aria-label="Previous">‹</button>
+          <button type="button" class="stp__btn" data-dir="-1" aria-label="Previous"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M15 5l-7 7 7 7"/></svg></button>
           <div class="stp__body"><button type="button" class="stp__value" data-value>—</button><div class="stp__menu" data-menu hidden></div><span class="stp__label"><span class="ko">지점</span><span class="en">Studio</span></span><div class="stp__parts" id="rParts" role="group" aria-label="Parts"></div></div>
-          <button type="button" class="stp__btn" data-dir="1" aria-label="Next">›</button>
+          <button type="button" class="stp__btn" data-dir="1" aria-label="Next"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M9 5l7 7-7 7"/></svg></button>
         </div>
         <p class="rform__notice rsv__notice" id="rNotice" hidden data-for="faust"><span class="ko">Faust는 온라인 신청을 받지 않습니다. 전화로 문의해 주세요. <a href="tel:0233567750">02-336-7750</a></span><span class="en">Faust is not bookable online. Please call us at <a href="tel:0233567750">+82-2-336-7750</a>.</span></p>
         <p class="rform__notice rsv__notice" id="rNotice10" hidden data-for="layer-10"><span class="ko">Layer 10은 현재 장기 대관 중이라 예약이 어렵습니다. 문의는 <a href="tel:0233567750">02-336-7750</a>으로 부탁드립니다.</span><span class="en">Layer 10 is currently under a long-term rental and not available. Please call <a href="tel:0233567750">+82-2-336-7750</a> for enquiries.</span></p>
         
         <div class="stp" data-field="date">
-          <button type="button" class="stp__btn" data-dir="-1" aria-label="Previous">‹</button>
+          <button type="button" class="stp__btn" data-dir="-1" aria-label="Previous"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M15 5l-7 7 7 7"/></svg></button>
           <div class="stp__body"><button type="button" class="stp__value" data-value>—</button><div class="stp__menu" data-menu hidden></div><span class="stp__label"><span class="ko">날짜</span><span class="en">Date</span></span><input type="date" name="date" id="rDate" class="stp__date" aria-label="Date"></div>
-          <button type="button" class="stp__btn" data-dir="1" aria-label="Next">›</button>
+          <button type="button" class="stp__btn" data-dir="1" aria-label="Next"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M9 5l7 7-7 7"/></svg></button>
         </div>
         <div class="stp-row">
           
         <div class="stp" data-field="start">
-          <button type="button" class="stp__btn" data-dir="-1" aria-label="Previous">‹</button>
+          <button type="button" class="stp__btn" data-dir="-1" aria-label="Previous"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M15 5l-7 7 7 7"/></svg></button>
           <div class="stp__body"><button type="button" class="stp__value" data-value>—</button><div class="stp__menu" data-menu hidden></div><span class="stp__label"><span class="ko">시작</span><span class="en">Start</span></span></div>
-          <button type="button" class="stp__btn" data-dir="1" aria-label="Next">›</button>
+          <button type="button" class="stp__btn" data-dir="1" aria-label="Next"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M9 5l7 7-7 7"/></svg></button>
         </div>
           
         <div class="stp" data-field="end">
-          <button type="button" class="stp__btn" data-dir="-1" aria-label="Previous">‹</button>
+          <button type="button" class="stp__btn" data-dir="-1" aria-label="Previous"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M15 5l-7 7 7 7"/></svg></button>
           <div class="stp__body"><button type="button" class="stp__value" data-value>—</button><div class="stp__menu" data-menu hidden></div><span class="stp__label"><span class="ko">종료</span><span class="en">End</span></span></div>
-          <button type="button" class="stp__btn" data-dir="1" aria-label="Next">›</button>
+          <button type="button" class="stp__btn" data-dir="1" aria-label="Next"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M9 5l7 7-7 7"/></svg></button>
         </div>
         </div>
-        <p class="rsv__hint" id="rHint"><span class="ko">최소 대관 시간: 레이어 4시간 / 홍대 2시간. 세팅과 철수 시간을 포함해 주세요.</span><span class="en">Minimum booking: Layer studios 4 hours / Hongdae 2 hours. Include set-up and strike.</span></p>
         
         <div class="stp" data-field="purpose">
-          <button type="button" class="stp__btn" data-dir="-1" aria-label="Previous">‹</button>
+          <button type="button" class="stp__btn" data-dir="-1" aria-label="Previous"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M15 5l-7 7 7 7"/></svg></button>
           <div class="stp__body"><button type="button" class="stp__value" data-value>—</button><div class="stp__menu" data-menu hidden></div><span class="stp__label"><span class="ko">촬영 내용</span><span class="en">Type of use</span></span></div>
-          <button type="button" class="stp__btn" data-dir="1" aria-label="Next">›</button>
+          <button type="button" class="stp__btn" data-dir="1" aria-label="Next"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M9 5l7 7-7 7"/></svg></button>
         </div>
         <div class="stp-row">
           
         <div class="stp" data-field="people">
-          <button type="button" class="stp__btn" data-dir="-1" aria-label="Previous">‹</button>
+          <button type="button" class="stp__btn" data-dir="-1" aria-label="Previous"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M15 5l-7 7 7 7"/></svg></button>
           <div class="stp__body"><button type="button" class="stp__value" data-value>—</button><div class="stp__menu" data-menu hidden></div><span class="stp__label"><span class="ko">인원</span><span class="en">People</span></span></div>
-          <button type="button" class="stp__btn" data-dir="1" aria-label="Next">›</button>
+          <button type="button" class="stp__btn" data-dir="1" aria-label="Next"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M9 5l7 7-7 7"/></svg></button>
         </div>
           
         <div class="stp" data-field="vehicles">
-          <button type="button" class="stp__btn" data-dir="-1" aria-label="Previous">‹</button>
+          <button type="button" class="stp__btn" data-dir="-1" aria-label="Previous"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M15 5l-7 7 7 7"/></svg></button>
           <div class="stp__body"><strong class="stp__value stp__value--static" data-value>—</strong><span class="stp__label"><span class="ko">차량</span><span class="en">Vehicles</span></span></div>
-          <button type="button" class="stp__btn" data-dir="1" aria-label="Next">›</button>
+          <button type="button" class="stp__btn" data-dir="1" aria-label="Next"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M9 5l7 7-7 7"/></svg></button>
         </div>
         </div>
         <p class="rform__error rsv__error" id="rError1" hidden></p>
@@ -157,7 +156,7 @@
 
       <!-- ===== Step 2: contact ===== -->
       <section class="rsv__step" id="step2" hidden>
-        <button type="button" class="rsv__back" id="toStep1">‹ <span class="ko">일정 다시 고르기</span><span class="en">Back to schedule</span></button>
+        <button type="button" class="rsv__back" id="toStep1"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M15 5l-7 7 7 7"/></svg> <span class="ko">일정 다시 고르기</span><span class="en">Back to schedule</span></button>
         <p class="rsv__summary" id="rSummary"></p>
         <div class="rsv__fields">
           <label class="rform__field"><span class="rform__label"><span class="ko">업체명 (예약자명)</span><span class="en">Company / name</span></span><input type="text" name="company" maxlength="60" required></label>

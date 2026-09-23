@@ -18,6 +18,8 @@ const WEEKDAYS = ['일', '월', '화', '수', '목', '금', '토'];
 
 function bad(res, msg, code = 400) { res.status(code).json({ ok: false, error: msg }); }
 function pad2(n) { return String(n).padStart(2, '0'); }
+/** 9.5 → "09:30" (hours may end in .5) */
+function hm(h) { return pad2(Math.floor(h)) + ':' + (h % 1 ? '30' : '00'); }
 function clean(s, max = 200) { return String(s ?? '').replace(/[\r\n\t]+/g, ' ').trim().slice(0, max); }
 
 function validate(b) {
@@ -32,8 +34,8 @@ function validate(b) {
   if (Number.isNaN(date.getTime()) || date.getUTCMonth() !== mm - 1) return 'date';
   const todayKst = new Date(Date.now() + 9 * 3600e3); todayKst.setUTCHours(0, 0, 0, 0);
   if (date.getTime() < todayKst.getTime()) return 'date-past';
-  const start = parseInt(b.start, 10), end = parseInt(b.end, 10);
-  if (!(start >= 0 && start <= 23 && end >= 1 && end <= 24 && end > start)) return 'time';
+  const start = parseFloat(b.start), end = parseFloat(b.end);
+  if (!(start >= 0 && start <= 23.5 && end >= 0.5 && end <= 24 && end > start && start % 0.5 === 0 && end % 0.5 === 0)) return 'time';
   if (end - start < (MIN_HOURS[studio] || 4)) return 'min-hours';
   const company = clean(b.company, 60); if (company.length < 1) return 'company';
   const contact = clean(b.contact, 60); if (contact.length < 1) return 'contact';
@@ -52,13 +54,13 @@ function buildPost(r, rank = 1) {
   const d = r.date; const y = d.getUTCFullYear(), m = d.getUTCMonth() + 1, day = d.getUTCDate();
   const label = `++(W${rank})`; // calendar label follows the staff convention; details live in the body
   const memo = [
-    `* ${r.part === '-' ? '' : r.part + ' '}${pad2(r.start)}-${pad2(r.end)} 홈페이지 예약 신청 (가부킹 W${rank}, 미확정)`,
+    `* ${r.part === '-' ? '' : r.part + ' '}${hm(r.start)}-${hm(r.end)} 홈페이지 예약 신청 (가부킹 W${rank}, 미확정)`,
     '',
     '====',
     `* 대관 날짜 : ${y}년 ${m}월 ${day}일(${WEEKDAYS[d.getUTCDay()]})`,
     `* 대관 지점 : ${NAMES[r.studio]}`,
     `* 대관 파트 : ${r.part}`,
-    `* 대관 시간 : ${pad2(r.start)}:00 - ${pad2(r.end)}:00 (${r.end - r.start}h)`,
+    `* 대관 시간 : ${hm(r.start)} - ${hm(r.end)} (${r.end - r.start}h)`,
     `* 대관 내용 : ${r.purpose || '-'}`,
     `* 이용 인원수 : ${r.people || '-'}`,
     `* 방문 차량수 : ${r.vehicles || '-'}`,
@@ -78,7 +80,7 @@ async function slack(r, post, boardId, boardResult) {
   const d = r.date;
   const text = [
     `:inbox_tray: *홈페이지 예약 신청* — ${NAMES[r.studio]}${r.part !== '-' ? ' ' + r.part : ''}`,
-    `• ${d.getUTCFullYear()}.${pad2(d.getUTCMonth() + 1)}.${pad2(d.getUTCDate())}(${WEEKDAYS[d.getUTCDay()]}) ${pad2(r.start)}:00–${pad2(r.end)}:00 · ${r.purpose || '-'} · ${r.people || '-'}명 · 차량 ${r.vehicles || '-'}`,
+    `• ${d.getUTCFullYear()}.${pad2(d.getUTCMonth() + 1)}.${pad2(d.getUTCDate())}(${WEEKDAYS[d.getUTCDay()]}) ${hm(r.start)}–${hm(r.end)} · ${r.purpose || '-'} · ${r.people || '-'}명 · 차량 ${r.vehicles || '-'}`,
     `• ${r.company} / ${r.contact} / ${r.phone}${r.email ? ' / ' + r.email : ''}`,
     r.note ? `• 요청: ${r.note}` : null,
     boardId ? (boardResult && boardResult.ok ? `• 스케줄표에 가부킹으로 기록됨 → \`${post.label}\`` : `• :warning: 게시판 기록 실패 — 수동 등록 필요`) : `• :warning: 이 지점은 스케줄 게시판이 없어 수동 등록 필요`,

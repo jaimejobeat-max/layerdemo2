@@ -11,12 +11,13 @@
     ko: { studio: '지점을 선택해 주세요.', part: '파트를 선택해 주세요.', date: '날짜를 선택해 주세요.', 'date-past': '지난 날짜는 신청할 수 없습니다.', time: '시작 시간이 종료 시간보다 앞서야 합니다.', 'min-hours': '최소 대관 시간보다 짧습니다.', company: '업체명(예약자명)을 입력해 주세요.', contact: '담당자를 입력해 주세요.', phone: '연락 가능한 전화번호를 입력해 주세요.', email: '이메일 형식을 확인해 주세요.', consent: '정보 수집에 동의해 주세요.', network: '전송에 실패했습니다. 잠시 후 다시 시도하거나 02-336-7750으로 연락해 주세요.', sending: '보내는 중…', offline: '이 지점은 온라인 신청을 받지 않습니다.' },
     en: { studio: 'Please choose a studio.', part: 'Please choose a part.', date: 'Please choose a date.', 'date-past': 'The date has already passed.', time: 'Start must be before end.', 'min-hours': 'Shorter than the minimum booking.', company: 'Please enter your company or name.', contact: 'Please enter a contact person.', phone: 'Please enter a phone number.', email: 'Please check the email address.', consent: 'Please agree to the data use.', network: 'Could not send. Please try again or call +82-2-336-7750.', sending: 'Sending…', offline: 'This studio is not bookable online.' }
   };
-  var PURPOSE = { photo: { ko: '사진', en: 'Photo' }, video: { ko: '영상', en: 'Video' }, event: { ko: '행사', en: 'Event' } };
+  var PURPOSE = { photo: { ko: '사진', en: 'Photography' }, video: { ko: '영상', en: 'Filming' }, event: { ko: '행사', en: 'Event' } };
   var DAYS = { ko: ['일', '월', '화', '수', '목', '금', '토'], en: ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'] };
   var MONTHS_EN = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
   function L() { return window.LANG === 'en' ? 'en' : 'ko'; }
   function t(k) { return MSG[L()][k] || k; }
   function pad(n) { return String(n).padStart(2, '0'); }
+  function hm(h) { return pad(Math.floor(h)) + ':' + (h % 1 ? '30' : '00'); } // 9.5 → 09:30
 
   /* ---------- state ---------- */
   var todayKst = new Date(Date.now() + 9 * 3600e3); var today = todayKst.toISOString().slice(0, 10);
@@ -53,7 +54,7 @@
     Array.prototype.slice.call(document.querySelectorAll('.rsv__notice[data-for]')).forEach(function (n) { n.hidden = n.getAttribute('data-for') !== s.key; });
     $('toStep2').disabled = !!NO_ONLINE[s.key];
     dateInput.value = state.date; dateInput.min = today; val('date', fmtDate(state.date));
-    hidden.start.value = state.start; hidden.end.value = state.end; val('start', pad(state.start) + ':00'); val('end', pad(state.end) + ':00');
+    hidden.start.value = state.start; hidden.end.value = state.end; val('start', hm(state.start)); val('end', hm(state.end));
     hidden.purpose.value = state.purpose; val('purpose', PURPOSE[state.purpose][L()]);
     hidden.people.value = state.people; val('people', state.people + (L() === 'en' ? '' : '명'));
     hidden.vehicles.value = state.vehicles; val('vehicles', state.vehicles + (L() === 'en' ? '' : '대'));
@@ -66,8 +67,8 @@
     var s = studio();
     if (field === 'studio') { state.studioIdx = (state.studioIdx + dir + studios.length) % studios.length; hidden.part.value = ''; renderParts(); }
     else if (field === 'date') { var n = shiftDate(state.date, dir); if (n >= today) state.date = n; }
-    else if (field === 'start') { state.start = Math.min(23, Math.max(6, state.start + dir)); if (state.end <= state.start) state.end = Math.min(24, state.start + s.min); }
-    else if (field === 'end') { state.end = Math.min(24, Math.max(7, state.end + dir)); if (state.end <= state.start) state.start = Math.max(6, state.end - s.min); }
+    else if (field === 'start') { state.start = Math.min(23.5, Math.max(6, state.start + dir * 0.5)); if (state.end <= state.start) state.end = Math.min(24, state.start + s.min); }
+    else if (field === 'end') { state.end = Math.min(24, Math.max(6.5, state.end + dir * 0.5)); if (state.end <= state.start) state.start = Math.max(6, state.end - s.min); }
     else if (field === 'purpose') { state.purpose = PURPOSES[(PURPOSES.indexOf(state.purpose) + dir + 3) % 3]; }
     else if (field === 'people') { state.people = Math.min(300, Math.max(1, state.people + dir)); }
     else if (field === 'vehicles') { state.vehicles = Math.min(50, Math.max(0, state.vehicles + dir)); }
@@ -88,8 +89,8 @@
   function options(field) {
     var s = studio(), L_ = L();
     if (field === 'studio') return studios.map(function (x, i) { return { v: i, t: x.title, on: i === state.studioIdx }; });
-    if (field === 'start') { var a = []; for (var h = 6; h <= 23; h++) a.push({ v: h, t: pad(h) + ':00', on: h === state.start }); return a; }
-    if (field === 'end') { var b = []; for (var h2 = 7; h2 <= 24; h2++) b.push({ v: h2, t: pad(h2) + ':00', on: h2 === state.end }); return b; }
+    if (field === 'start') { var a = []; for (var h = 6; h <= 23.5; h += 0.5) a.push({ v: h, t: hm(h), on: h === state.start }); return a; }
+    if (field === 'end') { var b = []; for (var h2 = 6.5; h2 <= 24; h2 += 0.5) b.push({ v: h2, t: hm(h2), on: h2 === state.end }); return b; }
     if (field === 'purpose') return PURPOSES.map(function (k) { return { v: k, t: PURPOSE[k][L_], on: k === state.purpose }; });
     if (field === 'people') { var c = []; for (var n = 1; n <= 100; n++) c.push({ v: n, t: n + (L_ === 'en' ? '' : '명'), on: n === state.people }); return c; }
     return null;
@@ -137,7 +138,7 @@
   }
   function summary() {
     var s = studio(); var parts = hidden.part.value && hidden.part.value !== '-' ? ' · ' + hidden.part.value : '';
-    return s.title + parts + ' · ' + fmtDate(state.date) + ' · ' + pad(state.start) + ':00–' + pad(state.end) + ':00 · ' + PURPOSE[state.purpose][L()];
+    return s.title + parts + ' · ' + fmtDate(state.date) + ' · ' + hm(state.start) + '–' + hm(state.end) + ' · ' + PURPOSE[state.purpose][L()];
   }
   $('toStep2').addEventListener('click', function () {
     var c = check1(); if (c) { err1.textContent = t(c); err1.hidden = false; return; }
