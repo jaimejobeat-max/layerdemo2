@@ -3,7 +3,7 @@
   'use strict';
   var form = document.getElementById('rform'); if (!form) return;
   var studios = window.RESERVE_STUDIOS || [];
-  var NO_ONLINE = { faust: true, 'layer-10': true };
+  var NO_ONLINE = { faust: true, 'layer-10': true, 'layer-57': true }; // layer-57: opening soon
   var $ = function (id) { return document.getElementById(id); };
   var hidden = { studio: $('rStudio'), part: $('rPart'), start: $('rStart'), end: $('rEnd'), purpose: $('rPurpose'), people: $('rPeople'), vehicles: $('rVehicles') };
   var dateInput = $('rDate'), partsBox = $('rParts'), step1 = $('step1'), step2 = $('step2'), err1 = $('rError1'), err = $('rError'), done = $('rDone');

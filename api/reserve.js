@@ -13,7 +13,7 @@ const NAMES = {
 };
 const MIN_HOURS = { hongdae: 2 };
 const PURPOSE = { photo: '사진 촬영', video: '영상 촬영', event: '행사' };
-const NO_ONLINE = { faust: true, 'layer-10': true }; // faust: phone only · layer-10: long-term rental
+const NO_ONLINE = { faust: true, 'layer-10': true, 'layer-57': true }; // faust: phone only · layer-10: long-term rental · layer-57: opening soon
 const WEEKDAYS = ['일', '월', '화', '수', '목', '금', '토'];
 
 function bad(res, msg, code = 400) { res.status(code).json({ ok: false, error: msg }); }
