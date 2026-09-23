@@ -138,7 +138,7 @@
   }
   function summary() {
     var s = studio(); var parts = hidden.part.value && hidden.part.value !== '-' ? ' · ' + hidden.part.value : '';
-    return s.title + parts + ' · ' + fmtDate(state.date) + ' · ' + hm(state.start) + '–' + hm(state.end) + ' · ' + PURPOSE[state.purpose][L()];
+    return s.title.toUpperCase() + parts + ' · ' + fmtDate(state.date) + ' · ' + hm(state.start) + '–' + hm(state.end) + ' · ' + PURPOSE[state.purpose][L()];
   }
   $('toStep2').addEventListener('click', function () {
     var c = check1(); if (c) { err1.textContent = t(c); err1.hidden = false; return; }

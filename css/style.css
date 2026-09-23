@@ -1341,7 +1341,9 @@ body.search-open { overflow: hidden; }
 .rsv__cta:disabled { background: #bbb; cursor: default; }
 .rsv__back { justify-self: start; display: inline-flex; align-items: center; gap: 4px; font-size: 14px; text-transform: none; }
 .rsv__back svg { width: 16px; height: 16px; fill: none; stroke: currentColor; stroke-width: 1.8; stroke-linecap: round; stroke-linejoin: round; }
-.rsv__summary { text-align: center; font-size: 15px; font-weight: 700; letter-spacing: -0.01em; text-transform: none; border-top: 1px solid var(--black); border-bottom: 1px solid var(--black); padding: 16px 0; }
+.rsv__summary { text-align: center; font-size: 14px; font-weight: 500; letter-spacing: -0.01em; text-transform: none; border-top: 1px solid var(--black); border-bottom: 1px solid var(--black); padding: 14px 0; }
+.rsv__required { font-size: 13px; line-height: 1.6; text-transform: none; text-align: center; color: var(--black); margin: -4px 0 8px; word-break: keep-all; }
+.rform__req { color: var(--black); margin-left: 3px; }
 .rsv__fields { display: grid; grid-template-columns: 1fr 1fr; gap: 22px 28px; }
 .rsv__fields-wide { grid-column: 1 / -1; }
 .rsv__done { text-align: center; padding-top: 24px; }

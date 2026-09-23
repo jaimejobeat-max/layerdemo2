@@ -71,10 +71,11 @@
       <section class="rsv__step" id="step2" hidden>
         <button type="button" class="rsv__back" id="toStep1"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M15 5l-7 7 7 7"/></svg> <span class="ko">일정 다시 고르기</span><span class="en">Back to schedule</span></button>
         <p class="rsv__summary" id="rSummary"></p>
+        <p class="rsv__required"><span class="ko">업체명, 담당자, 전화번호는 필수 항목입니다.<br>비어 있거나 잘못 입력되면 담당자가 연락드릴 수 없어 예약 확정이 어렵습니다.<br>연락 가능한 번호를 정확히 적어주세요.</span><span class="en">Company, contact person and phone number are required.<br>If they are missing or incorrect we cannot reach you, and the booking cannot be confirmed.<br>Please enter a number we can call.</span></p>
         <div class="rsv__fields">
-          <label class="rform__field"><span class="rform__label"><span class="ko">업체명 (예약자명)</span><span class="en">Company / name</span></span><input type="text" name="company" maxlength="60" required></label>
-          <label class="rform__field"><span class="rform__label"><span class="ko">담당자</span><span class="en">Contact person</span></span><input type="text" name="contact" maxlength="60" required></label>
-          <label class="rform__field"><span class="rform__label"><span class="ko">전화</span><span class="en">Phone</span></span><input type="tel" name="phone" maxlength="40" required></label>
+          <label class="rform__field"><span class="rform__label"><span class="ko">업체명 (예약자명)</span><span class="en">Company / name</span><span class="rform__req" aria-hidden="true">*</span></span><input type="text" name="company" maxlength="60" required></label>
+          <label class="rform__field"><span class="rform__label"><span class="ko">담당자</span><span class="en">Contact person</span><span class="rform__req" aria-hidden="true">*</span></span><input type="text" name="contact" maxlength="60" required></label>
+          <label class="rform__field"><span class="rform__label"><span class="ko">전화</span><span class="en">Phone</span><span class="rform__req" aria-hidden="true">*</span></span><input type="tel" name="phone" maxlength="40" required></label>
           <label class="rform__field"><span class="rform__label"><span class="ko">이메일 (선택)</span><span class="en">Email (optional)</span></span><input type="email" name="email" maxlength="100"></label>
           <label class="rform__field rsv__fields-wide"><span class="rform__label"><span class="ko">요청사항 (선택)</span><span class="en">Notes (optional)</span></span><textarea name="note" rows="3" maxlength="1000"></textarea></label>
         </div>
