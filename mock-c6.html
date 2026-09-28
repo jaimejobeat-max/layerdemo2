@@ -109,7 +109,7 @@
     .header__wordmark {
       justify-self: center;
       font-family: var(--serif); font-weight: 500; font-size: 19px; letter-spacing: 4px;
-      text-transform: uppercase; color: var(--black);
+      text-transform: uppercase; color: var(--black); white-space: nowrap;
     }
     .header__right { justify-self: end; display: inline-flex; align-items: center; gap: 28px; }
     .header__lang { display: inline-flex; align-items: center; gap: 6px; font-family: var(--sans); font-weight: 500; font-size: 12px; letter-spacing: 1.5px; text-transform: uppercase; }
@@ -234,6 +234,30 @@
     .footer__bottom ul { display: flex; gap: 32px; }
     .footer__copy { text-align: center; margin-top: 40px; font-size: 11px; color: var(--muted); }
 
+    /* ---- Menu overlay ---- */
+    .menu { position: fixed; inset: 0; z-index: 200; background: var(--cream); color: var(--ink); overflow-y: auto; display: none; }
+    .menu.is-open { display: block; }
+    body.menu-open { overflow: hidden; }
+    .menu__bar { position: sticky; top: 0; height: var(--header-h); display: grid; grid-template-columns: 1fr auto 1fr; align-items: center; padding: 0 var(--gutter); background: var(--cream); }
+    .menu__close { display: inline-flex; align-items: center; gap: 10px; justify-self: start; }
+    .menu__body { display: grid; grid-template-columns: 1.4fr 1fr; gap: 64px; padding: 48px var(--gutter) 64px; min-height: calc(100vh - var(--header-h)); }
+    .menu__col > .label { color: var(--muted); padding-bottom: 14px; border-bottom: 1px solid var(--line); }
+    .menu__studios { columns: 2; column-gap: 48px; margin-top: 8px; }
+    .menu__studios li { break-inside: avoid; }
+    .menu__studios a, .menu__pages a {
+      display: flex; align-items: baseline; justify-content: space-between; gap: 16px;
+      padding: 14px 0; border-bottom: 1px solid var(--line);
+      font-family: var(--serif); font-size: 22px; line-height: 28px; color: var(--black);
+    }
+    .menu__studios a small, .menu__pages a small { font-family: var(--sans); font-weight: 500; font-size: 11px; letter-spacing: 1px; text-transform: uppercase; color: var(--muted); white-space: nowrap; }
+    .menu__studios a:hover, .menu__pages a:hover { color: var(--brown); }
+    .menu__studios a.is-soon { color: var(--muted); }
+    .menu__pages { margin-top: 8px; }
+    .menu__pages a { font-size: 28px; line-height: 34px; padding: 18px 0; }
+    .menu__meta { margin-top: 48px; color: var(--muted); }
+    .menu__meta p { margin-top: 8px; }
+    .menu__meta a:hover { color: var(--brown); }
+
     /* ---- Responsive ---- */
     @media (max-width: 1024px) {
       :root { --gutter: 32px; }
@@ -244,6 +268,13 @@
       .header { grid-template-columns: auto 1fr auto; }
       .header__wordmark { font-size: 15px; letter-spacing: 3px; }
       .header__menu span, .header__lang { display: none; }
+      .menu__bar { grid-template-columns: 1fr auto 1fr; }
+      .menu__bar .header__right { display: none; }
+      .menu__close span { display: none; }
+      .menu__body { grid-template-columns: 1fr; gap: 40px; padding: 24px var(--gutter) 48px; }
+      .menu__studios { columns: 1; }
+      .menu__studios a { font-size: 20px; padding: 12px 0; }
+      .menu__pages a { font-size: 24px; line-height: 30px; padding: 14px 0; }
       .header .btn { height: 36px; padding: 0 18px; letter-spacing: 1px; }
       .hero { min-height: 520px; }
       .hero__caption { bottom: 56px; }
@@ -280,7 +311,7 @@
 
   <!-- ===== Header: MENU · wordmark · lang + brown CTA ===== -->
   <header class="header">
-    <button class="header__menu label" type="button" aria-label="Open menu">
+    <button class="header__menu label" type="button" aria-label="Open menu" aria-expanded="false" data-menu-open>
       <svg width="16" height="12" viewBox="0 0 16 12" fill="none" stroke="currentColor" stroke-width="1.2"><path d="M0 1h16M0 6h16M0 11h16"/></svg>
       <span>Menu</span>
     </button>
@@ -292,6 +323,49 @@
       <a class="btn" href="reservation.html">Reservation</a>
     </div>
   </header>
+
+  <!-- ===== Menu overlay ===== -->
+  <div class="menu" id="menu" role="dialog" aria-modal="true" aria-label="Menu" hidden>
+    <div class="menu__bar">
+      <button class="menu__close label" type="button" data-menu-close>
+        <svg width="14" height="14" viewBox="0 0 14 14" fill="none" stroke="currentColor" stroke-width="1.2"><path d="M1 1l12 12M13 1L1 13"/></svg>
+        <span>Close</span>
+      </button>
+      <a class="header__wordmark" href="#" data-menu-close>Layer Studios</a>
+      <div class="header__right"><a class="btn" href="reservation.html">Reservation</a></div>
+    </div>
+    <div class="menu__body">
+      <div class="menu__col">
+        <h2 class="label">Studios</h2>
+        <ul class="menu__studios">
+          <li><a href="studios/layer-41.html">Layer 41<small>Seongsu</small></a></li>
+          <li><a href="studios/layer-20.html">Layer 20<small>Yongsan</small></a></li>
+          <li><a href="studios/layer-11.html">Layer 11<small>Mapo</small></a></li>
+          <li><a href="studios/layer-26.html">Layer 26<small>Seongsu</small></a></li>
+          <li><a href="studios/layer-27.html">Layer 27<small>Seongsu</small></a></li>
+          <li><a href="studios/layer-7.html">Layer 7<small>Yongsan</small></a></li>
+          <li><a href="studios/layer-10.html">Layer 10<small>Seongsu</small></a></li>
+          <li><a href="studios/layer-hannam.html">Layer Hannam<small>Yongsan</small></a></li>
+          <li><a href="studios/hongdae.html">Hongdae<small>Mapo</small></a></li>
+          <li><a href="studios/faust.html">Faust<small>Itaewon</small></a></li>
+          <li><a href="studios/layer-57.html" class="is-soon">Layer 57<small>Opening 26.11</small></a></li>
+        </ul>
+      </div>
+      <div class="menu__col">
+        <h2 class="label">Menu</h2>
+        <ul class="menu__pages">
+          <li><a href="reservation.html">Reservation<small>Book a studio</small></a></li>
+          <li><a href="archives.html">Archives<small>Shot at Layer</small></a></li>
+          <li><a href="journal.html">Journal<small>News &amp; events</small></a></li>
+        </ul>
+        <div class="menu__meta">
+          <p class="label">Contact</p>
+          <p><a href="tel:0233567750">02.336.7750</a><br><a href="mailto:contact@plusjun.com">contact@plusjun.com</a></p>
+          <p>743-27 Hannam-dong, Yongsan-gu, Seoul</p>
+        </div>
+      </div>
+    </div>
+  </div>
 
   <main>
     <!-- ===== Hero ===== -->
@@ -559,6 +633,15 @@
 
   <script src="js/archive-data.js"></script>
   <script>
+    // Menu overlay
+    const menu = document.getElementById('menu');
+    const menuBtn = document.querySelector('[data-menu-open]');
+    const openMenu = () => { menu.hidden = false; menu.classList.add('is-open'); document.body.classList.add('menu-open'); menuBtn.setAttribute('aria-expanded', 'true'); menu.querySelector('[data-menu-close]').focus(); };
+    const closeMenu = () => { menu.classList.remove('is-open'); menu.hidden = true; document.body.classList.remove('menu-open'); menuBtn.setAttribute('aria-expanded', 'false'); menuBtn.focus(); };
+    menuBtn.addEventListener('click', openMenu);
+    menu.querySelectorAll('[data-menu-close]').forEach(b => b.addEventListener('click', e => { e.preventDefault(); closeMenu(); }));
+    document.addEventListener('keydown', e => { if (e.key === 'Escape' && !menu.hidden) closeMenu(); });
+
     // Archive strip: latest 14 entries from the shared archive data
     const strip = document.querySelector('[data-strip]');
     (window.ARCHIVE_DATA || []).filter(a => a.thumb).slice(0, 14).forEach(a => {
