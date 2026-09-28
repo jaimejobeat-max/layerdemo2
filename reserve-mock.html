@@ -129,6 +129,19 @@
     .time__hint { font-size: 12px; color: var(--ink-2); margin: 8px 0 0; }
     .time__hint.is-bad { color: var(--full); }
 
+    /* add-to-list + item list */
+    .add { display: grid; gap: 10px; }
+    .add__btn { font: inherit; font-family: var(--ko); font-size: 14px; font-weight: 600; color: var(--ink); background: none; border: 1px solid var(--ink); height: 48px; width: 100%; cursor: pointer; }
+    .add__btn:disabled { opacity: .35; cursor: default; }
+    .add__hint { font-size: 12px; color: var(--ink-2); margin: 0; }
+    .items[hidden] { display: none; }
+    .items { display: grid; gap: 6px; }
+    .item { display: grid; grid-template-columns: 1fr auto; align-items: center; gap: 10px; background: var(--cell); border: 1px solid var(--line); padding: 10px 12px; font-size: 13px; }
+    .item b { font-family: var(--sans); font-weight: 600; letter-spacing: .06em; text-transform: uppercase; font-size: 12px; margin-right: 8px; }
+    .item span { color: var(--ink-2); }
+    .item button { font: inherit; color: var(--ink-2); background: none; border: 0; width: 32px; height: 32px; cursor: pointer; font-size: 18px; line-height: 1; }
+    .item button:hover { color: var(--full); }
+
     /* summary + cta */
     .sum { display: grid; grid-template-columns: auto 1fr; gap: 6px 16px; font-size: 14px; padding: 14px 0; border-top: 1px solid var(--line); border-bottom: 1px solid var(--line); }
     .sum dt { font-family: var(--sans); font-size: 11px; letter-spacing: .1em; text-transform: uppercase; color: var(--ink-2); align-self: baseline; }
@@ -153,7 +166,7 @@
 </div>
 
 <main class="wrap">
-  <p class="note">v2: <b>파트</b>가 들어갔습니다. 파트를 고르기 전엔 달력에 날짜별 <b>빈 파트 수</b>(예: 2/3)가 보이고, 파트를 고르면 그 조합의 가능·문의·마감이 보입니다. 날짜를 누르면 그날의 파트별 현황이 펼쳐지고 거기서도 파트를 고를 수 있습니다. 촬영 내용도 추가했습니다. 상태 값은 여전히 임의로 만든 값입니다.</p>
+  <p class="note">v2: <b>파트</b>가 들어갔습니다. 파트를 고르기 전엔 달력에 날짜별 <b>빈 파트 수</b>(예: 2/3)가 보이고, 파트를 고르면 그 조합의 가능·문의·마감이 보입니다. 날짜를 누르면 그날의 파트별 현황이 펼쳐지고 거기서도 파트를 고를 수 있습니다. 촬영 내용도 추가했습니다. <b>예약 추가</b>로 파트마다 다른 시간(예: A 09–18시, C 13–18시)이나 여러 날짜를 한 번에 신청할 수 있습니다. 상태 값은 여전히 임의로 만든 값입니다.</p>
 
   <section class="w" aria-label="예약">
     <div class="w__head">
@@ -216,11 +229,16 @@
         <p class="time__hint" id="tHint"></p>
       </div>
 
+      <div class="add" id="add" hidden>
+        <button type="button" class="add__btn" id="addBtn">+ 예약 추가</button>
+        <p class="add__hint">파트마다 사용 시간이 다르면 파트·시간을 정해 추가하고, 다음 파트를 이어서 고르세요. 다른 날짜도 추가할 수 있습니다.</p>
+      </div>
+
+      <div class="items" id="items" hidden></div>
+
       <dl class="sum" id="sum">
         <dt>지점</dt><dd id="sStudio">—</dd>
-        <dt>파트</dt><dd id="sPart">—</dd>
-        <dt>날짜</dt><dd id="sDate">—</dd>
-        <dt>시간</dt><dd id="sTime">—</dd>
+        <dt>예약</dt><dd id="sItems">—</dd>
         <dt>내용</dt><dd id="sPurpose">—</dd>
         <dt>인원 · 차량</dt><dd id="sPeople">—</dd>
       </dl>
@@ -276,7 +294,7 @@
 
   // ---------- state
   const firstMonth = (() => { const m = new Date(minD.getFullYear(), minD.getMonth(), 1); const left = new Date(m.getFullYear(), m.getMonth() + 1, 0).getDate() - minD.getDate() + 1; return left >= 7 ? m : new Date(m.getFullYear(), m.getMonth() + 1, 1); })();
-  const st = { studio: 0, parts: [], purpose: 'photo', people: 10, vehicles: 1, month: firstMonth, date: null, start: 9, end: 18 };
+  const st = { studio: 0, parts: [], purpose: 'photo', people: 10, vehicles: 1, month: firstMonth, date: null, start: 9, end: 18, items: [] };
   const $ = id => document.getElementById(id);
   const DOW = ['일', '월', '화', '수', '목', '금', '토'];
   const hm = h => pad(Math.floor(h)) + ':' + (h % 1 ? '30' : '00');
@@ -284,7 +302,7 @@
 
   // ---------- studios
   const stBox = $('studios');
-  STUDIOS.forEach((s, i) => { const b = document.createElement('button'); b.type = 'button'; b.className = 'chip'; b.textContent = s.name; b.addEventListener('click', () => { st.studio = i; st.parts = []; st.date = null; render(); }); stBox.appendChild(b); });
+  STUDIOS.forEach((s, i) => { const b = document.createElement('button'); b.type = 'button'; b.className = 'chip'; b.textContent = s.name; b.addEventListener('click', () => { st.studio = i; st.parts = []; st.date = null; st.items = []; render(); }); stBox.appendChild(b); });
 
   // ---------- purpose
   const puBox = $('purpose');
@@ -332,6 +350,16 @@
   $('tStart').addEventListener('change', e => { st.start = +e.target.value; if (st.end <= st.start) st.end = Math.min(24, st.start + 4); render(); });
   $('tEnd').addEventListener('change', e => { st.end = +e.target.value; render(); });
 
+  // ---------- booking items: the draft (date + parts + time) can be added to a list, then another drafted
+  const fmtD = d => (d.getMonth() + 1) + '/' + d.getDate() + ' (' + DOW[d.getDay()] + ')';
+  const draftOk = () => st.date && st.parts.length > 0 && (st.end - st.start) >= S().min;
+  $('addBtn').addEventListener('click', () => {
+    if (!draftOk()) return;
+    st.items.push({ date: st.date, parts: st.parts.slice(), start: st.start, end: st.end });
+    st.parts = []; // keep the date and time; pick the next part
+    render(); $('items').scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+  });
+  function removeItem(i) { st.items.splice(i, 1); render(); }
   $('cta').addEventListener('click', () => { $('cta').textContent = '다음 단계: 연락처 입력 (목업에서는 생략)'; });
 
   // ---------- render
@@ -400,7 +428,7 @@
         b.addEventListener('click', () => togglePart(p));
         box.appendChild(b);
       });
-      $('dHint').textContent = picked ? '선택: ' + st.parts.join(' + ') + (st.parts.some(p => partStatus(s.key, st.date, p) === 'prov') ? ' · 가부킹이 있는 파트는 담당자 확인 후 확정됩니다.' : '') : '대관할 파트를 선택해 주세요. 여러 파트를 함께 쓸 수 있습니다.';
+      $('dHint').textContent = picked ? '선택: ' + st.parts.join(' + ') + (st.parts.some(p => partStatus(s.key, st.date, p) === 'prov') ? ' · 가부킹이 있는 파트는 담당자 확인 후 확정됩니다.' : '') : '대관할 파트를 선택해 주세요. 같은 시간이면 여러 파트를 함께, 시간이 다르면 파트별로 예약을 추가하세요.';
     }
 
     // time
@@ -410,15 +438,27 @@
     $('tHint').textContent = bad ? '최소 대관 ' + s.min + '시간입니다.' : hours + '시간 · 최소 대관 ' + s.min + '시간';
     $('tHint').classList.toggle('is-bad', bad);
 
-    // summary + cta
+    // add button + item list
+    const ok = !!st.date && picked && !bad;
+    $('add').hidden = !st.date;
+    $('addBtn').disabled = !ok;
+    $('addBtn').textContent = ok ? '+ 예약 추가 · ' + fmtD(st.date) + ' ' + st.parts.join('+') + ' ' + hm(st.start) + '–' + hm(st.end) : '+ 예약 추가';
+    const list = $('items'); list.hidden = st.items.length === 0; list.innerHTML = '';
+    st.items.forEach((it, i) => {
+      const row = document.createElement('div'); row.className = 'item';
+      row.innerHTML = '<div><b>' + it.parts.join(' + ') + '</b>' + fmtD(it.date) + ' <span>' + hm(it.start) + ' – ' + hm(it.end) + ' (' + (it.end - it.start) + 'h)</span></div>';
+      const x = document.createElement('button'); x.type = 'button'; x.setAttribute('aria-label', '삭제'); x.textContent = '×'; x.addEventListener('click', () => removeItem(i));
+      row.appendChild(x); list.appendChild(row);
+    });
+
+    // summary + cta: added items plus the current draft (if complete)
+    const all = st.items.slice(); if (ok) all.push({ date: st.date, parts: st.parts, start: st.start, end: st.end, draft: true });
     $('sStudio').textContent = s.name;
-    $('sPart').textContent = picked ? st.parts.join(' + ') : '—';
-    $('sDate').textContent = st.date ? (st.date.getMonth() + 1) + '월 ' + st.date.getDate() + '일 (' + DOW[st.date.getDay()] + ')' : '—';
-    $('sTime').textContent = st.date ? hm(st.start) + ' – ' + hm(st.end) + ' (' + hours + 'h)' : '—';
+    $('sItems').innerHTML = all.length ? all.map(it => fmtD(it.date) + ' · ' + it.parts.join('+') + ' · ' + hm(it.start) + '–' + hm(it.end) + (it.draft && st.items.length ? ' <span style="color:var(--ink-3)">(추가 전)</span>' : '')).join('<br>') : '—';
     $('sPurpose').textContent = PURPOSES.find(x => x[0] === st.purpose)[1];
     $('sPeople').textContent = st.people + '명 · ' + st.vehicles + '대';
-    const cta = $('cta'); cta.disabled = !st.date || !picked || bad;
-    cta.textContent = !st.date ? '날짜를 선택해 주세요' : !picked ? '파트를 선택해 주세요' : bad ? '최소 대관 시간을 확인해 주세요' : '예약 신청하기';
+    const cta = $('cta'); cta.disabled = all.length === 0;
+    cta.textContent = all.length ? '예약 신청하기 · ' + all.length + '건' : !st.date ? '날짜를 선택해 주세요' : !picked ? '파트를 선택해 주세요' : '최소 대관 시간을 확인해 주세요';
   }
   render();
 </script>
