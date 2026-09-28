@@ -1,0 +1,244 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+  <meta name="robots" content="noindex, nofollow">
+  <meta name="theme-color" content="#fbf7ed">
+  <title>Layer Hero Caption Alternates</title>
+  <link rel="icon" type="image/svg+xml" href="assets/favicon.svg">
+  <link rel="preconnect" href="https://cdn.jsdelivr.net" crossorigin>
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/static/pretendard.min.css">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Literata:opsz,wght@7..72,400;7..72,500&family=Figtree:wght@400;500;600&display=swap">
+  <style>
+    :root {
+      /* Bus Palladium palette, measured: cream ground, warm greys, near-black ink */
+      --cream: #fbf7ed;
+      --cream-2: #f3eee1;
+      --ink: #1f1f1f;
+      --ink-2: #63615d;
+      --ink-3: #9a968e;
+      --line: #e3ddcf;
+      --serif: "Literata", "SchoolBook", Georgia, serif;
+      --sans: "Figtree", "Maison Neue", "Helvetica Neue", Arial, sans-serif;
+      --ko: Pretendard, "Apple SD Gothic Neo", "Malgun Gothic", sans-serif;
+    }
+    * { box-sizing: border-box; }
+    html { scroll-behavior: smooth; }
+    body { margin: 0; background: var(--cream); color: var(--ink); font-family: var(--sans); font-size: 14px; line-height: 1.5; -webkit-font-smoothing: antialiased; }
+    @media (prefers-reduced-motion: reduce) { html { scroll-behavior: auto; } }
+
+    /* ---------- top bar ---------- */
+    .bar { position: sticky; top: 0; z-index: 50; background: rgba(251,247,237,.94); backdrop-filter: blur(10px); -webkit-backdrop-filter: blur(10px); border-bottom: 1px solid var(--line); padding-inline: 16px; }
+    .bar__in { max-width: 1400px; margin: 0 auto; display: flex; align-items: center; gap: 12px 24px; flex-wrap: wrap; padding-block: 12px; }
+    .bar__brand { font-size: 11px; font-weight: 600; letter-spacing: .12em; text-transform: uppercase; white-space: nowrap; }
+    .bar__brand small { display: inline-block; margin-left: 10px; font-family: var(--ko); font-weight: 400; letter-spacing: 0; text-transform: none; color: var(--ink-2); font-size: 12px; }
+    .chips { display: flex; gap: 6px; flex: 1 1 260px; }
+    .chip { color: var(--ink-2); border: 1px solid var(--line); padding: 5px 11px; border-radius: 999px; font-size: 11px; letter-spacing: .06em; text-transform: uppercase; text-decoration: none; white-space: nowrap; }
+    .chip:hover { color: var(--ink); border-color: var(--ink-3); }
+    .seg { display: flex; border: 1px solid var(--line); border-radius: 999px; overflow: hidden; }
+    .seg button { font: inherit; font-size: 12px; font-family: var(--ko); color: var(--ink-2); background: none; border: 0; padding: 6px 12px; cursor: pointer; }
+    .seg button.is-on { background: var(--ink); color: var(--cream); }
+
+    /* ---------- intro / meta ---------- */
+    .wrap { max-width: 1400px; margin: 0 auto; padding: 32px 16px 80px; display: flex; flex-direction: column; gap: 56px; }
+    .intro { font-family: var(--ko); color: var(--ink-2); max-width: 66ch; }
+    .intro h1 { font-family: var(--sans); font-size: 11px; font-weight: 600; letter-spacing: .12em; text-transform: uppercase; color: var(--ink-3); margin: 0 0 10px; }
+    .intro p { margin: 0 0 8px; }
+    .intro b { color: var(--ink); font-weight: 600; }
+    .item { scroll-margin-top: 90px; }
+    .meta { display: grid; grid-template-columns: 1fr auto; gap: 8px 24px; align-items: end; padding-bottom: 14px; }
+    .meta__name { font-family: var(--ko); font-size: 22px; font-weight: 600; letter-spacing: -.01em; line-height: 1.15; }
+    .meta__name .k { font-family: var(--sans); font-size: 11px; font-weight: 600; letter-spacing: .12em; text-transform: uppercase; color: var(--ink-3); display: block; margin-bottom: 6px; }
+    .meta__why { font-family: var(--ko); color: var(--ink-2); margin: 6px 0 0; max-width: 72ch; }
+    .meta__spec { font-size: 11px; letter-spacing: .08em; text-transform: uppercase; color: var(--ink-3); text-align: right; }
+
+    /* ---------- shared hero pieces ---------- */
+    .hero { position: relative; overflow: hidden; width: 100%; max-width: 100%; container-type: inline-size; border: 1px solid var(--line);
+      --navW: 17.9cqw; --gut: 2.2cqw; --capL: 27.3cqw; --capW: 45.4cqw; --navFs: 1.46cqw; --navGap: .83cqw;
+      --labelFs: .9cqw; --titleFs: 3.6cqw; --subFs: 1.25cqw; }
+    .hero__img { display: block; width: 100%; height: 100%; object-fit: cover; }
+    .hero__ov { position: absolute; inset: 0; background: #000; opacity: .12; pointer-events: none; }
+    .hero__nav { position: absolute; top: 0; left: 0; height: 100%; width: var(--navW); padding: 4.4cqw var(--gut); display: flex; flex-direction: column; justify-content: center; color: #fff; }
+    .hero__nav ul { list-style: none; margin: 0; padding: 0; }
+    .hero__nav li { font-family: var(--sans); font-weight: 400; font-size: var(--navFs); line-height: 1; min-height: var(--navFs); display: flex; align-items: center; opacity: .5; white-space: nowrap; }
+    .hero__nav li.gap { margin-bottom: var(--navGap); }
+    .hero__nav li.cur { opacity: 1; }
+    .label { font-family: var(--sans); font-weight: 500; font-size: var(--labelFs); letter-spacing: .12em; text-transform: uppercase; line-height: 1; margin: 0; }
+    .title { font-family: var(--serif); font-weight: 400; font-size: var(--titleFs); letter-spacing: -.01em; line-height: 1; margin: 0; }
+    body.sans .title { font-family: var(--sans); font-weight: 500; letter-spacing: -.015em; }
+    .sub { font-family: var(--serif); font-weight: 400; font-size: var(--subFs); line-height: 1.2; margin: 0; }
+    body.sans .sub { font-family: var(--sans); }
+
+    /* ---------- A: text on the photo, pinned to the bottom ---------- */
+    .hero--a { aspect-ratio: 1846 / 724; background: #000; color: #fff; }
+    .hero--a .hero__img { position: absolute; inset: 0; }
+    .hero--a .cap { position: absolute; left: var(--capL); right: var(--gut); bottom: var(--gut); display: flex; align-items: flex-end; justify-content: space-between; gap: 2cqw; }
+    .hero--a .cap__main { display: flex; flex-direction: column; gap: 1cqw; max-width: var(--capW); }
+    .hero--a .cap__side { text-align: right; opacity: .85; padding-bottom: .15cqw; }
+    .hero--a .label { opacity: .85; }
+
+    /* ---------- B: photo on top, text below on cream ---------- */
+    .hero--b { background: var(--cream); color: var(--ink); display: grid; grid-template-rows: auto auto; }
+    .hero--b .photo { position: relative; aspect-ratio: 1846 / 560; overflow: hidden; background: #000; }
+    .hero--b .photo .hero__img { position: absolute; inset: 0; }
+    .hero--b .below { display: grid; grid-template-columns: var(--capL) 1fr auto; align-items: start; padding: 2.4cqw var(--gut) 2.6cqw 0; gap: 2cqw; }
+    .hero--b .below__lead { grid-column: 2; display: flex; flex-direction: column; gap: .9cqw; }
+    .hero--b .below__lead .sub { color: var(--ink-2); }
+    .hero--b .below__lead .title + .sub { font-size: var(--titleFs); color: var(--ink-3); letter-spacing: -.01em; line-height: 1; }
+    .hero--b .specs { grid-column: 3; display: grid; grid-template-columns: auto auto; gap: .55cqw 1.2cqw; align-self: end; font-family: var(--sans); font-size: 1cqw; line-height: 1.2; min-width: 16cqw; }
+    .hero--b .specs dt { color: var(--ink-3); letter-spacing: .1em; text-transform: uppercase; font-size: .85cqw; align-self: baseline; }
+    .hero--b .specs dd { margin: 0; color: var(--ink); font-weight: 500; }
+    .hero--b .btn { grid-column: 3; justify-self: end; margin-top: 1.4cqw; display: inline-block; background: var(--ink); color: var(--cream); font-family: var(--sans); font-size: .95cqw; letter-spacing: .12em; text-transform: uppercase; padding: 1cqw 2cqw; text-decoration: none; }
+
+    /* ---------- reference: current ---------- */
+    .hero--cur { aspect-ratio: 1846 / 724; background: #000; color: #fff; text-transform: uppercase; font-family: "Helvetica Neue", Helvetica, Arial, sans-serif; }
+    .hero--cur .hero__img { position: absolute; inset: 0; }
+    .hero--cur .hero__nav li { font-family: inherit; font-weight: 700; letter-spacing: -.02em; opacity: .45; }
+    .hero--cur .hero__nav li.cur { opacity: 1; }
+    .hero--cur .cap { position: absolute; left: 0; right: 0; top: 50%; transform: translateY(-50%); display: flex; flex-direction: column; align-items: center; padding: 0 var(--gut); }
+    .hero--cur .cap > * { width: min(var(--capW), 100%); font-family: inherit; font-weight: 700; letter-spacing: -.02em; text-transform: uppercase; line-height: 1; margin: 0; opacity: 1; }
+    .hero--cur .cap .label, .hero--cur .cap .sub { font-size: var(--navFs); }
+    .hero--cur .cap .title { font-size: 4.3cqw; line-height: .85; margin: 1.25cqw 0 1.4cqw; }
+
+    /* ---------- phone ---------- */
+    @media (max-width: 700px) {
+      .bar__brand small { display: block; margin: 2px 0 0; }
+      .chips { flex: 1 1 100%; }
+      .wrap { gap: 44px; padding-top: 24px; }
+      .meta { grid-template-columns: 1fr; }
+      .meta__spec { text-align: left; }
+      .hero { --navFs: 3.4cqw; --navGap: 2cqw; --gut: 5cqw; --labelFs: 2.6cqw; --titleFs: 9cqw; --subFs: 3.6cqw; }
+      .hero__nav { height: auto; width: 100%; padding: 6cqw var(--gut); justify-content: flex-start; }
+      .hero--a, .hero--cur { aspect-ratio: 4 / 5; }
+      .hero--a .cap { left: var(--gut); right: var(--gut); bottom: 6cqw; flex-direction: column; align-items: flex-start; gap: 3cqw; }
+      .hero--a .cap__main { gap: 2.6cqw; max-width: 100%; }
+      .hero--a .cap__side { text-align: left; }
+      .hero--cur .cap { top: auto; bottom: 7cqw; transform: none; align-items: flex-start; padding: 0 var(--gut); }
+      .hero--cur .cap > * { width: 100%; }
+      .hero--cur .cap .label, .hero--cur .cap .sub { font-size: 3.6cqw; }
+      .hero--cur .cap .title { font-size: 9.2cqw; margin: 3cqw 0 3.2cqw; }
+      .hero--b .photo { aspect-ratio: 4 / 3; }
+      .hero--b .below { grid-template-columns: 1fr; padding: 6cqw var(--gut) 7cqw; gap: 5cqw; }
+      .hero--b .below__lead { grid-column: 1; gap: 2.4cqw; }
+      .hero--b .specs { grid-column: 1; font-size: 3.6cqw; gap: 2cqw 4cqw; min-width: 0; }
+      .hero--b .specs dt { font-size: 2.8cqw; }
+      .hero--b .btn { grid-column: 1; justify-self: start; font-size: 3.2cqw; padding: 3.6cqw 7cqw; margin-top: 1cqw; }
+    }
+  </style>
+</head>
+<body>
+
+<div class="bar">
+  <div class="bar__in">
+    <div class="bar__brand">Layer Studios <small>히어로 캡션 얼터 · "아래 정렬" 두 가지 해석</small></div>
+    <nav class="chips" aria-label="패널">
+      <a class="chip" href="#cur">현재</a>
+      <a class="chip" href="#a">A · 사진 위 하단</a>
+      <a class="chip" href="#b">B · 사진 아래</a>
+    </nav>
+    <div class="seg" role="group" aria-label="제목 폰트">
+      <button type="button" data-face="serif" class="is-on">제목 세리프 (Literata)</button>
+      <button type="button" data-face="sans">제목 산세리프 (Figtree)</button>
+    </div>
+  </div>
+</div>
+
+<main class="wrap">
+  <section class="intro">
+    <h1>Hero caption · two readings</h1>
+    <p>대표님이 보내신 Bus Palladium 사이트의 <b>배색</b>(크림 #FBF7ED · 따뜻한 회색 · 검정)과 <b>폰트 조합</b>(세리프 제목 + 작은 대문자 라벨)을 그대로 가져와, "폰트가 아래 정렬되는 방식"의 두 가지 해석을 각각 만들었습니다. 사이드 내비는 두 안 모두 유지됩니다. 위 버튼으로 제목만 세리프·산세리프를 바꿔 볼 수 있습니다. 라벨 폰트 Figtree와 세리프 Literata는 둘 다 Google Fonts라 무료입니다.</p>
+  </section>
+
+  <article class="item" id="cur">
+    <div class="meta">
+      <div>
+        <div class="meta__name"><span class="k">00 · 기준</span>현재 시안</div>
+        <p class="meta__why">캡션이 사진 정중앙. Helvetica Bold · 대문자 · 62px. 비교용으로 그대로 두었습니다.</p>
+      </div>
+      <div class="meta__spec">As is · centered</div>
+    </div>
+    <div class="hero hero--cur">
+      <img class="hero__img" src="assets/img/a468e3e22d-960.webp" srcset="assets/img/a468e3e22d-960.webp 960w, assets/img/a468e3e22d-1920.webp 1920w" sizes="100vw" alt="" width="1950" height="938">
+      <div class="hero__ov"></div>
+      <nav class="hero__nav" aria-hidden="true"><ul data-nav></ul></nav>
+      <div class="cap">
+        <p class="label">Seongsu-dong · Seoul</p>
+        <h2 class="title">Layer 41</h2>
+        <p class="sub">Former Steel Factory · 9m Ceiling</p>
+      </div>
+    </div>
+  </article>
+
+  <article class="item" id="a">
+    <div class="meta">
+      <div>
+        <div class="meta__name"><span class="k">A · 해석 1</span>사진 위, 하단 정렬</div>
+        <p class="meta__why">호텔 사이트 히어로처럼 텍스트를 사진 위에 두되 <b>아래 가장자리에 붙입니다</b>. 왼쪽 아래에 지역 라벨 · 지점명 · 설명, 오른쪽 아래에 공연 포스터식 한 줄. 사이드 내비는 세로 중앙 그대로라 화면이 위아래로 나뉘지 않습니다.</p>
+      </div>
+      <div class="meta__spec">Overlay · bottom-left</div>
+    </div>
+    <div class="hero hero--a">
+      <img class="hero__img" src="assets/img/a468e3e22d-960.webp" srcset="assets/img/a468e3e22d-960.webp 960w, assets/img/a468e3e22d-1920.webp 1920w" sizes="100vw" alt="" width="1950" height="938">
+      <div class="hero__ov"></div>
+      <nav class="hero__nav" aria-hidden="true"><ul data-nav></ul></nav>
+      <div class="cap">
+        <div class="cap__main">
+          <p class="label">Seongsu-dong · Seoul</p>
+          <h2 class="title">Layer 41</h2>
+          <p class="sub">Former steel factory · 9m ceiling · 1,490㎡</p>
+        </div>
+        <p class="label cap__side">Studio A · B · C · Rooftop</p>
+      </div>
+    </div>
+  </article>
+
+  <article class="item" id="b">
+    <div class="meta">
+      <div>
+        <div class="meta__name"><span class="k">B · 해석 2</span>사진 아래, 크림 배경</div>
+        <p class="meta__why">공연 상세 페이지처럼 <b>사진에는 글씨를 얹지 않고</b>, 사진 아래 크림 영역에 지점명 · 지역 · 스펙(면적 · 층고 · 최소 대관) · 예약 버튼을 내립니다. 사진이 온전히 보이고, 정보는 라벨:값 형식으로 읽힙니다. 사이드 내비는 사진 영역 안에 남습니다.</p>
+      </div>
+      <div class="meta__spec">Below photo · cream</div>
+    </div>
+    <div class="hero hero--b">
+      <div class="photo">
+        <img class="hero__img" src="assets/img/a468e3e22d-960.webp" srcset="assets/img/a468e3e22d-960.webp 960w, assets/img/a468e3e22d-1920.webp 1920w" sizes="100vw" alt="" width="1950" height="938">
+        <div class="hero__ov"></div>
+        <nav class="hero__nav" aria-hidden="true"><ul data-nav></ul></nav>
+      </div>
+      <div class="below">
+        <div class="below__lead">
+          <h2 class="title">Layer 41</h2>
+          <p class="sub">Seongsu-dong</p>
+        </div>
+        <dl class="specs">
+          <dt>Area</dt><dd>1,490㎡ · 450py</dd>
+          <dt>Ceiling</dt><dd>9m</dd>
+          <dt>Min. booking</dt><dd>4 hours</dd>
+        </dl>
+        <a class="btn" href="#">Reservation</a>
+      </div>
+    </div>
+  </article>
+</main>
+
+<script>
+  const NAV = ['Reservation', 'Archives', 'Layer 41', 'Layer 20', 'Layer 11', 'Layer 26', 'Layer 27', 'Layer 7', 'Layer 10', 'Layer Hannam', 'Hongdae', 'Faust', 'Layer 57'];
+  document.querySelectorAll('[data-nav]').forEach(ul => {
+    ul.innerHTML = NAV.map((n, j) => `<li class="${j === 1 ? 'gap' : ''} ${n === 'Layer 41' ? 'cur' : ''}">${n}</li>`).join('');
+  });
+  const btns = document.querySelectorAll('[data-face]');
+  const setFace = (f) => {
+    document.body.classList.toggle('sans', f === 'sans');
+    btns.forEach(b => b.classList.toggle('is-on', b.dataset.face === f));
+    try { localStorage.setItem('layer-hero-face', f); } catch (e) {}
+  };
+  btns.forEach(b => b.addEventListener('click', () => setFace(b.dataset.face)));
+  let saved = 'serif'; try { saved = localStorage.getItem('layer-hero-face') || 'serif'; } catch (e) {}
+  setFace(saved);
+</script>
+</body>
+</html>

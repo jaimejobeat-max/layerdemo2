@@ -1,0 +1,426 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+  <meta name="robots" content="noindex, nofollow">
+  <title>Layer Reservation Calendar Mock</title>
+  <link rel="icon" type="image/svg+xml" href="assets/favicon.svg">
+  <link rel="preconnect" href="https://cdn.jsdelivr.net" crossorigin>
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/static/pretendard.min.css">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Literata:opsz,wght@7..72,400;7..72,500&family=Figtree:wght@400;500;600&display=swap">
+  <style>
+    :root {
+      --ko: Pretendard, "Apple SD Gothic Neo", "Malgun Gothic", sans-serif;
+      --sans: "Figtree", "Helvetica Neue", Arial, sans-serif;
+      --serif: "Literata", Georgia, serif;
+      /* theme: cream (default) */
+      --bg: #fbf7ed; --panel: #fbf7ed; --ink: #1f1f1f; --ink-2: #63615d; --ink-3: #a29d93; --line: #e3ddcf; --cell: #ffffff; --cell-off: transparent;
+      --sel: #1f1f1f; --sel-ink: #fbf7ed; --btn: #1f1f1f; --btn-ink: #fbf7ed;
+      --ok: #2f7a4d; --prov: #b8862b; --full: #b23a3a; --ok-bg: #e9f2ec; --prov-bg: #f6ecd6; --full-bg: #f5e1e1;
+      --page: #efeadf;
+    }
+    :root[data-theme="beige"] { --bg: #e9dbc8; --panel: #e9dbc8; --ink: #2a2118; --ink-2: #6e5f4d; --ink-3: #a9987f; --line: #d3c2a8; --cell: #f4ebdd; --sel: #2a2118; --sel-ink: #e9dbc8; --btn: #2a2118; --btn-ink: #e9dbc8; --ok: #2f6b45; --prov: #9c6f1e; --full: #a23434; --ok-bg: #dfe8dc; --prov-bg: #eadfc4; --full-bg: #e8d2c8; --page: #dccbb3; }
+    :root[data-theme="black"] { --bg: #0d0d0d; --panel: #0d0d0d; --ink: #f2f2f2; --ink-2: #a3a3a3; --ink-3: #5c5c5c; --line: #262626; --cell: #171717; --sel: #f2f2f2; --sel-ink: #0d0d0d; --btn: #f2f2f2; --btn-ink: #0d0d0d; --ok: #6fcf97; --prov: #e0b24a; --full: #ef6b6b; --ok-bg: #16281d; --prov-bg: #2b2213; --full-bg: #2e1616; --page: #000; color-scheme: dark; }
+
+    * { box-sizing: border-box; }
+    body { margin: 0; background: var(--page); color: var(--ink); font-family: var(--ko); font-size: 15px; line-height: 1.45; -webkit-font-smoothing: antialiased; }
+
+    /* ---------- reviewer bar (not part of the design) ---------- */
+    .rev { position: sticky; top: 0; z-index: 50; background: rgba(20,20,20,.92); color: #ddd; backdrop-filter: blur(8px); -webkit-backdrop-filter: blur(8px); padding: 10px 16px; display: flex; align-items: center; justify-content: space-between; gap: 12px; flex-wrap: wrap; font-size: 12px; }
+    .rev b { font-family: var(--sans); font-weight: 600; letter-spacing: .1em; text-transform: uppercase; color: #fff; }
+    .rev b span { color: #888; font-weight: 400; letter-spacing: 0; text-transform: none; margin-left: 8px; font-family: var(--ko); }
+    .rev .seg { display: flex; border: 1px solid #444; border-radius: 999px; overflow: hidden; }
+    .rev .seg button { font: inherit; font-family: var(--ko); color: #bbb; background: none; border: 0; padding: 5px 12px; cursor: pointer; }
+    .rev .seg button.is-on { background: #fff; color: #111; }
+
+    /* ---------- the widget ---------- */
+    .wrap { padding: 24px 16px 64px; display: flex; flex-direction: column; align-items: center; gap: 16px; }
+    .note { max-width: 520px; width: 100%; color: #6b665c; font-size: 13px; line-height: 1.5; }
+    :root[data-theme="black"] .note { color: #8a8a8a; }
+    .w { width: 100%; min-width: 0; max-width: 520px; overflow: hidden; background: var(--panel); color: var(--ink); border: 1px solid var(--line); box-shadow: 0 20px 60px rgba(0,0,0,.08); }
+    .w__head { display: grid; grid-template-columns: 40px 1fr 40px; align-items: center; height: 60px; border-bottom: 1px solid var(--line); padding: 0 6px; }
+    .w__head button { font: inherit; color: var(--ink); background: none; border: 0; width: 40px; height: 40px; cursor: pointer; display: grid; place-items: center; }
+    .w__head svg { width: 18px; height: 18px; stroke: currentColor; fill: none; stroke-width: 1.4; }
+    .w__brand { text-align: center; font-family: var(--sans); font-size: 15px; font-weight: 600; letter-spacing: .22em; text-transform: uppercase; }
+    .w__body { padding: 22px 20px 26px; display: grid; gap: 24px; }
+    .w__body > * { min-width: 0; }
+
+    .lbl { font-family: var(--sans); font-size: 11px; font-weight: 600; letter-spacing: .12em; text-transform: uppercase; color: var(--ink-2); margin: 0 0 8px; display: flex; justify-content: space-between; align-items: baseline; gap: 12px; }
+    .lbl small { font-family: var(--ko); font-weight: 400; letter-spacing: 0; text-transform: none; color: var(--ink-3); font-size: 12px; }
+    .lbl button { font: inherit; font-family: var(--ko); font-size: 12px; color: var(--ink-2); background: none; border: 0; padding: 0; cursor: pointer; text-decoration: underline; text-underline-offset: 2px; }
+
+    /* chips (studio · parts · purpose) */
+    .chips { display: flex; gap: 6px; overflow-x: auto; scrollbar-width: none; margin: 0 -20px; padding: 0 20px 2px; }
+    .chips::-webkit-scrollbar { display: none; }
+    .chips.wrap-ok { flex-wrap: wrap; overflow: visible; margin: 0; padding: 0; }
+    .chip { font: inherit; font-family: var(--sans); font-size: 12px; letter-spacing: .06em; text-transform: uppercase; color: var(--ink-2); background: var(--cell); border: 1px solid var(--line); padding: 8px 12px; white-space: nowrap; cursor: pointer; display: inline-flex; align-items: center; gap: 7px; }
+    .chip.ko { font-family: var(--ko); letter-spacing: 0; text-transform: none; font-size: 13px; }
+    .chip.is-on { background: var(--sel); color: var(--sel-ink); border-color: var(--sel); }
+    .chip:disabled { opacity: .4; cursor: default; text-decoration: line-through; }
+    .chip i { width: 6px; height: 6px; border-radius: 50%; background: var(--ink-3); flex: none; }
+    .chip.st-ok i { background: var(--ok); } .chip.st-prov i { background: var(--prov); } .chip.st-full i { background: var(--full); }
+    .chip.is-on i { background: var(--sel-ink); }
+
+    /* steppers */
+    .row2 { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
+    .num { display: grid; grid-template-columns: 40px 1fr 40px; align-items: center; background: var(--cell); border: 1px solid var(--line); height: 48px; }
+    .num > button[data-step] { font: inherit; color: var(--ink); background: none; border: 0; height: 100%; cursor: pointer; font-size: 18px; }
+    .num { position: relative; }
+    .num__val--static { cursor: default; display: grid; place-items: center; }
+    .num__val { font: inherit; text-align: center; font-family: var(--serif); font-size: 18px; color: var(--ink); background: none; border: 0; height: 100%; cursor: pointer; padding: 0; }
+    .num__in { font: inherit; text-align: center; font-family: var(--serif); font-size: 18px; color: var(--ink); background: var(--cell); border: 0; outline: 2px solid var(--sel); outline-offset: -2px; height: 100%; width: 100%; min-width: 0; padding: 0; -moz-appearance: textfield; }
+    .num__in::-webkit-outer-spin-button, .num__in::-webkit-inner-spin-button { -webkit-appearance: none; margin: 0; }
+    .num__menu { position: absolute; top: calc(100% + 4px); left: -1px; right: -1px; z-index: 10; background: var(--cell); border: 1px solid var(--line); box-shadow: 0 12px 30px rgba(0,0,0,.12); display: grid; grid-template-columns: repeat(4, 1fr); gap: 1px; padding: 4px; }
+    .num__menu[hidden] { display: none; }
+    .num__menu button { font: inherit; font-family: var(--serif); font-size: 15px; color: var(--ink); background: none; border: 0; height: 40px; cursor: pointer; }
+    .num__menu button:hover { background: var(--panel); }
+    .num__menu button.is-on { background: var(--sel); color: var(--sel-ink); }
+    .num__menu button.free { grid-column: 1 / -1; font-family: var(--ko); font-size: 12px; color: var(--ink-2); border-top: 1px solid var(--line); height: 36px; }
+
+    /* calendar */
+    .cal__head { display: grid; grid-template-columns: 40px 1fr 40px; align-items: center; margin-bottom: 8px; }
+    .cal__head button { font: inherit; color: var(--ink); background: none; border: 0; width: 40px; height: 40px; cursor: pointer; display: grid; place-items: center; }
+    .cal__head button:disabled { opacity: .25; cursor: default; }
+    .cal__head svg { width: 18px; height: 18px; stroke: currentColor; fill: none; stroke-width: 1.4; }
+    .cal__title { text-align: center; font-family: var(--sans); font-size: 15px; font-weight: 600; letter-spacing: .14em; text-transform: uppercase; }
+    .cal__dow { display: grid; grid-template-columns: repeat(7, 1fr); border-top: 1px solid var(--line); border-bottom: 1px solid var(--line); padding: 8px 0; }
+    .cal__dow span { text-align: center; font-family: var(--sans); font-size: 11px; font-weight: 600; letter-spacing: .08em; color: var(--ink-2); }
+    .cal__grid { display: grid; grid-template-columns: repeat(7, 1fr); gap: 4px; padding-top: 6px; }
+    .day { position: relative; aspect-ratio: 1 / 1.25; display: flex; flex-direction: column; justify-content: space-between; align-items: center; padding: 8px 2px 7px; background: var(--cell); border: 1px solid transparent; font: inherit; color: var(--ink); cursor: pointer; }
+    .day:disabled, .day.is-off { background: var(--cell-off); color: var(--ink-3); cursor: default; }
+    .day__n { font-family: var(--serif); font-size: 17px; line-height: 1; }
+    .day__s { font-family: var(--sans); font-size: 9.5px; letter-spacing: .04em; text-transform: uppercase; line-height: 1; white-space: nowrap; font-variant-numeric: tabular-nums; }
+    .day.is-ok .day__s { color: var(--ok); }
+    .day.is-prov .day__s { color: var(--prov); }
+    .day.is-full .day__s { color: var(--full); }
+    .day.is-last .day__s { color: var(--prov); }
+    .day.is-off .day__s { visibility: hidden; }
+    .day.is-sel { background: var(--sel); color: var(--sel-ink); border-color: var(--sel); }
+    .day.is-sel .day__s { color: var(--sel-ink); opacity: .8; }
+    .day.is-today::after { content: ""; position: absolute; top: 5px; right: 5px; width: 4px; height: 4px; border-radius: 50%; background: currentColor; opacity: .6; }
+    .legend { display: flex; flex-wrap: wrap; gap: 6px 16px; margin-top: 12px; padding-top: 12px; border-top: 1px solid var(--line); font-size: 12px; color: var(--ink-2); }
+    .legend i { display: inline-block; width: 8px; height: 8px; border-radius: 50%; margin-right: 6px; vertical-align: 1px; }
+    .legend .ok i { background: var(--ok); } .legend .prov i { background: var(--prov); } .legend .full i { background: var(--full); } .legend .off i { background: var(--ink-3); }
+
+    /* day detail: per-part status for the picked date */
+    .detail[hidden] { display: none; }
+    .detail { background: var(--cell); border: 1px solid var(--line); padding: 14px 16px 16px; }
+    .detail__t { display: flex; justify-content: space-between; align-items: baseline; gap: 12px; margin-bottom: 10px; }
+    .detail__t b { font-family: var(--serif); font-weight: 500; font-size: 17px; }
+    .detail__t span { font-size: 12px; color: var(--ink-2); }
+    .parts { display: grid; grid-template-columns: repeat(auto-fill, minmax(96px, 1fr)); gap: 6px; }
+    .part { font: inherit; text-align: left; background: var(--panel); border: 1px solid var(--line); padding: 9px 10px; cursor: pointer; color: var(--ink); display: grid; gap: 3px; }
+    .part b { font-family: var(--sans); font-weight: 600; font-size: 12px; letter-spacing: .06em; text-transform: uppercase; }
+    .part span { font-size: 11px; line-height: 1.2; }
+    .part.st-ok span { color: var(--ok); } .part.st-prov span { color: var(--prov); } .part.st-full span { color: var(--full); }
+    .part.st-ok { background: var(--ok-bg); } .part.st-prov { background: var(--prov-bg); } .part.st-full { background: var(--full-bg); }
+    .part.is-on { outline: 2px solid var(--sel); outline-offset: -2px; }
+    .part:disabled { cursor: default; opacity: .6; }
+    .detail__hint { font-size: 12px; color: var(--ink-2); margin: 10px 0 0; }
+
+    /* time */
+    .time[hidden] { display: none; }
+    .time__pick { display: grid; grid-template-columns: 1fr auto 1fr; align-items: center; gap: 10px; }
+    .time__pick select { font: inherit; font-family: var(--serif); font-size: 18px; color: var(--ink); background: var(--cell); border: 1px solid var(--line); height: 48px; padding: 0 12px; width: 100%; -webkit-appearance: none; appearance: none; }
+    .time__pick span { font-family: var(--serif); color: var(--ink-3); }
+    .time__hint { font-size: 12px; color: var(--ink-2); margin: 8px 0 0; }
+    .time__hint.is-bad { color: var(--full); }
+
+    /* summary + cta */
+    .sum { display: grid; grid-template-columns: auto 1fr; gap: 6px 16px; font-size: 14px; padding: 14px 0; border-top: 1px solid var(--line); border-bottom: 1px solid var(--line); }
+    .sum dt { font-family: var(--sans); font-size: 11px; letter-spacing: .1em; text-transform: uppercase; color: var(--ink-2); align-self: baseline; }
+    .sum dd { margin: 0; }
+    .cta { font: inherit; font-family: var(--ko); font-size: 16px; font-weight: 600; background: var(--btn); color: var(--btn-ink); border: 0; height: 56px; width: 100%; cursor: pointer; }
+    .cta:disabled { opacity: .35; cursor: default; }
+    .fine { font-size: 12px; color: var(--ink-2); margin: 0; padding: 0; list-style: none; display: grid; gap: 4px; line-height: 1.5; }
+    .fine a { color: inherit; }
+
+    @media (min-width: 900px) { .wrap { padding-top: 48px; } }
+  </style>
+</head>
+<body>
+
+<div class="rev">
+  <b>Layer Studios <span>예약 달력 목업 v2 · 파트별 현황 · 데이터는 가짜</span></b>
+  <div class="seg" role="group" aria-label="배색">
+    <button type="button" data-theme="cream" class="is-on">크림</button>
+    <button type="button" data-theme="beige">베이지</button>
+    <button type="button" data-theme="black">검정</button>
+  </div>
+</div>
+
+<main class="wrap">
+  <p class="note">v2: <b>파트</b>가 들어갔습니다. 파트를 고르기 전엔 달력에 날짜별 <b>빈 파트 수</b>(예: 2/3)가 보이고, 파트를 고르면 그 조합의 가능·문의·마감이 보입니다. 날짜를 누르면 그날의 파트별 현황이 펼쳐지고 거기서도 파트를 고를 수 있습니다. 촬영 내용도 추가했습니다. 상태 값은 여전히 임의로 만든 값입니다.</p>
+
+  <section class="w" aria-label="예약">
+    <div class="w__head">
+      <button type="button" aria-label="뒤로"><svg viewBox="0 0 24 24"><path d="M15 5l-7 7 7 7"/></svg></button>
+      <div class="w__brand">Layer Studios</div>
+      <button type="button" aria-label="닫기"><svg viewBox="0 0 24 24"><path d="M6 6l12 12M18 6L6 18"/></svg></button>
+    </div>
+    <div class="w__body">
+
+      <div>
+        <p class="lbl">지점</p>
+        <div class="chips" id="studios"></div>
+      </div>
+
+      <div>
+        <p class="lbl">파트 <small id="partHint">여러 개 선택 가능 · 비우면 전체 현황</small><button type="button" id="partClear" hidden>선택 해제</button></p>
+        <div class="chips wrap-ok" id="parts"></div>
+      </div>
+
+      <div>
+        <p class="lbl">촬영 내용</p>
+        <div class="chips wrap-ok" id="purpose"></div>
+      </div>
+
+      <div class="row2">
+        <div>
+          <p class="lbl">인원</p>
+          <div class="num"><button type="button" data-step="people" data-d="-1" aria-label="줄이기">−</button><button type="button" class="num__val" id="people" data-pick="people" aria-haspopup="listbox">10</button><div class="num__menu" id="peopleMenu" hidden></div><button type="button" data-step="people" data-d="1" aria-label="늘리기">+</button></div>
+        </div>
+        <div>
+          <p class="lbl">차량</p>
+          <div class="num"><button type="button" data-step="vehicles" data-d="-1" aria-label="줄이기">−</button><output class="num__val num__val--static" id="vehicles">1</output><button type="button" data-step="vehicles" data-d="1" aria-label="늘리기">+</button></div>
+        </div>
+      </div>
+
+      <div class="cal">
+        <div class="cal__head">
+          <button type="button" id="prevM" aria-label="이전 달"><svg viewBox="0 0 24 24"><path d="M15 5l-7 7 7 7"/></svg></button>
+          <div class="cal__title" id="calTitle"></div>
+          <button type="button" id="nextM" aria-label="다음 달"><svg viewBox="0 0 24 24"><path d="M9 5l7 7-7 7"/></svg></button>
+        </div>
+        <div class="cal__dow"><span>월</span><span>화</span><span>수</span><span>목</span><span>금</span><span>토</span><span>일</span></div>
+        <div class="cal__grid" id="calGrid"></div>
+        <div class="legend" id="legend"></div>
+      </div>
+
+      <div class="detail" id="detail" hidden>
+        <div class="detail__t"><b id="dTitle"></b><span id="dSub">파트별 현황 · 눌러서 선택</span></div>
+        <div class="parts" id="dParts"></div>
+        <p class="detail__hint" id="dHint"></p>
+      </div>
+
+      <div class="time" id="time" hidden>
+        <p class="lbl">시간</p>
+        <div class="time__pick">
+          <select id="tStart" aria-label="시작"></select>
+          <span>—</span>
+          <select id="tEnd" aria-label="종료"></select>
+        </div>
+        <p class="time__hint" id="tHint"></p>
+      </div>
+
+      <dl class="sum" id="sum">
+        <dt>지점</dt><dd id="sStudio">—</dd>
+        <dt>파트</dt><dd id="sPart">—</dd>
+        <dt>날짜</dt><dd id="sDate">—</dd>
+        <dt>시간</dt><dd id="sTime">—</dd>
+        <dt>내용</dt><dd id="sPurpose">—</dd>
+        <dt>인원 · 차량</dt><dd id="sPeople">—</dd>
+      </dl>
+
+      <button type="button" class="cta" id="cta" disabled>날짜를 선택해 주세요</button>
+      <ul class="fine">
+        <li>신청 후 담당자가 확인하고 안내드립니다.</li>
+        <li>Faust · Layer 10 · Layer 57은 온라인 신청을 받지 않습니다.</li>
+        <li>당일 예약과 3개월 이후 일정은 전화로 문의해 주세요.</li>
+        <li><a href="tel:0233567750">02-336-7750</a></li>
+      </ul>
+    </div>
+  </section>
+</main>
+
+<script>
+  // ---------- theme toggle (reviewer only)
+  document.querySelectorAll('[data-theme]').forEach(b => b.addEventListener('click', () => {
+    document.documentElement.setAttribute('data-theme', b.dataset.theme);
+    document.querySelectorAll('[data-theme]').forEach(x => x.classList.toggle('is-on', x === b));
+  }));
+
+  // ---------- data: same studios/parts the live form uses (reservation.html RESERVE_STUDIOS, online-bookable only)
+  const STUDIOS = [
+    { key: 'layer-41', name: 'Layer 41', parts: ['A', 'B', 'C'], min: 4 },
+    { key: 'layer-20', name: 'Layer 20', parts: ['1F', '2F', '3F', 'Caravan'], min: 4 },
+    { key: 'layer-11', name: 'Layer 11', parts: ['A', 'B', 'Cafe'], min: 4 },
+    { key: 'layer-26', name: 'Layer 26', parts: ['A', 'B'], min: 4 },
+    { key: 'layer-27', name: 'Layer 27', parts: ['A', 'Office'], min: 4 },
+    { key: 'layer-7', name: 'Layer 7', parts: ['A', 'B', 'C'], min: 4 },
+    { key: 'layer-hannam', name: 'Layer Hannam', parts: ['1F', '2F'], min: 4 },
+    { key: 'hongdae', name: 'Hongdae', parts: ['A', 'B', 'D', 'Back Garden', 'Greenhouse', 'Garden'], min: 2 },
+  ];
+  const PURPOSES = [['photo', '사진 촬영'], ['video', '영상 촬영'], ['event', '행사']];
+  const pad = n => String(n).padStart(2, '0');
+  const iso = d => d.getFullYear() + '-' + pad(d.getMonth() + 1) + '-' + pad(d.getDate());
+  const today = new Date(); today.setHours(0, 0, 0, 0);
+  const minD = new Date(today); minD.setDate(minD.getDate() + 1);           // online starts tomorrow
+  const maxD = new Date(today); maxD.setMonth(maxD.getMonth() + 3);          // 3 months ahead
+  // deterministic fake status per studio+date+part: 'ok' | 'prov' | 'full'
+  function hash(s) { let h = 0; for (let i = 0; i < s.length; i++) h = (h * 31 + s.charCodeAt(i)) >>> 0; return h; }
+  function partStatus(key, d, part) {
+    const r = hash(key + iso(d) + part) % 100; const wk = d.getDay() === 0 || d.getDay() === 6;
+    if (r < (wk ? 24 : 12)) return 'full';
+    if (r < (wk ? 40 : 24)) return 'prov';
+    return 'ok';
+  }
+  // status of a set of parts on a day: any full → full, any prov → prov, else ok
+  function comboStatus(key, d, parts) {
+    const ss = parts.map(p => partStatus(key, d, p));
+    return ss.includes('full') ? 'full' : ss.includes('prov') ? 'prov' : 'ok';
+  }
+
+  // ---------- state
+  const firstMonth = (() => { const m = new Date(minD.getFullYear(), minD.getMonth(), 1); const left = new Date(m.getFullYear(), m.getMonth() + 1, 0).getDate() - minD.getDate() + 1; return left >= 7 ? m : new Date(m.getFullYear(), m.getMonth() + 1, 1); })();
+  const st = { studio: 0, parts: [], purpose: 'photo', people: 10, vehicles: 1, month: firstMonth, date: null, start: 9, end: 18 };
+  const $ = id => document.getElementById(id);
+  const DOW = ['일', '월', '화', '수', '목', '금', '토'];
+  const hm = h => pad(Math.floor(h)) + ':' + (h % 1 ? '30' : '00');
+  const S = () => STUDIOS[st.studio];
+
+  // ---------- studios
+  const stBox = $('studios');
+  STUDIOS.forEach((s, i) => { const b = document.createElement('button'); b.type = 'button'; b.className = 'chip'; b.textContent = s.name; b.addEventListener('click', () => { st.studio = i; st.parts = []; st.date = null; render(); }); stBox.appendChild(b); });
+
+  // ---------- purpose
+  const puBox = $('purpose');
+  PURPOSES.forEach(([k, t]) => { const b = document.createElement('button'); b.type = 'button'; b.className = 'chip ko'; b.dataset.k = k; b.textContent = t; b.addEventListener('click', () => { st.purpose = k; render(); }); puBox.appendChild(b); });
+
+  // ---------- parts
+  $('partClear').addEventListener('click', () => { st.parts = []; render(); });
+  function togglePart(p) { const i = st.parts.indexOf(p); if (i > -1) st.parts.splice(i, 1); else st.parts.push(p); st.parts.sort((a, b) => S().parts.indexOf(a) - S().parts.indexOf(b)); render(); }
+
+  // ---------- steppers: −/+ buttons, tap the number for presets or free input
+  const LIMITS = { people: [1, 300], vehicles: [0, 30] };
+  const PRESETS = { people: [1, 10, 20, 30, 40, 50] };
+  const clamp = (k, v) => Math.max(LIMITS[k][0], Math.min(LIMITS[k][1], v));
+  document.querySelectorAll('[data-step]').forEach(b => b.addEventListener('click', () => {
+    const k = b.dataset.step, d = +b.dataset.d; st[k] = clamp(k, st[k] + d); render();
+  }));
+  const closeMenus = () => document.querySelectorAll('.num__menu').forEach(m => { m.hidden = true; });
+  document.querySelectorAll('[data-pick]').forEach(btn => btn.addEventListener('click', (e) => {
+    e.stopPropagation();
+    const k = btn.dataset.pick; const menu = $(k + 'Menu'); const wasOpen = !menu.hidden; closeMenus(); if (wasOpen) return;
+    menu.innerHTML = ''; menu.style.gridTemplateColumns = 'repeat(' + (PRESETS[k].length <= 6 ? 3 : 4) + ', 1fr)';
+    PRESETS[k].forEach(v => { const o = document.createElement('button'); o.type = 'button'; o.textContent = v; o.classList.toggle('is-on', v === st[k]); o.addEventListener('click', () => { st[k] = v; closeMenus(); render(); }); menu.appendChild(o); });
+    const free = document.createElement('button'); free.type = 'button'; free.className = 'free'; free.textContent = '직접 입력';
+    free.addEventListener('click', () => { closeMenus(); freeInput(k); });
+    menu.appendChild(free); menu.hidden = false;
+  }));
+  document.addEventListener('click', closeMenus);
+  function freeInput(k) {
+    const btn = $(k); const inp = document.createElement('input');
+    inp.type = 'number'; inp.className = 'num__in'; inp.inputMode = 'numeric'; inp.min = LIMITS[k][0]; inp.max = LIMITS[k][1]; inp.value = st[k]; inp.setAttribute('aria-label', k === 'people' ? '인원' : '차량');
+    let done = false;
+    const commit = () => { if (done) return; done = true; const v = parseInt(inp.value, 10); if (!Number.isNaN(v)) st[k] = clamp(k, v); inp.replaceWith(btn); render(); };
+    inp.addEventListener('blur', commit);
+    inp.addEventListener('keydown', e => { if (e.key === 'Enter') { e.preventDefault(); commit(); } if (e.key === 'Escape') { inp.value = st[k]; commit(); } });
+    btn.replaceWith(inp); inp.focus(); inp.select();
+  }
+
+  // ---------- month nav
+  $('prevM').addEventListener('click', () => { st.month = new Date(st.month.getFullYear(), st.month.getMonth() - 1, 1); render(); });
+  $('nextM').addEventListener('click', () => { st.month = new Date(st.month.getFullYear(), st.month.getMonth() + 1, 1); render(); });
+
+  // ---------- time selects
+  const opts = (el, from, to) => { el.innerHTML = ''; for (let h = from; h <= to; h += 0.5) { const o = document.createElement('option'); o.value = h; o.textContent = hm(h); el.appendChild(o); } };
+  opts($('tStart'), 6, 23.5); opts($('tEnd'), 6.5, 24);
+  $('tStart').addEventListener('change', e => { st.start = +e.target.value; if (st.end <= st.start) st.end = Math.min(24, st.start + 4); render(); });
+  $('tEnd').addEventListener('change', e => { st.end = +e.target.value; render(); });
+
+  $('cta').addEventListener('click', () => { $('cta').textContent = '다음 단계: 연락처 입력 (목업에서는 생략)'; });
+
+  // ---------- render
+  function render() {
+    const s = S(); const N = s.parts.length; const picked = st.parts.length > 0;
+    stBox.querySelectorAll('.chip').forEach((b, i) => b.classList.toggle('is-on', i === st.studio));
+    puBox.querySelectorAll('.chip').forEach(b => b.classList.toggle('is-on', b.dataset.k === st.purpose));
+    $('people').textContent = st.people; $('vehicles').textContent = st.vehicles;
+
+    // part chips: when a date is picked, each chip carries that day's status and booked parts are disabled
+    const pBox = $('parts'); pBox.innerHTML = '';
+    s.parts.forEach(p => {
+      const b = document.createElement('button'); b.type = 'button'; b.className = 'chip';
+      const stt = st.date ? partStatus(s.key, st.date, p) : null;
+      if (stt) b.classList.add('st-' + stt);
+      b.classList.toggle('is-on', st.parts.includes(p));
+      b.disabled = stt === 'full';
+      b.innerHTML = (stt ? '<i></i>' : '') + p;
+      b.addEventListener('click', () => togglePart(p));
+      pBox.appendChild(b);
+    });
+    $('partClear').hidden = !picked;
+    $('partHint').textContent = picked ? st.parts.join(' + ') + ' 기준 현황' : '여러 개 선택 가능 · 비우면 전체 현황';
+
+    // calendar
+    const y = st.month.getFullYear(), m = st.month.getMonth();
+    $('calTitle').textContent = y + ' · ' + pad(m + 1);
+    $('prevM').disabled = st.month <= new Date(minD.getFullYear(), minD.getMonth(), 1);
+    $('nextM').disabled = st.month >= new Date(maxD.getFullYear(), maxD.getMonth(), 1);
+    const grid = $('calGrid'); grid.innerHTML = '';
+    const first = new Date(y, m, 1); const lead = (first.getDay() + 6) % 7; // Monday first
+    for (let i = 0; i < lead; i++) grid.appendChild(document.createElement('div'));
+    const days = new Date(y, m + 1, 0).getDate();
+    for (let d = 1; d <= days; d++) {
+      const date = new Date(y, m, d); const off = date < minD || date > maxD;
+      let cls, txt, disabled = off;
+      if (off) { cls = 'off'; txt = ''; }
+      else if (picked) { cls = comboStatus(s.key, date, st.parts); txt = { ok: '가능', prov: '문의', full: '마감' }[cls]; disabled = cls === 'full'; }
+      else {
+        const free = s.parts.filter(p => partStatus(s.key, date, p) !== 'full').length;
+        const anyProv = s.parts.some(p => partStatus(s.key, date, p) === 'prov');
+        cls = free === 0 ? 'full' : free === 1 && N > 1 ? 'last' : anyProv ? 'prov' : 'ok';
+        txt = free === 0 ? '마감' : free + '/' + N; disabled = free === 0;
+      }
+      const b = document.createElement('button'); b.type = 'button';
+      b.className = 'day is-' + cls + (st.date && iso(st.date) === iso(date) ? ' is-sel' : '') + (iso(date) === iso(today) ? ' is-today' : '');
+      b.disabled = disabled;
+      b.innerHTML = '<span class="day__n">' + d + '</span><span class="day__s">' + txt + '</span>';
+      if (!disabled) b.addEventListener('click', () => { st.date = date; st.parts = st.parts.filter(p => partStatus(s.key, date, p) !== 'full'); render(); $('detail').scrollIntoView({ behavior: 'smooth', block: 'nearest' }); });
+      grid.appendChild(b);
+    }
+    $('legend').innerHTML = picked
+      ? '<span class="ok"><i></i>선택한 파트 모두 가능</span><span class="prov"><i></i>가부킹 있음 · 확인 후 안내</span><span class="full"><i></i>마감</span><span class="off"><i></i>온라인 불가 (당일 · 3개월 이후)</span>'
+      : '<span class="ok"><i></i>빈 파트 수 / 전체</span><span class="prov"><i></i>가부킹 있음 또는 1개 남음</span><span class="full"><i></i>모든 파트 마감</span><span class="off"><i></i>온라인 불가 (당일 · 3개월 이후)</span>';
+
+    // day detail: per-part status for the picked date
+    const det = $('detail'); det.hidden = !st.date;
+    if (st.date) {
+      $('dTitle').textContent = (st.date.getMonth() + 1) + '월 ' + st.date.getDate() + '일 (' + DOW[st.date.getDay()] + ')';
+      const box = $('dParts'); box.innerHTML = '';
+      s.parts.forEach(p => {
+        const stt = partStatus(s.key, st.date, p);
+        const b = document.createElement('button'); b.type = 'button'; b.className = 'part st-' + stt + (st.parts.includes(p) ? ' is-on' : '');
+        b.disabled = stt === 'full';
+        b.innerHTML = '<b>' + p + '</b><span>' + { ok: '예약 가능', prov: '가부킹 있음 · 문의', full: '마감' }[stt] + '</span>';
+        b.addEventListener('click', () => togglePart(p));
+        box.appendChild(b);
+      });
+      $('dHint').textContent = picked ? '선택: ' + st.parts.join(' + ') + (st.parts.some(p => partStatus(s.key, st.date, p) === 'prov') ? ' · 가부킹이 있는 파트는 담당자 확인 후 확정됩니다.' : '') : '대관할 파트를 선택해 주세요. 여러 파트를 함께 쓸 수 있습니다.';
+    }
+
+    // time
+    $('time').hidden = !st.date;
+    $('tStart').value = st.start; $('tEnd').value = st.end;
+    const hours = st.end - st.start; const bad = hours < s.min;
+    $('tHint').textContent = bad ? '최소 대관 ' + s.min + '시간입니다.' : hours + '시간 · 최소 대관 ' + s.min + '시간';
+    $('tHint').classList.toggle('is-bad', bad);
+
+    // summary + cta
+    $('sStudio').textContent = s.name;
+    $('sPart').textContent = picked ? st.parts.join(' + ') : '—';
+    $('sDate').textContent = st.date ? (st.date.getMonth() + 1) + '월 ' + st.date.getDate() + '일 (' + DOW[st.date.getDay()] + ')' : '—';
+    $('sTime').textContent = st.date ? hm(st.start) + ' – ' + hm(st.end) + ' (' + hours + 'h)' : '—';
+    $('sPurpose').textContent = PURPOSES.find(x => x[0] === st.purpose)[1];
+    $('sPeople').textContent = st.people + '명 · ' + st.vehicles + '대';
+    const cta = $('cta'); cta.disabled = !st.date || !picked || bad;
+    cta.textContent = !st.date ? '날짜를 선택해 주세요' : !picked ? '파트를 선택해 주세요' : bad ? '최소 대관 시간을 확인해 주세요' : '예약 신청하기';
+  }
+  render();
+</script>
+</body>
+</html>
