@@ -156,7 +156,7 @@ async function findPost({ cookie, boardId, y, m, d, marker, limit = 6 }) {
   const nos = (await dayPostNos({ cookie, boardId, y, m, d })).slice(0, limit);
   for (const no of nos) {
     const view = iconv.decode((await rawRequest('GET', `${BASE}/view.php?id=${boardId}&no=${no}`, { cookie })).body, 'EUC-KR');
-    if (stripTags(view).includes(marker)) return no;
+    if (new RegExp(marker.replace(/[.*+?^${}()|[\]\\]/g, '\\$&') + '(?!\\d)').test(stripTags(view))) return no; // "#12" must not match "#123"
   }
   return null;
 }

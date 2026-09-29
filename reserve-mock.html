@@ -478,6 +478,7 @@
     if (!st.date) return 'date'; if (!st.parts.length) return 'part';
     if (st.end - st.start < S().min) return 'min-hours';
     if (overlaps(st.date, st.parts, st.start, st.end).fixed.length) return 'overlap';
+    if (st.items.some(it => iso(it.date) === iso(st.date) && it.parts.some(p => st.parts.includes(p)) && it.start < st.end && it.end > st.start)) return 'dup';
     return null;
   }
   const draftOk = () => draftCheck() === null;
@@ -621,8 +622,9 @@
     let hint = hours + '시간 · 최소 대관 ' + s.min + '시간';
     if (why === 'min-hours') hint = '최소 대관 ' + s.min + '시간입니다.';
     else if (why === 'overlap') hint = '예약과 겹칩니다: ' + overlaps(st.date, st.parts, st.start, st.end).fixed.map(blockTxt).join(', ');
+    else if (why === 'dup') hint = '이미 추가한 예약과 같은 파트·시간이 겹칩니다.';
     else if (st.date && picked) { const ov = overlaps(st.date, st.parts, st.start, st.end).prov; if (ov.length) hint += ' · 같은 시간에 가부킹·대기 건이 있어 확인 후 안내드립니다'; }
-    $('tHint').textContent = hint; $('tHint').classList.toggle('is-bad', why === 'min-hours' || why === 'overlap');
+    $('tHint').textContent = hint; $('tHint').classList.toggle('is-bad', why === 'min-hours' || why === 'overlap' || why === 'dup');
 
     // add button + item list
     const ok = why === null;
@@ -643,7 +645,7 @@
     $('sPurpose').textContent = PURPOSES.find(x => x[0] === st.purpose)[1];
     $('sPeople').textContent = st.people + '명 · ' + st.vehicles + '대';
     const cta = $('cta'); cta.disabled = all.length === 0;
-    cta.textContent = all.length ? '예약 신청하기 · ' + all.length + '건' : !st.date ? '날짜를 선택해 주세요' : !picked ? '파트를 선택해 주세요' : why === 'overlap' ? '겹치지 않는 시간을 선택해 주세요' : '최소 대관 시간을 확인해 주세요';
+    cta.textContent = all.length ? '예약 신청하기 · ' + all.length + '건' : !st.date ? '날짜를 선택해 주세요' : !picked ? '파트를 선택해 주세요' : why === 'overlap' ? '겹치지 않는 시간을 선택해 주세요' : why === 'dup' ? '이미 추가한 예약과 겹칩니다' : '최소 대관 시간을 확인해 주세요';
   }
   function renderStep2() {
     $('s2Items').innerHTML = st.items.map(it => '<div class="item">' + itemRow(it) + '</div>').join('');

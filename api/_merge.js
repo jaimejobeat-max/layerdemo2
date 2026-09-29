@@ -6,6 +6,7 @@
 // Every other line is staff text and is kept verbatim. An owned line is replaced only when staff left it as
 // the console wrote it; otherwise it is a conflict, unless `resolve[key]` says 'board' (keep) or 'console' (replace).
 const OWN = /^\* (대관 날짜|대관 지점|대관 파트|대관 시간|대관 내용|이용 인원수|방문 차량수|업체명\(예약자명\)|담당자|연락처|이메일|요청사항|접수) :/;
+const INFO = new Set(['접수']); // informational lines: replaced without asking
 const TITLES = { label: '캘린더 라벨', summary: '요약 줄', '대관 날짜': '대관 날짜', '대관 지점': '대관 지점', '대관 파트': '파트', '대관 시간': '시간', '대관 내용': '내용', '이용 인원수': '인원', '방문 차량수': '차량', '업체명(예약자명)': '업체명', 담당자: '담당자', 연락처: '연락처', 이메일: '이메일', 요청사항: '요청사항', 접수: '접수 정보' };
 
 const norm = (t) => String(t ?? '').replace(/\r\n?/g, '\n').split('\n').map((l) => l.replace(/\s+$/, ''));
@@ -23,7 +24,9 @@ function merge(base, board, next, resolve = {}) {
   const conflicts = [];
   const pick = (key, boardVal, baseVal, nextVal) => {
     if (boardVal === nextVal) return boardVal;
+    if (base && baseVal === nextVal) return boardVal;            // console did not change this line → whatever staff did stays
     if (base && boardVal === baseVal) return nextVal;            // untouched by staff → take the console's new value
+    if (INFO.has(key)) return nextVal;                           // bookkeeping lines never block a save
     const r = resolve[key];
     if (r === 'console') return nextVal; if (r === 'board') return boardVal;
     conflicts.push({ key, title: TITLES[key] || key, board: boardVal, console: nextVal });

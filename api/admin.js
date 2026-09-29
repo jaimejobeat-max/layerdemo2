@@ -39,7 +39,8 @@ const toDate = (iso) => { const [y, m, d] = iso.split('-').map(Number); return n
 
 /** Row → the shape buildPost() expects */
 function asRequest(row) {
-  return { id: row.id, studio: row.studio, part: row.part || '-', date: toDate(row.date), start: toHours(row.start_at), end: toHours(row.end_at),
+  return { id: row.id, received: row.created_at ? new Date(new Date(row.created_at).getTime() + 9 * 3600e3).toISOString().replace('T', ' ').slice(0, 16) : null,
+    studio: row.studio, part: row.part || '-', date: toDate(row.date), start: toHours(row.start_at), end: toHours(row.end_at),
     purpose: row.purpose, people: row.people, vehicles: row.vehicles, note: row.note, company: row.company, contact: row.contact, phone: row.phone, email: row.email };
 }
 
@@ -52,7 +53,7 @@ function confirmedPost(r, label, actor) {
     `* 대관 시간 : ${hm(r.start)} - ${hm(r.end)} (${r.end - r.start}h)`, `* 대관 내용 : ${r.purpose || '-'}`,
     `* 이용 인원수 : ${r.people || '-'}`, `* 방문 차량수 : ${r.vehicles || '-'}`, `* 업체명(예약자명) : ${r.company}`,
     `* 담당자 : ${r.contact}`, `* 연락처 : ${r.phone}`, `* 이메일 : ${r.email || '-'}`, `* 요청사항 : ${r.note || '-'}`,
-    '', `* 접수 : 홈페이지 예약 폼 → 승인 콘솔 (${actor}), ${new Date(Date.now() + 9 * 3600e3).toISOString().replace('T', ' ').slice(0, 16)} KST${r.id ? ' · ' + marker(r.id) : ''}`,
+    '', `* 접수 : 홈페이지 예약 폼, ${r.received || new Date(Date.now() + 9 * 3600e3).toISOString().replace('T', ' ').slice(0, 16)} KST${r.id ? ' · ' + marker(r.id) : ''}`,
   ].join('\n');
   return { label, memo };
 }
@@ -83,7 +84,7 @@ async function list(req, res) {
   else {
     // the queue: past reservation days drop out; 대기·보류 oldest request first, 승인 soonest booking first, 반려 newest first
     query.date = `gte.${today}`; query.limit = '300';
-    query.order = status === 'approved' ? 'date.asc,start_at.asc,created_at.asc' : status === 'rejected' ? 'created_at.desc' : 'created_at.asc';
+    query.order = (status === 'approved' || status === 'confirmed') ? 'date.asc,start_at.asc,created_at.asc' : status === 'rejected' ? 'created_at.desc' : 'created_at.asc';
   }
   const [rows, live] = await Promise.all([supa.select(T, query), supa.select(T, { select: 'status', date: `gte.${today}` })]);
   const counts = {}; for (const r of live) counts[r.status] = (counts[r.status] || 0) + 1;
@@ -96,10 +97,16 @@ async function detail(req, res) {
   if (!row) return json(res, 404, { ok: false, error: 'not-found' });
   const [events, siblings, board] = await Promise.all([
     supa.select(E, { request_id: `eq.${id}`, order: 'created_at.asc' }),
-    supa.select(T, { select: 'id,part,start_at,end_at,company,status,board_label', studio: `eq.${row.studio}`, date: `eq.${row.date}`, id: `neq.${id}`, status: 'neq.rejected' }),
+    supa.select(T, { select: 'id,part,start_at,end_at,company,status,board_label', studio: `eq.${row.studio}`, date: `eq.${row.date}`, id: `neq.${id}`, status: 'not.in.(rejected,cancelled)' }),
     boardLabels(row.studio, row.date),
   ]);
-  json(res, 200, { ok: true, row, events, siblings, board: { boardId: board.boardId, labels: board.labels, blocks: board.blocks || [], error: board.error || null }, studioName: NAMES[row.studio] || row.studio });
+  // this request's own post is not a conflict with itself: drop one occurrence of its label
+  let labels = board.labels || [], blocks = board.blocks || [];
+  if (row.board_label && (row.status === 'approved' || row.status === 'confirmed' || row.status === 'cancelled')) {
+    const li = labels.indexOf(row.board_label); if (li > -1) labels = labels.filter((_, i) => i !== li);
+    const bi = blocks.findIndex((b) => b.raw === row.board_label); if (bi > -1) blocks = blocks.filter((_, i) => i !== bi);
+  }
+  json(res, 200, { ok: true, row, events, siblings, board: { boardId: board.boardId, labels, blocks, error: board.error || null }, studioName: NAMES[row.studio] || row.studio });
 }
 
 async function decide(req, res) {
@@ -123,14 +130,20 @@ async function decide(req, res) {
       return json(res, 502, { ok: false, error: 'board-write', detail: result });
     };
     if (decision === 'approved') {
-      let labels = []; try { labels = await dayLabels({ cookie, boardId, y: d.getUTCFullYear(), m: d.getUTCMonth() + 1, d: d.getUTCDate() }); } catch (e) { console.error('rank lookup failed', e.message); }
-      const post = buildPost(r, provisionalRank(labels));
-      const w = await writePost({ cookie, boardId, date: d, label: post.label, memo: post.memo, name, password }).catch((e) => ({ ok: false, error: e.message }));
-      if (!w.ok) return fail('가부킹 글 작성 실패', w);
-      const no = await linkPost({ cookie, boardId, date: d, id }).catch(() => null);
-      await snapshot(id, { no, label: post.label, memo: post.memo });
-      Object.assign(patch, { board_id: boardId, board_label: post.label, board_post_no: no || null, board_error: null });
-      boardTxt = `게시판 기록 · 라벨 ${post.label}`;
+      const found = await locatePost({ cookie, boardId, row }).catch(() => null); // a previous attempt may have written the post but failed to save
+      if (found) {
+        Object.assign(patch, { board_id: boardId, board_label: found.cur.label || row.board_label, board_post_no: found.no, board_error: null });
+        boardTxt = `게시판 글 이미 있음 (no=${found.no}) · 라벨 ${found.cur.label}`;
+      } else {
+        let labels = []; try { labels = await dayLabels({ cookie, boardId, y: d.getUTCFullYear(), m: d.getUTCMonth() + 1, d: d.getUTCDate() }); } catch (e) { console.error('rank lookup failed', e.message); }
+        const post = buildPost(r, provisionalRank(labels));
+        const w = await writePost({ cookie, boardId, date: d, label: post.label, memo: post.memo, name, password }).catch((e) => ({ ok: false, error: e.message }));
+        if (!w.ok) return fail('가부킹 글 작성 실패', w);
+        const no = await linkPost({ cookie, boardId, date: d, id }).catch(() => null);
+        await snapshot(id, { no, label: post.label, memo: post.memo });
+        Object.assign(patch, { board_id: boardId, board_label: post.label, board_post_no: no || null, board_error: null });
+        boardTxt = `게시판 기록 · 라벨 ${post.label}`;
+      }
     } else if (decision === 'confirmed') {
       const label = clean(b.fixedLabel, 40) || defaultConfirmedLabel(r);
       const cp = confirmedPost(r, label, actor);
@@ -171,7 +184,12 @@ async function decide(req, res) {
   } else if (boardId && touchesBoard) boardTxt = '게시판 생략 (RESERVE_DRY_RUN)';
   else if (!boardId && touchesBoard) boardTxt = '게시판 없는 지점 · 수기 처리';
 
-  const [updated] = await supa.update(T, { id: `eq.${id}` }, patch);
+  let updated;
+  try { [updated] = await supa.update(T, { id: `eq.${id}` }, patch); }
+  catch (e) { // the board is already changed; say so instead of letting a retry write a second post
+    await supa.insert(E, { request_id: id, actor, action: 'board_failed', detail: `콘솔 저장 실패 (${e.message}) — 게시판은 이미 처리됨: ${boardTxt || '-'}` }).catch(() => {});
+    return json(res, 500, { ok: false, error: 'db-update', detail: e.message, board: patch.board_label ? { label: patch.board_label, no: patch.board_post_no || null } : null });
+  }
   await supa.insert(E, { request_id: id, actor, action: decision, detail: [boardTxt, note || null].filter(Boolean).join(' — ') || null }).catch((e) => console.error('event failed', e.message));
   json(res, 200, { ok: true, row: updated, board: patch.board_label ? { label: patch.board_label } : null });
 }
@@ -208,7 +226,7 @@ async function latestSnapshot(id) {
   try { return JSON.parse(rows[0].detail); } catch { return null; }
 }
 const isProv = (label) => /\+\+/.test(label);
-const rankOf = (label) => { const m = label.match(/\(W(\d)\)/); return m ? Number(m[1]) : 1; };
+const rankOf = (label) => { const m = label.match(/\(W(\d+)\)/); return m ? Number(m[1]) : 1; };
 const FIELD_KO = { part: '파트', date: '날짜', start_at: '시작', end_at: '종료', purpose: '내용', people: '인원', vehicles: '차량', note: '요청사항', company: '업체명', contact: '담당자', phone: '연락처', email: '이메일' };
 
 function validateEdit(f) {
@@ -251,8 +269,14 @@ async function edit(req, res) {
       board = { synced: false, reason: !no ? 'unlinked' : 'missing' };
       if (!resolve.__board) return json(res, 409, { ok: false, error: 'board-unlinked', reason: board.reason, changes });
     } else {
-      const label = wantLabel || cur.label || row.board_label || '';
       const next = { ...row, ...patch }; const r = asRequest(next);
+      let label = wantLabel || cur.label || row.board_label || ''; let labelKept = false;
+      if (isProv(label) && patch.date !== row.date) { // moving a provisional post: take the next free rank on the new day
+        try { const nd = toDate(patch.date); label = `++(W${provisionalRank(await dayLabels({ cookie, boardId, y: nd.getUTCFullYear(), m: nd.getUTCMonth() + 1, d: nd.getUTCDate() }))})`; } catch (e) { console.error('rank lookup failed', e.message); }
+      } else if (!isProv(label) && (!wantLabel || wantLabel === cur.label)) {
+        if (label === defaultConfirmedLabel(asRequest(row))) label = defaultConfirmedLabel(r); // label was the default → regenerate for the new part/time/company
+        else if (label !== defaultConfirmedLabel(r)) labelKept = true;                        // custom label: left as is, the UI points it out
+      }
       const post = isProv(label) ? buildPost(r, rankOf(label)) : confirmedPost(r, label, actor);
       const m = merge(base ? { label: base.label, memo: base.memo } : null, cur, { label, memo: post.memo }, resolve);
       if (m.conflicts.length) return json(res, 409, { ok: false, error: 'conflict', hasBase: !!base, conflicts: m.conflicts, board: cur, changes });
@@ -275,12 +299,17 @@ async function edit(req, res) {
         await supa.insert(E, { request_id: id, actor, action: 'board_failed', detail: '수정 반영 실패 — ' + (result.error || result.status || 'unknown') + (result.snippet ? ' — ' + result.snippet.slice(0, 200) : '') }).catch(() => {});
         return json(res, 502, { ok: false, error: 'board-write', detail: result });
       }
-      Object.assign(board, { no, label: m.label, staffLines: m.staffLines });
+      Object.assign(board, { no, label: m.label, staffLines: m.staffLines, labelKept });
       Object.assign(patch, { board_post_no: no, board_label: m.label, board_error: null });
       await snapshot(id, { no, label: m.label, memo: m.memo });
     }
   }
-  const [updated] = await supa.update(T, { id: `eq.${id}` }, patch);
+  let updated;
+  try { [updated] = await supa.update(T, { id: `eq.${id}` }, patch); }
+  catch (e) {
+    if (board && board.synced) await supa.insert(E, { request_id: id, actor, action: 'board_failed', detail: `콘솔 저장 실패 (${e.message}) — 게시판 글(no=${board.no})은 이미 수정됨` }).catch(() => {});
+    return json(res, 500, { ok: false, error: 'db-update', detail: e.message, board });
+  }
   const boardTxt = !board ? null : board.synced ? `게시판 반영${board.moved ? ' (날짜 이동, 새 글 작성)' : ''} · 라벨 ${board.label}${board.staffLines ? ` · 스태프 메모 ${board.staffLines}줄 유지` : ''}` : `게시판 미반영 (${board.reason === 'unlinked' ? '글을 찾지 못함' : '글이 삭제됨'})`;
   await supa.insert(E, { request_id: id, actor, action: 'edited', detail: [changes.join(', ') || '변경 없음', boardTxt].filter(Boolean).join(' — ') }).catch((e) => console.error('event failed', e.message));
   json(res, 200, { ok: true, row: updated, changes, board });

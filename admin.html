@@ -365,7 +365,7 @@
         const btn = form.querySelector('[type=submit]'); const was = btn.textContent; btn.disabled = true; btn.textContent = '저장 중…';
         try {
           const d = await api('edit', { method: 'POST', body: { id: r.id, fields, boardLabel: f.boardLabel ? f.boardLabel.value : '', resolve, actor: ACTOR } });
-          toast(!d.board ? '저장했습니다.' : d.board.synced ? `저장했습니다. 게시판 글도 반영했습니다 (${d.board.label}${d.board.moved ? ', 날짜 이동' : ''}${d.board.staffLines ? `, 스태프 메모 ${d.board.staffLines}줄 유지` : ''}).` : '저장했습니다. 게시판 글은 찾지 못해 그대로 두었습니다.');
+          toast(!d.board ? '저장했습니다.' : d.board.synced ? `저장했습니다. 게시판 글도 반영했습니다 (${d.board.label}${d.board.moved ? ', 날짜 이동' : ''}${d.board.staffLines ? `, 스태프 메모 ${d.board.staffLines}줄 유지` : ''}).${d.board.labelKept ? ' 캘린더 라벨은 직접 적은 값이라 그대로 두었습니다. 시간·파트가 바뀌었으면 라벨도 확인해 주세요.' : ''}` : '저장했습니다. 게시판 글은 찾지 못해 그대로 두었습니다.', !!(d.board && d.board.labelKept));
           await loadList(); loadDetail();
         } catch (err) {
           const data = err.data || {};
@@ -376,6 +376,7 @@
           }
           else if (data.error === 'input') toast('입력을 확인해 주세요: ' + ({ part: '파트', date: '날짜', time: '시간 (30분 단위, 종료가 시작보다 뒤)', company: '업체명', contact: '담당자', phone: '전화번호', email: '이메일' }[data.field] || data.field), true);
           else if (data.error === 'board-write') toast('게시판 글 수정에 실패해 저장하지 않았습니다. 잠시 후 다시 시도해 주세요.', true);
+          else if (data.error === 'db-update') toast(`게시판 글은 수정됐지만 콘솔 저장에 실패했습니다 (${data.detail}). 다시 저장하지 말고 처리 기록을 확인해 주세요.`, true);
           else if (data.error === 'board-login') toast('게시판 로그인에 실패했습니다. 잠시 후 다시 시도해 주세요.', true);
           else if (err.message !== 'unauthorized') toast('저장 실패: ' + err.message, true);
         } finally { btn.disabled = false; btn.textContent = was; }
@@ -402,7 +403,7 @@
         tab = act; await loadList(); loadDetail();
       } catch (e) {
         const code = e.data && e.data.error;
-        const msg = code === 'board-write' ? '게시판 처리에 실패해 상태를 바꾸지 않았습니다. 잠시 후 다시 시도하거나 수기로 처리해 주세요.' : code === 'board-login' ? '게시판 로그인에 실패했습니다. 잠시 후 다시 시도해 주세요.' : code === 'not-allowed' ? `지금 상태(${STATUS[e.data.from] || e.data.from})에서는 할 수 없는 처리입니다. 화면을 새로고침해 주세요.` : /check constraint|reservation_requests_status_check/i.test(e.message) ? 'Supabase에 확정·취소 상태가 아직 없습니다. supabase/2026-09-29-status-confirmed-cancelled.sql 을 SQL Editor에서 실행해 주세요.' : '처리 실패: ' + e.message;
+        const msg = code === 'board-write' ? '게시판 처리에 실패해 상태를 바꾸지 않았습니다. 잠시 후 다시 시도하거나 수기로 처리해 주세요.' : code === 'db-update' ? (/check constraint|status_check/i.test(e.data.detail || '') ? `게시판은 처리됐지만 콘솔 저장에 실패했습니다: Supabase에 확정·취소 상태가 아직 없습니다. supabase/2026-09-29-status-confirmed-cancelled.sql 을 실행한 뒤 같은 버튼을 다시 누르세요 (게시판 글은 다시 만들지 않습니다).` : `게시판은 처리됐지만 콘솔 저장에 실패했습니다 (${e.data.detail}). 처리 기록을 확인해 주세요.`) : code === 'board-login' ? '게시판 로그인에 실패했습니다. 잠시 후 다시 시도해 주세요.' : code === 'not-allowed' ? `지금 상태(${STATUS[e.data.from] || e.data.from})에서는 할 수 없는 처리입니다. 화면을 새로고침해 주세요.` : /check constraint|reservation_requests_status_check/i.test(e.message) ? 'Supabase에 확정·취소 상태가 아직 없습니다. supabase/2026-09-29-status-confirmed-cancelled.sql 을 SQL Editor에서 실행해 주세요.' : '처리 실패: ' + e.message;
         toast(msg, true); loadDetail();
       }
     }

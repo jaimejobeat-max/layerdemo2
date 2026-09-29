@@ -27,9 +27,9 @@ const pad2 = (n) => String(n).padStart(2, '0');
 const decode = (s) => s.replace(/&lt;/g, '<').replace(/&gt;/g, '>').replace(/&quot;/g, '"').replace(/&#39;/g, "'").replace(/&amp;/g, '&');
 const toHours = (t) => { const [h, m] = String(t).split(':').map(Number); return h + (m >= 30 ? 0.5 : 0); };
 
-/** "13", "13:30", "8.5" → hours */
-function hourOf(s) {
-  if (s.includes(':')) { const [h, m] = s.split(':').map(Number); return h + (m >= 30 ? 0.5 : 0); }
+/** "13", "13:30", "8.5" → hours; starts round down to the half hour, ends round up ("15:45" end → 16) */
+function hourOf(s, isEnd) {
+  if (s.includes(':')) { const [h, m] = s.split(':').map(Number); return h + (isEnd ? (m > 30 ? 1 : m > 0 ? 0.5 : 0) : (m >= 30 ? 0.5 : 0)); }
   return parseFloat(s);
 }
 
@@ -39,8 +39,10 @@ function hourOf(s) {
  */
 function parseLabel(raw, studio) {
   const parts = PARTS[studio] || [];
-  let l = decode(raw).replace(/<-{2,}|-{2,}>/g, ' ').trim();
-  if (!l || SKIP.has(l)) return null;
+  const text = decode(raw);
+  const arrow = /-{2,}>/.test(text) ? 'start' : /<-{2,}/.test(text) ? 'end' : null; // multi-day booking drawn with arrows on its first/last day
+  let l = text.replace(/<-{2,}|-{2,}>/g, ' ').trim();
+  if (!l || SKIP.has(l) || /^[*\-·.]+$/.test(l)) return null; // '-', '**', '***' … are markers, not bookings
   const kind = l.includes('++') ? 'prov' : 'fixed';
   l = l.replace(/\+\+\s*\(W\d\)|\(W\d\)|\+\+|\$\$\$/g, ' ').trim();
   // multi-day range "10/05~08" or "10/30~11/02" (only on the first and last day's cell)
@@ -50,11 +52,11 @@ function parseLabel(raw, studio) {
   // time "10-19", "8.5-16.5", "13:00-15:30"
   let start = null, end = null;
   const tm = l.match(/(?:^|\s)(\d{1,2}(?:\.5|:\d{2})?)\s*[\-~–]\s*(\d{1,2}(?:\.5|:\d{2})?)(?=\s|$)/);
-  if (tm) { const a = hourOf(tm[1]), b = hourOf(tm[2]); if (a >= 0 && b <= 24 && b > a) { start = a; end = b; } l = l.replace(tm[0], ' '); }
+  if (tm) { const a = hourOf(tm[1], false), b = hourOf(tm[2], true); if (a >= 0 && b <= 24 && b > a) { start = a; end = b; } l = l.replace(tm[0], ' '); }
   // leading token names the part(s): "A", "ABD", "ALL", "BG", "1F", "Caravan", "A#"
   const token = (l.trim().split(/\s+/)[0] || '').replace(/[#:,.]+$/, '');
-  if (!token && !start && !range) { if (kind !== 'prov') return null; /* '++(W1)' alone: provisional, whole studio, whole day */ }
-  const bare = l.trim() === token; // label is only a part name → empty-room placeholder on the hongdae board
+  if (!token && start === null && !range) { if (kind !== 'prov') return null; /* '++(W1)' alone: provisional, whole studio, whole day */ }
+  const bare = start === null && !range && !arrow && l.trim() === token; // label is only a part name (no time, no name) → empty-room placeholder on the hongdae board
   const up = token.toUpperCase();
   let picked = null, all = false;
   if (!token || up === 'ALL' || up === '전체') all = true;
@@ -65,8 +67,8 @@ function parseLabel(raw, studio) {
     else if (/^[A-Z]{2,}$/.test(up) && [...up].every((ch) => parts.includes(ch))) picked = [...new Set([...up])];
     else all = true; // a name or something we don't recognise → whole studio
   }
-  if (bare && picked && !range) return null; // "A" alone = placeholder, not a booking
-  return { block: { parts: all ? parts.slice() : picked, all, start, end, kind, label: (all ? 'ALL' : picked.join('+')) + (start !== null ? ' ' + start + '–' + end : ''), raw: decode(raw).trim() }, range };
+  if (bare && picked) return null; // "A" alone = placeholder, not a booking
+  return { block: { parts: all ? parts.slice() : picked, all, start, end, kind, label: (all ? 'ALL' : picked.join('+')) + (start !== null ? ' ' + start + '–' + end : ''), raw: text.trim() }, range, arrow: range ? null : arrow, key: l.replace(/\s+/g, ' ').trim() };
 }
 
 /** Board month → { 'YYYY-MM-DD': [block…] } */
@@ -75,9 +77,21 @@ function fromBoard(labels, studio, y, m) {
   const push = (d, b) => { const k = `${y}-${pad2(m)}-${pad2(d)}`; (days[k] = days[k] || []).push(b); };
   const seenRange = new Set();
   const last = new Date(Date.UTC(y, m, 0)).getUTCDate();
+  // "$$$ 이름 --->" on the first day and "<--- $$$ 이름" on the last day, with no dates written: pair them by text
+  const arrowStart = {}, arrowEnd = {};
+  for (const [dStr, list] of Object.entries(labels)) for (const raw of list) { const p = parseLabel(raw, studio); if (p && p.arrow) (p.arrow === 'start' ? arrowStart : arrowEnd)[p.key] = (p.arrow === 'start' ? Math.min : Math.max)((p.arrow === 'start' ? arrowStart : arrowEnd)[p.key] ?? +dStr, +dStr); }
+  const pairedEnd = new Set();
   for (const [dStr, list] of Object.entries(labels)) {
     for (const raw of list) {
       const p = parseLabel(raw, studio); if (!p) continue;
+      if (p.arrow === 'start') { // fill from here to the matching end (or the end of the month)
+        const d1 = +dStr, d2 = arrowEnd[p.key] >= d1 ? arrowEnd[p.key] : last; if (d2 !== d1) pairedEnd.add(p.key);
+        for (let d = d1; d <= d2; d++) push(d, p.block); continue;
+      }
+      if (p.arrow === 'end') { // end without a start in this month → booked since the 1st
+        if (pairedEnd.has(p.key) || arrowStart[p.key] <= +dStr) continue;
+        for (let d = 1; d <= +dStr; d++) push(d, p.block); continue;
+      }
       if (p.range) {
         const key = JSON.stringify([p.range, p.block.label]); if (seenRange.has(key)) continue; seenRange.add(key);
         const { m1, d1, m2, d2 } = p.range;

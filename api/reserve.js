@@ -76,7 +76,7 @@ function buildPost(r, rank = 1) {
     `* 이메일 : ${r.email || '-'}`,
     `* 요청사항 : ${r.note || '-'}`,
     '',
-    `* 접수 : 홈페이지 예약 폼, ${new Date(Date.now() + 9 * 3600e3).toISOString().replace('T', ' ').slice(0, 16)} KST${r.id ? ' · 접수번호 #' + r.id : ''}`,
+    `* 접수 : 홈페이지 예약 폼, ${r.received || new Date(Date.now() + 9 * 3600e3).toISOString().replace('T', ' ').slice(0, 16)} KST${r.id ? ' · 접수번호 #' + r.id : ''}`,
   ].join('\n');
   return { label, memo };
 }
