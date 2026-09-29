@@ -179,6 +179,16 @@
     .item.is-fail { border-color: var(--full); }
     @media (max-width: 420px) { .fields { grid-template-columns: 1fr; } }
 
+    /* modal: event enquiries go by email */
+    .modal { position: fixed; inset: 0; z-index: 100; display: grid; place-items: center; padding: 20px; background: rgba(0,0,0,.45); }
+    .modal[hidden] { display: none; }
+    .modal__box { width: 100%; max-width: 380px; background: var(--panel); color: var(--ink); border: 1px solid var(--line); padding: 26px 22px 22px; display: grid; gap: 14px; box-shadow: 0 24px 60px rgba(0,0,0,.25); }
+    .modal__t { font-family: var(--serif); font-weight: 500; font-size: 20px; margin: 0; }
+    .modal__p { font-size: 14px; color: var(--ink-2); margin: 0; line-height: 1.6; }
+    .modal__mail { display: flex; align-items: center; justify-content: center; height: 52px; border: 1px solid var(--ink); font-family: var(--sans); font-size: 15px; letter-spacing: .02em; color: var(--ink); text-decoration: none; }
+    .modal__mail:hover { background: var(--sel); color: var(--sel-ink); }
+    .modal__close { font: inherit; font-family: var(--ko); font-size: 13px; color: var(--ink-2); background: none; border: 0; padding: 4px; cursor: pointer; text-decoration: underline; text-underline-offset: 2px; justify-self: center; }
+
     @media (min-width: 900px) { .wrap { padding-top: 48px; } }
   </style>
 </head>
@@ -318,6 +328,14 @@
 
     </div>
   </section>
+<div class="modal" id="eventModal" hidden role="dialog" aria-modal="true" aria-labelledby="eventT">
+  <div class="modal__box">
+    <p class="modal__t" id="eventT">행사 대관 문의</p>
+    <p class="modal__p">행사는 규모와 내용에 따라 준비가 달라 온라인으로 접수하지 않습니다. 아래 메일로 일정·인원·행사 내용을 보내 주시면 담당자가 안내드립니다.</p>
+    <a class="modal__mail" href="mailto:event@layer-studios.com?subject=%ED%96%89%EC%82%AC%20%EB%8C%80%EA%B4%80%20%EB%AC%B8%EC%9D%98">event@layer-studios.com</a>
+    <button type="button" class="modal__close" id="eventClose">닫기</button>
+  </div>
+</div>
 </main>
 
 <script>
@@ -402,7 +420,14 @@
 
   // ---------- purpose
   const puBox = $('purpose');
-  PURPOSES.forEach(([k, t]) => { const b = document.createElement('button'); b.type = 'button'; b.className = 'chip ko'; b.dataset.k = k; b.textContent = t; b.addEventListener('click', () => { st.purpose = k; render(); }); puBox.appendChild(b); });
+  PURPOSES.forEach(([k, t]) => { const b = document.createElement('button'); b.type = 'button'; b.className = 'chip ko'; b.dataset.k = k; b.textContent = t; b.addEventListener('click', () => { if (k === 'event') return openEvent(); st.purpose = k; render(); }); puBox.appendChild(b); });
+  // 행사: not booked online — show the email and leave the purpose as it was
+  const eventModal = $('eventModal'); let eventOpener = null;
+  function openEvent() { eventOpener = document.activeElement; eventModal.hidden = false; $('eventClose').focus(); }
+  function closeEvent() { eventModal.hidden = true; if (eventOpener && eventOpener.focus) eventOpener.focus(); }
+  $('eventClose').addEventListener('click', closeEvent);
+  eventModal.addEventListener('click', e => { if (e.target === eventModal) closeEvent(); });
+  document.addEventListener('keydown', e => { if (e.key === 'Escape' && !eventModal.hidden) closeEvent(); });
 
   // ---------- parts
   $('partClear').addEventListener('click', () => { st.parts = []; render(); });
