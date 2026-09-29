@@ -46,6 +46,7 @@ python3 tools/build.py
 - 표 생성 SQL: `supabase/schema.sql` (Supabase → SQL Editor에서 한 번 실행)
 - `RESERVE_MODE=direct` 로 두면 예전처럼 신청 즉시 게시판에 쓰는 방식으로 돌아갑니다.
 - `/api/keepalive` 가 매일 한 번 크론으로 돌아 무료 플랜의 무활동 정지를 막습니다.
+- **수정 (`/admin` → 수정 펼치기)**: 파트·날짜·시간·인원·연락처 등을 고치면 Supabase 행이 바뀌고 `reservation_events`에 "수정"으로 남습니다. 승인된 건은 게시판 글도 함께 고칩니다(`POST /api/admin?action=edit`). 승인 때 본문에 `접수번호 #id`를 적어 두고 그 글 번호를 `board_post_no`에 저장하며, 콘솔이 쓴 라벨·본문은 `board_snapshot` 이벤트로 남깁니다. 고칠 때는 게시판 글을 먼저 읽어 **줄 단위로 병합**합니다(`api/_merge.js`): 콘솔이 만든 `* 항목 :` 줄만 바꾸고 스태프가 적은 줄은 그대로 두며, 스태프가 콘솔 줄을 직접 고쳤으면 409로 돌려보내 어느 쪽을 남길지 묻습니다. 날짜가 바뀌면 새 날짜에 글을 쓰고 옛 글을 지웁니다. 글을 못 찾는 예전 건은 콘솔 기록만 바꿉니다.
 - `GET /api/availability?studio=layer-41&y=2026&m=10` — 달력용 월별 현황. 지점 스케줄 게시판의 라벨(`A 10-19 …`, `$$$ 10/05~08 …`, `++(W1)`)과 Supabase 대기 건을 파트·시간 블록으로 합쳐 돌려줍니다(이름은 서버에서 제거). 인스턴스·CDN에서 60초 캐시. `/reserve-mock` 달력이 이걸 씁니다.
 
 Vercel 프로젝트 → Settings → Environment Variables 에 아래를 넣어야 동작합니다.

@@ -133,4 +133,70 @@ async function writePost({ cookie, boardId, date, label, memo, name, password })
   return { ok, status: res.headers.split('\r\n')[0], snippet: html.replace(/<[^>]+>/g, ' ').replace(/\s+/g, ' ').slice(0, 300) };
 }
 
-module.exports = { login, writePost, probeLogin, dayLabels, monthLabels, rawRequest, BASE, HOST };
+const decodeEntities = (t) => t.replace(/&lt;/g, '<').replace(/&gt;/g, '>').replace(/&quot;/g, '"').replace(/&#39;/g, "'").replace(/&nbsp;/g, ' ').replace(/&amp;/g, '&');
+const stripTags = (h) => decodeEntities(h.replace(/<script[\s\S]*?<\/script>/gi, ' ').replace(/<[^>]+>/g, ' ')).replace(/\s+/g, ' ').trim();
+
+/** Post numbers linked from one day's cell of the month grid (newest first). */
+async function dayPostNos({ cookie, boardId, y, m, d }) {
+  const res = await rawRequest('GET', `${BASE}/zboard.php?id=${boardId}&year=${y}&month=${m}`, { cookie });
+  const html = iconv.decode(res.body, 'EUC-KR');
+  const start = html.indexOf(`subject=${y}/${m}/${d}'`);
+  if (start === -1) return [];
+  const rest = html.slice(start + 10);
+  const next = rest.search(/subject=\d{4}\/\d{1,2}\/\d{1,2}'/);
+  const cell = next === -1 ? rest : rest.slice(0, next);
+  return [...new Set([...cell.matchAll(/[?&]no=(\d+)/g)].map((x) => x[1]))].sort((a, b) => b - a);
+}
+
+/**
+ * Find the homepage post for one request on a day: the newest post on that day whose body contains `marker`
+ * (e.g. "접수번호 #12"). Returns the post number or null.
+ */
+async function findPost({ cookie, boardId, y, m, d, marker, limit = 6 }) {
+  const nos = (await dayPostNos({ cookie, boardId, y, m, d })).slice(0, limit);
+  for (const no of nos) {
+    const view = iconv.decode((await rawRequest('GET', `${BASE}/view.php?id=${boardId}&no=${no}`, { cookie })).body, 'EUC-KR');
+    if (stripTags(view).includes(marker)) return no;
+  }
+  return null;
+}
+
+/**
+ * Current label + body of a post, read from its modify form (needs the staff session).
+ * Returns { label, memo, name } or null when the post is gone / not editable.
+ */
+async function readPost({ cookie, boardId, no, y, m }) {
+  const res = await rawRequest('GET', `${BASE}/write.php?id=${boardId}&no=${no}&mode=modify&year=${y}&month=${m}`, { cookie });
+  const html = iconv.decode(res.body, 'EUC-KR');
+  const memoM = html.match(/<textarea[^>]*name=['"]?memo['"]?[^>]*>([\s\S]*?)<\/textarea>/i);
+  if (!memoM) return null;
+  const attr = (name) => { const mm = html.match(new RegExp(`<input[^>]*name=['"]?${name}['"]?[^>]*>`, 'i')); if (!mm) return ''; const v = mm[0].match(/value=(?:"([^"]*)"|'([^']*)'|([^\s>]*))/i); return v ? decodeEntities(v[1] ?? v[2] ?? v[3] ?? '') : ''; };
+  return { label: attr('sitelink1').trim(), memo: decodeEntities(memoM[1]).replace(/\r\n?/g, '\n'), name: attr('name') };
+}
+
+/** Rewrite a post's label + body in place (subject/date unchanged). */
+async function modifyPost({ cookie, boardId, no, date, label, memo, name, password }) {
+  const y = date.getUTCFullYear(), m = date.getUTCMonth() + 1, d = date.getUTCDate();
+  const fields = {
+    page: '', id: boardId, no, select_arrange: '', desc: '', page_num: '', keyword: '', category: '', sn: '', ss: '', sc: '',
+    mode: 'modify', name, password, email: '', homepage: '', is_secret: '', subject: `${y}/${m}/${d}`, sitelink1: label, memo, sitelink2: '',
+  };
+  const { body, contentType } = multipart(fields);
+  const res = await rawRequest('POST', `${BASE}/write_ok.php?year=${y}&month=${m}`, { body, cookie, contentType });
+  const html = iconv.decode(res.body, 'EUC-KR');
+  const ok = /zboard\.php|view\.php/i.test(html) && !/사용권한이 없습니다|비밀번호가 틀|error|오류/i.test(html.replace(/(zboard|view)\.php[^"']*/g, ''));
+  return { ok, status: res.headers.split('\r\n')[0], snippet: stripTags(html).slice(0, 300) };
+}
+
+/** Delete a post (owner/admin session deletes outright; otherwise the post password form is answered). */
+async function deletePost({ cookie, boardId, no, password }) {
+  let html = iconv.decode((await rawRequest('GET', `${BASE}/delete.php?id=${boardId}&no=${no}&page=1`, { cookie })).body, 'EUC-KR');
+  if (/name=['"]?password/i.test(html)) {
+    const form = new URLSearchParams({ id: boardId, no, page: '1', password, select_arrange: '', desc: '', page_num: '', keyword: '', category: '', sn: '', ss: '', sc: '' });
+    html = iconv.decode((await rawRequest('POST', `${BASE}/delete_ok.php`, { cookie, body: Buffer.from(form.toString()) })).body, 'EUC-KR');
+  }
+  const ok = /삭제|zboard\.php/.test(html) && !/비밀번호가 틀|권한이 없/.test(html);
+  return { ok, snippet: stripTags(html).slice(0, 200) };
+}
+
+module.exports = { login, writePost, modifyPost, deletePost, readPost, findPost, dayPostNos, probeLogin, dayLabels, monthLabels, rawRequest, BASE, HOST };

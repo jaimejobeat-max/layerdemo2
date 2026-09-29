@@ -76,10 +76,12 @@ function buildPost(r, rank = 1) {
     `* 이메일 : ${r.email || '-'}`,
     `* 요청사항 : ${r.note || '-'}`,
     '',
-    `* 접수 : 홈페이지 예약 폼, ${new Date(Date.now() + 9 * 3600e3).toISOString().replace('T', ' ').slice(0, 16)} KST`,
+    `* 접수 : 홈페이지 예약 폼, ${new Date(Date.now() + 9 * 3600e3).toISOString().replace('T', ' ').slice(0, 16)} KST${r.id ? ' · 접수번호 #' + r.id : ''}`,
   ].join('\n');
   return { label, memo };
 }
+/** Text that identifies a request's post on the board (see findPost) */
+const marker = (id) => `접수번호 #${id}`;
 
 async function slack(r, post, boardId, boardResult) {
   const url = process.env.SLACK_WEBHOOK_URL; if (!url) return;
@@ -160,5 +162,5 @@ module.exports = async (req, res) => {
   const reason = !boardId ? 'no-board' : process.env.RESERVE_DRY_RUN === '1' ? 'dry-run' : (boardResult && boardResult.ok) ? null : (boardResult && (boardResult.error || boardResult.status)) || 'unknown';
   res.status(200).json({ ok: true, recorded: !!(boardResult && boardResult.ok), label: post.label, reason });
 };
-module.exports.buildPost = buildPost; module.exports.validate = validate; module.exports.provisionalRank = provisionalRank;
+module.exports.buildPost = buildPost; module.exports.validate = validate; module.exports.provisionalRank = provisionalRank; module.exports.marker = marker;
 module.exports.BOARDS = BOARDS; module.exports.NAMES = NAMES; module.exports.hm = hm; module.exports.WEEKDAYS = WEEKDAYS;

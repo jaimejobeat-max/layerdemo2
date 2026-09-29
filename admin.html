@@ -78,6 +78,17 @@
     .log { margin-top: 14px; } .log li { display: grid; grid-template-columns: 130px 1fr; gap: 16px; padding: 8px 0; border-bottom: 1px solid var(--line); font-size: 13px; } .log time { color: var(--muted); font-family: var(--label); font-size: 11px; letter-spacing: .5px; padding-top: 2px; }
     .note-form { display: flex; gap: 8px; margin-top: 12px; } .note-form input { flex: 1; height: 36px; padding: 0 10px; border: 1px solid var(--line); background: #fff; }
     .toast { position: fixed; left: 50%; bottom: 28px; transform: translate(-50%, 20px); background: var(--dark); color: #fff; padding: 12px 20px; font-size: 13px; border-radius: 2px; opacity: 0; transition: all .3s var(--ease); pointer-events: none; z-index: 30; } .toast.is-on { opacity: 1; transform: translate(-50%, 0); } .toast.is-bad { background: var(--bad); }
+    .edit { margin-top: 18px; display: grid; gap: 14px; } .edit[hidden] { display: none; }
+    .edit__grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 12px 16px; } .edit__wide { grid-column: 1 / -1; }
+    .edit label { display: grid; gap: 4px; } .edit label > span { font-family: var(--label); font-size: 10px; letter-spacing: 1px; text-transform: uppercase; color: var(--muted); }
+    .edit input, .edit select, .edit textarea { height: 36px; padding: 0 10px; border: 1px solid var(--line); background: #fff; width: 100%; font-size: 13px; } .edit textarea { height: auto; min-height: 60px; padding: 8px 10px; resize: vertical; }
+    .edit input:focus, .edit select:focus, .edit textarea:focus { outline: none; border-color: var(--ink); }
+    .edit__row { display: flex; gap: 12px; align-items: center; flex-wrap: wrap; } .edit__hint { font-size: 12px; color: var(--muted); }
+    .conf { border: 1px solid #E4B9B2; background: var(--bad-soft); padding: 14px 16px; font-size: 13px; color: var(--ink); } .conf[hidden] { display: none; } .conf > strong { color: var(--bad); }
+    .conf__item { display: grid; grid-template-columns: 1fr 1fr; gap: 6px 16px; padding: 10px 0 4px; margin-top: 8px; border-top: 1px solid rgba(0,0,0,.08); }
+    .conf__item > .label { grid-column: 1 / -1; } .conf__item label { display: flex; gap: 8px; align-items: flex-start; cursor: pointer; } .conf__item label > span { flex: 1; min-width: 0; } .conf__item input[type=radio] { width: auto; height: auto; margin: 3px 0 0; accent-color: var(--brown); }
+    .conf__item code { display: block; font-family: ui-monospace, Menlo, monospace; font-size: 12px; white-space: pre-wrap; word-break: break-all; background: #fff; padding: 6px 8px; border: 1px solid var(--line); margin-top: 4px; }
+    @media (max-width: 1100px) { .edit__grid { grid-template-columns: repeat(2, 1fr); } .conf__item { grid-template-columns: 1fr; } }
     .empty { padding: 96px var(--gutter); text-align: center; color: var(--muted); }
     .gate { position: fixed; inset: 0; z-index: 50; background: var(--cream); display: flex; align-items: center; justify-content: center; padding: 24px; } .gate[hidden] { display: none; }
     .gate__box { width: 360px; max-width: 100%; } .gate__title { font-family: var(--serif); font-size: 24px; color: var(--black); margin-top: 16px; }
@@ -243,6 +254,7 @@
             <div class="fact"><dt>처리</dt><dd>${r.decided_by ? `${esc(r.decided_by)} · ${fmtAt(r.decided_at)}` : '<span style="color:var(--muted)">아직 없음</span>'}</dd></div>
             <div class="fact" style="grid-column:1/-1"><dt>요청 사항</dt><dd>${r.note ? esc(r.note) : '<span style="color:var(--muted)">없음</span>'}</dd></div>
           </dl></section>
+        ${editSection(r, board)}
         <section class="section"><div class="section__head"><h3 class="label">${fmtDate(r.date)} · ${esc(studioName)} 스케줄</h3>${board.boardId ? `<a class="label label--muted" href="https://raysoda.cafe24.com/zboard/zboard.php?id=${esc(board.boardId)}&year=${r.date.slice(0, 4)}&month=${+r.date.slice(5, 7)}" target="_blank" rel="noopener">게시판에서 열기 ↗</a>` : ''}</div>
           <div class="tl"><div class="tl__hours"><div></div><div class="tl__scale">${scale.join('')}</div></div>${lanes}</div>
           <div class="legend"><span><i style="background:var(--dark)"></i>게시판 확정</span><span><i style="border:1px dashed var(--brown);background:#fff"></i>게시판 가부킹 (++)</span><span><i style="background:var(--brown-soft)"></i>다른 홈페이지 신청</span><span><i style="background:var(--brown)"></i>이 신청</span><span><i style="background:var(--bad)"></i>겹침</span></div>
@@ -255,12 +267,75 @@
               <p class="decision__hint">승인하면 게시판 글이 먼저 작성되고, 성공해야 승인으로 바뀝니다. 되돌리려면 게시판에서 글을 직접 지워야 합니다.</p></div>
             <div class="decision__btns"><button class="btn" data-act="approved">${board.boardId ? '승인 · 게시판 작성' : '승인 · 수기 처리'}</button><button class="btn btn--ghost" data-act="hold">보류</button><button class="btn btn--danger" data-act="rejected">반려</button>${r.status !== 'pending' ? '<button class="btn btn--ghost" data-act="pending">대기로 되돌리기</button>' : ''}</div></div></section>
         <section class="section"><div class="section__head"><h3 class="label">처리 기록</h3></div>
-          <ul class="log">${events.slice().reverse().map(ev => `<li><time>${fmtAt(ev.created_at)}</time><span><b style="font-weight:500">${esc(actionName(ev.action))}</b> · ${esc(ev.actor)}${ev.detail ? ' — ' + esc(ev.detail) : ''}</span></li>`).join('')}</ul>
+          <ul class="log">${events.filter(ev => ev.action !== 'board_snapshot').slice().reverse().map(ev => `<li><time>${fmtAt(ev.created_at)}</time><span><b style="font-weight:500">${esc(actionName(ev.action))}</b> · ${esc(ev.actor)}${ev.detail ? ' — ' + esc(ev.detail) : ''}</span></li>`).join('')}</ul>
           <form class="note-form" data-note-form><input type="text" placeholder="메모 추가 (예: 전화 통화, 입금 안내)" required><button class="btn btn--ghost" type="submit">기록</button></form></section>`;
       root.querySelectorAll('[data-act]').forEach(b => b.addEventListener('click', () => decide(r, b.dataset.act, b)));
+      bindEdit(r);
       $('[data-note-form]').addEventListener('submit', async e => { e.preventDefault(); const inp = e.target.querySelector('input'); try { await api('note', { method: 'POST', body: { id: r.id, note: inp.value, actor: ACTOR } }); toast('기록했습니다.'); loadDetail(); } catch (err) { toast('기록 실패: ' + err.message, true); } });
     }
-    const actionName = a => ({ submitted: '접수', approved: '승인', hold: '보류', rejected: '반려', pending: '대기로 되돌림', board_written: '게시판 기록', board_failed: '게시판 기록 실패', note: '메모' }[a] || a);
+    // ---------- edit: change a request; for an approved one the board post is rewritten too (line-level merge, see api/_merge.js) ----------
+    const PURPOSES = ['사진 촬영', '영상 촬영', '행사'];
+    function editSection(r, board) {
+      const timeOpts = v => { let o = ''; for (let h = 0; h <= 24; h += .5) o += `<option value="${h}" ${h === v ? 'selected' : ''}>${hm(h)}</option>`; return o; };
+      const syncs = r.status === 'approved' && board.boardId;
+      return `<section class="section"><div class="section__head"><h3 class="label">수정</h3><button type="button" class="label label--muted" data-edit-toggle>펼치기</button></div>
+        <form class="edit" data-edit-form hidden>
+          <div class="edit__grid">
+            <label><span>파트</span><input name="part" value="${esc(r.part)}" placeholder="A, A+B, -" list="parts-${esc(r.studio)}"><datalist id="parts-${esc(r.studio)}">${(STUDIOS[r.studio] || []).map(p => `<option value="${esc(p)}">`).join('')}</datalist></label>
+            <label><span>날짜</span><input type="date" name="date" value="${esc(r.date)}" required></label>
+            <label><span>시작</span><select name="start">${timeOpts(hrs(r.start_at))}</select></label>
+            <label><span>종료</span><select name="end">${timeOpts(hrs(r.end_at))}</select></label>
+            <label><span>내용</span><input name="purpose" value="${esc(r.purpose || '')}" list="purposes"><datalist id="purposes">${PURPOSES.map(p => `<option value="${p}">`).join('')}</datalist></label>
+            <label><span>인원</span><input name="people" value="${esc(r.people || '')}" inputmode="numeric"></label>
+            <label><span>차량</span><input name="vehicles" value="${esc(r.vehicles || '')}" inputmode="numeric"></label>
+            ${syncs ? `<label><span>캘린더 라벨</span><input name="boardLabel" value="${esc(r.board_label || '')}" placeholder="++(W1) 또는 확정 라벨"></label>` : '<div></div>'}
+            <label><span>업체명</span><input name="company" value="${esc(r.company)}" required></label>
+            <label><span>담당자</span><input name="contact" value="${esc(r.contact)}" required></label>
+            <label><span>전화</span><input name="phone" value="${esc(r.phone)}" required></label>
+            <label><span>이메일</span><input name="email" type="email" value="${esc(r.email || '')}"></label>
+            <label class="edit__wide"><span>요청 사항</span><textarea name="note">${esc(r.note || '')}</textarea></label>
+          </div>
+          <div class="conf" data-conflicts hidden></div>
+          <div class="edit__row"><button class="btn" type="submit">${syncs ? '저장 · 게시판 반영' : '저장'}</button>
+            <span class="edit__hint">${syncs ? '게시판 글을 먼저 읽어 콘솔이 쓴 줄만 바꿉니다. 스태프가 직접 적은 메모는 그대로 두고, 스태프가 고친 항목이 있으면 저장 전에 어느 쪽을 남길지 묻습니다. 날짜를 바꾸면 새 날짜에 글을 쓰고 옛 글을 지웁니다.' : r.status === 'approved' ? '게시판이 없는 지점이라 콘솔 기록만 바뀝니다. 스케줄은 수기로 고쳐 주세요.' : '아직 게시판에 올라가지 않은 건이라 콘솔 기록만 바뀝니다.'}</span></div>
+        </form></section>`;
+    }
+    function bindEdit(r) {
+      const form = $('[data-edit-form]'); if (!form) return;
+      $('[data-edit-toggle]').addEventListener('click', e => { form.hidden = !form.hidden; e.target.textContent = form.hidden ? '펼치기' : '접기'; });
+      const resolve = {};
+      form.addEventListener('submit', async e => {
+        e.preventDefault(); const f = form.elements;
+        const fields = { part: f.part.value, date: f.date.value, start: f.start.value, end: f.end.value, purpose: f.purpose.value, people: f.people.value, vehicles: f.vehicles.value, note: f.note.value, company: f.company.value, contact: f.contact.value, phone: f.phone.value, email: f.email.value };
+        form.querySelectorAll('[data-conf-key]').forEach(el => { const c = el.querySelector('input:checked'); if (c) resolve[el.dataset.confKey] = c.value; });
+        const btn = form.querySelector('[type=submit]'); const was = btn.textContent; btn.disabled = true; btn.textContent = '저장 중…';
+        try {
+          const d = await api('edit', { method: 'POST', body: { id: r.id, fields, boardLabel: f.boardLabel ? f.boardLabel.value : '', resolve, actor: ACTOR } });
+          toast(!d.board ? '저장했습니다.' : d.board.synced ? `저장했습니다. 게시판 글도 반영했습니다 (${d.board.label}${d.board.moved ? ', 날짜 이동' : ''}${d.board.staffLines ? `, 스태프 메모 ${d.board.staffLines}줄 유지` : ''}).` : '저장했습니다. 게시판 글은 찾지 못해 그대로 두었습니다.');
+          await loadList(); loadDetail();
+        } catch (err) {
+          const data = err.data || {};
+          if (data.error === 'conflict') { renderConflicts(form, data); toast('게시판 글에 스태프가 직접 고친 부분이 있어 저장하지 않았습니다. 아래에서 선택해 주세요.', true); }
+          else if (data.error === 'board-unlinked') {
+            const why = data.reason === 'missing' ? '게시판 글이 삭제되어 있습니다.' : '게시판에서 이 신청의 글을 찾지 못했습니다 (글 번호가 기록되기 전에 승인된 건).';
+            if (confirm(`${why}\n게시판은 그대로 두고 콘솔 기록만 바꿀까요? 스케줄은 수기로 고쳐 주세요.`)) { resolve.__board = true; form.requestSubmit(); return; }
+          }
+          else if (data.error === 'input') toast('입력을 확인해 주세요: ' + ({ part: '파트', date: '날짜', time: '시간 (30분 단위, 종료가 시작보다 뒤)', company: '업체명', contact: '담당자', phone: '전화번호', email: '이메일' }[data.field] || data.field), true);
+          else if (data.error === 'board-write') toast('게시판 글 수정에 실패해 저장하지 않았습니다. 잠시 후 다시 시도해 주세요.', true);
+          else if (data.error === 'board-login') toast('게시판 로그인에 실패했습니다. 잠시 후 다시 시도해 주세요.', true);
+          else if (err.message !== 'unauthorized') toast('저장 실패: ' + err.message, true);
+        } finally { btn.disabled = false; btn.textContent = was; }
+      });
+    }
+    function renderConflicts(form, { conflicts, hasBase }) {
+      const box = form.querySelector('[data-conflicts]'); box.hidden = false;
+      box.innerHTML = `<strong>게시판 글에 스태프가 직접 고친 부분이 있습니다.</strong> 항목마다 어느 쪽을 남길지 고르고 다시 저장하세요. 고르지 않은 항목은 게시판 쪽이 남습니다.${hasBase ? '' : ' 이 글은 콘솔이 쓴 내용의 기록이 없어, 값이 다른 항목을 모두 묻습니다.'}` +
+        conflicts.map((c, i) => `<div class="conf__item" data-conf-key="${esc(c.key)}"><div class="label label--muted">${esc(c.title)}</div>
+          <label><input type="radio" name="conf-${i}" value="board" checked><span>게시판 유지<code>${esc(c.board || '(비어 있음)')}</code></span></label>
+          <label><input type="radio" name="conf-${i}" value="console"><span>콘솔 값으로 바꿈<code>${esc(c.console || '(비어 있음)')}</code></span></label></div>`).join('');
+      box.scrollIntoView({ behavior: 'smooth', block: 'center' });
+    }
+    const actionName = a => ({ submitted: '접수', approved: '승인', hold: '보류', rejected: '반려', pending: '대기로 되돌림', board_written: '게시판 기록', board_failed: '게시판 기록 실패', note: '메모', edited: '수정' }[a] || a);
     async function decide(r, act, btn) {
       const note = $('#note').value.trim(); const lblEl = $('input[name="lbl"]:checked'); const label = lblEl ? lblEl.value : 'prov'; const fixedLabel = ($('input[name="fixedLabel"]') || {}).value || '';
       if (act === 'rejected' && !note && !confirm('반려 사유 없이 반려할까요?')) return;
