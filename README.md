@@ -46,6 +46,7 @@ python3 tools/build.py
 - 표 생성 SQL: `supabase/schema.sql` (Supabase → SQL Editor에서 한 번 실행)
 - `RESERVE_MODE=direct` 로 두면 예전처럼 신청 즉시 게시판에 쓰는 방식으로 돌아갑니다.
 - `/api/keepalive` 가 매일 한 번 크론으로 돌아 무료 플랜의 무활동 정지를 막습니다.
+- `GET /api/availability?studio=layer-41&y=2026&m=10` — 달력용 월별 현황. 지점 스케줄 게시판의 라벨(`A 10-19 …`, `$$$ 10/05~08 …`, `++(W1)`)과 Supabase 대기 건을 파트·시간 블록으로 합쳐 돌려줍니다(이름은 서버에서 제거). 인스턴스·CDN에서 60초 캐시. `/reserve-mock` 달력이 이걸 씁니다.
 
 Vercel 프로젝트 → Settings → Environment Variables 에 아래를 넣어야 동작합니다.
 

@@ -71,19 +71,29 @@ async function probeLogin(userId, password) {
 }
 
 /**
- * Labels (sitelink1) already posted on one calendar day of a board.
+ * Labels (sitelink1) posted on every day of one board month → { [day]: [label, …] }.
  * The month grid marks each day cell with a write.php link whose subject is
  * "Y/M/D"; everything up to the next day's link belongs to that day.
  */
-async function dayLabels({ cookie, boardId, y, m, d }) {
+async function monthLabels({ cookie, boardId, y, m }) {
   const res = await rawRequest('GET', `${BASE}/zboard.php?id=${boardId}&year=${y}&month=${m}`, { cookie });
   const html = iconv.decode(res.body, 'EUC-KR');
-  const start = html.indexOf(`subject=${y}/${m}/${d}'`);
-  if (start === -1) return [];
-  const rest = html.slice(start + 10);
-  const next = rest.search(/subject=\d{4}\/\d{1,2}\/\d{1,2}'/);
-  const cell = next === -1 ? rest : rest.slice(0, next);
-  return [...cell.matchAll(/short_msg_show\('((?:[^'\\]|\\.)*)'/g)].map((x) => x[1].trim()).filter(Boolean);
+  if (html.includes('사용권한이 없습니다')) throw new Error('zeroboard session rejected');
+  const marks = [...html.matchAll(/subject=(\d{4})\/(\d{1,2})\/(\d{1,2})'/g)].map((x) => ({ y: +x[1], m: +x[2], d: +x[3], at: x.index }));
+  const out = {};
+  marks.forEach((c, i) => {
+    if (c.y !== y || c.m !== m) return;
+    const cell = html.slice(c.at, i + 1 < marks.length ? marks[i + 1].at : undefined);
+    const labels = [...cell.matchAll(/short_msg_show\('((?:[^'\\]|\\.)*)'/g)].map((x) => x[1].trim()).filter(Boolean);
+    if (labels.length) out[c.d] = labels;
+  });
+  return out;
+}
+
+/** Labels (sitelink1) already posted on one calendar day of a board. */
+async function dayLabels({ cookie, boardId, y, m, d }) {
+  const month = await monthLabels({ cookie, boardId, y, m });
+  return month[d] || [];
 }
 
 // Build a multipart/form-data body with EUC-KR encoded values.
@@ -123,4 +133,4 @@ async function writePost({ cookie, boardId, date, label, memo, name, password })
   return { ok, status: res.headers.split('\r\n')[0], snippet: html.replace(/<[^>]+>/g, ' ').replace(/\s+/g, ' ').slice(0, 300) };
 }
 
-module.exports = { login, writePost, probeLogin, dayLabels, rawRequest, BASE, HOST };
+module.exports = { login, writePost, probeLogin, dayLabels, monthLabels, rawRequest, BASE, HOST };

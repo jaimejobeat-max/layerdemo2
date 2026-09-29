@@ -4,7 +4,7 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
   <meta name="robots" content="noindex, nofollow">
-  <title>Layer Reservation Calendar Mock</title>
+  <title>Layer Reservation Calendar</title>
   <link rel="icon" type="image/svg+xml" href="assets/favicon.svg">
   <link rel="preconnect" href="https://cdn.jsdelivr.net" crossorigin>
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/static/pretendard.min.css">
@@ -151,13 +151,41 @@
     .fine { font-size: 12px; color: var(--ink-2); margin: 0; padding: 0; list-style: none; display: grid; gap: 4px; line-height: 1.5; }
     .fine a { color: inherit; }
 
+    /* status: booked for some hours only */
+    .chip.st-busy i { background: var(--prov); }
+    .day.is-busy .day__s, .day.is-loading .day__s { color: var(--prov); }
+    .day.is-loading .day__s { color: var(--ink-3); }
+    .part.st-busy span { color: var(--prov); } .part.st-busy { background: var(--prov-bg); }
+    .cal__note { font-size: 12px; color: var(--ink-2); margin: 10px 0 0; } .cal__note.is-bad { color: var(--full); } .cal__note[hidden] { display: none; }
+
+    /* steps: 1 pick · 2 contact · 3 done */
+    .step { display: grid; gap: 24px; } .step[hidden] { display: none; }
+    .step > * { min-width: 0; }
+    .hp { position: absolute; left: -9999px; width: 1px; height: 1px; opacity: 0; }
+    .fields { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
+    .field { display: grid; gap: 6px; font-size: 12px; color: var(--ink-2); }
+    .field--wide { grid-column: 1 / -1; }
+    .field input, .field textarea { font: inherit; font-size: 15px; color: var(--ink); background: var(--cell); border: 1px solid var(--line); height: 48px; padding: 0 12px; width: 100%; border-radius: 0; }
+    .field textarea { height: auto; padding: 12px; resize: vertical; }
+    .field input:focus, .field textarea:focus { outline: 2px solid var(--sel); outline-offset: -2px; }
+    .consent { display: flex; gap: 10px; align-items: flex-start; font-size: 13px; color: var(--ink-2); margin-top: 14px; cursor: pointer; }
+    .consent input { margin: 3px 0 0; accent-color: var(--sel); flex: none; }
+    .err { color: var(--full); font-size: 13px; margin: 12px 0 0; } .err[hidden] { display: none; }
+    .btns { display: grid; grid-template-columns: 1fr 2fr; gap: 10px; margin-top: 16px; }
+    .btn-ghost { font: inherit; font-family: var(--ko); font-size: 15px; color: var(--ink); background: none; border: 1px solid var(--ink); height: 56px; cursor: pointer; }
+    .btn-ghost:disabled { opacity: .35; cursor: default; }
+    .done__t { font-family: var(--serif); font-weight: 500; font-size: 22px; margin: 0; }
+    .done__p { font-size: 13px; color: var(--ink-2); margin: 0; line-height: 1.6; }
+    .item.is-fail { border-color: var(--full); }
+    @media (max-width: 420px) { .fields { grid-template-columns: 1fr; } }
+
     @media (min-width: 900px) { .wrap { padding-top: 48px; } }
   </style>
 </head>
 <body>
 
 <div class="rev">
-  <b>Layer Studios <span>예약 달력 목업 v2 · 파트별 현황 · 데이터는 가짜</span></b>
+  <b>Layer Studios <span>예약 달력 v3 · 실제 스케줄 연동 · 신청하면 실제 접수됨</span></b>
   <div class="seg" role="group" aria-label="배색">
     <button type="button" data-theme="cream" class="is-on">크림</button>
     <button type="button" data-theme="beige">베이지</button>
@@ -166,16 +194,17 @@
 </div>
 
 <main class="wrap">
-  <p class="note">v2: <b>파트</b>가 들어갔습니다. 파트를 고르기 전엔 달력에 날짜별 <b>빈 파트 수</b>(예: 2/3)가 보이고, 파트를 고르면 그 조합의 가능·문의·마감이 보입니다. 날짜를 누르면 그날의 파트별 현황이 펼쳐지고 거기서도 파트를 고를 수 있습니다. 촬영 내용도 추가했습니다. <b>예약 추가</b>로 파트마다 다른 시간(예: A 09–18시, C 13–18시)이나 여러 날짜를 한 번에 신청할 수 있습니다. 상태 값은 여전히 임의로 만든 값입니다.</p>
+  <p class="note">v3: 달력이 <b>실제 스케줄 게시판</b>과 <b>홈페이지 신청 대기 건</b>을 읽어 표시합니다. 확정 예약이 종일 있으면 <b>마감</b>, 일부 시간만 있으면 <b>일부</b>(시간을 고르면 겹침을 확인), 가부킹·대기 건이 있으면 <b>문의</b>로 보입니다. 연락처를 입력해 보내면 <b>실제로 접수</b>되어 승인 콘솔(/admin)에 올라갑니다. 테스트할 때는 업체명을 <b>테스트 (삭제 예정)</b>으로 적어 주세요.</p>
 
   <section class="w" aria-label="예약">
     <div class="w__head">
-      <button type="button" aria-label="뒤로"><svg viewBox="0 0 24 24"><path d="M15 5l-7 7 7 7"/></svg></button>
+      <button type="button" id="hBack" aria-label="뒤로"><svg viewBox="0 0 24 24"><path d="M15 5l-7 7 7 7"/></svg></button>
       <div class="w__brand">Layer Studios</div>
       <button type="button" aria-label="닫기"><svg viewBox="0 0 24 24"><path d="M6 6l12 12M18 6L6 18"/></svg></button>
     </div>
     <div class="w__body">
 
+    <div class="step" id="step1">
       <div>
         <p class="lbl">지점</p>
         <div class="chips" id="studios"></div>
@@ -210,6 +239,7 @@
         </div>
         <div class="cal__dow"><span>월</span><span>화</span><span>수</span><span>목</span><span>금</span><span>토</span><span>일</span></div>
         <div class="cal__grid" id="calGrid"></div>
+        <p class="cal__note" id="calNote" hidden></p>
         <div class="legend" id="legend"></div>
       </div>
 
@@ -251,6 +281,42 @@
         <li><a href="tel:0233567750">02-336-7750</a></li>
       </ul>
     </div>
+
+    <div class="step" id="step2" hidden>
+      <div>
+        <p class="lbl">신청 내용 <button type="button" id="editItems">수정</button></p>
+        <div class="items" id="s2Items"></div>
+        <dl class="sum" style="border-bottom:0;padding-bottom:0">
+          <dt>지점</dt><dd id="s2Studio">—</dd>
+          <dt>내용</dt><dd id="s2Purpose">—</dd>
+          <dt>인원 · 차량</dt><dd id="s2People">—</dd>
+        </dl>
+      </div>
+      <form id="cform" novalidate>
+        <input type="text" name="website" class="hp" tabindex="-1" autocomplete="off" aria-hidden="true">
+        <p class="lbl">연락처 <small>업체명 · 담당자 · 전화는 필수</small></p>
+        <div class="fields">
+          <label class="field"><span>업체명 (예약자명) *</span><input name="company" maxlength="60" required autocomplete="organization"></label>
+          <label class="field"><span>담당자 *</span><input name="contact" maxlength="60" required autocomplete="name"></label>
+          <label class="field"><span>전화 *</span><input name="phone" type="tel" maxlength="40" required autocomplete="tel" inputmode="tel"></label>
+          <label class="field"><span>이메일 (선택)</span><input name="email" type="email" maxlength="100" autocomplete="email" inputmode="email"></label>
+          <label class="field field--wide"><span>요청사항 (선택)</span><textarea name="note" rows="3" maxlength="1000"></textarea></label>
+        </div>
+        <label class="consent"><input type="checkbox" name="consent"> 예약 확인을 위한 연락처 수집·이용에 동의합니다.</label>
+        <p class="err" id="err" hidden></p>
+        <div class="btns"><button type="button" class="btn-ghost" id="back">이전</button><button type="submit" class="cta" id="submit">예약 신청 보내기</button></div>
+      </form>
+    </div>
+
+    <div class="step" id="done" hidden>
+      <p class="done__t" id="doneT">예약 신청이 접수되었습니다</p>
+      <div class="items" id="doneItems"></div>
+      <p class="done__p">담당자가 스케줄을 확인한 뒤 전화 또는 메일로 안내드립니다. 가부킹·문의 상태의 날짜는 확인 후 확정됩니다.</p>
+      <p class="err" id="doneErr" hidden></p>
+      <button type="button" class="cta" id="again">새 예약 신청</button>
+    </div>
+
+    </div>
   </section>
 </main>
 
@@ -261,7 +327,7 @@
     document.querySelectorAll('[data-theme]').forEach(x => x.classList.toggle('is-on', x === b));
   }));
 
-  // ---------- data: same studios/parts the live form uses (reservation.html RESERVE_STUDIOS, online-bookable only)
+  // ---------- studios: online-bookable only (same keys as api/reserve.js BOARDS and api/availability.js PARTS)
   const STUDIOS = [
     { key: 'layer-41', name: 'Layer 41', parts: ['A', 'B', 'C'], min: 4 },
     { key: 'layer-20', name: 'Layer 20', parts: ['1F', '2F', '3F', 'Caravan'], min: 4 },
@@ -273,32 +339,62 @@
     { key: 'hongdae', name: 'Hongdae', parts: ['A', 'B', 'D', 'Back Garden', 'Greenhouse', 'Garden'], min: 2 },
   ];
   const PURPOSES = [['photo', '사진 촬영'], ['video', '영상 촬영'], ['event', '행사']];
+  const MSG = { studio: '지점을 확인해 주세요.', 'studio-offline': '이 지점은 온라인 신청을 받지 않습니다.', part: '파트를 확인해 주세요.', date: '날짜를 확인해 주세요.', 'date-past': '당일 예약은 전화로 문의해 주세요.', 'date-far': '3개월 이후 일정은 전화로 문의해 주세요.', time: '시간을 확인해 주세요.', 'min-hours': '최소 대관 시간을 확인해 주세요.', company: '업체명을 입력해 주세요.', contact: '담당자를 입력해 주세요.', phone: '연락 가능한 전화번호를 입력해 주세요.', email: '이메일 형식을 확인해 주세요.', consent: '연락처 수집·이용에 동의해 주세요.', 'server-config': '서버 설정 오류입니다. 전화로 문의해 주세요.', network: '전송에 실패했습니다. 잠시 후 다시 시도해 주세요.' };
   const pad = n => String(n).padStart(2, '0');
   const iso = d => d.getFullYear() + '-' + pad(d.getMonth() + 1) + '-' + pad(d.getDate());
   const today = new Date(); today.setHours(0, 0, 0, 0);
   const minD = new Date(today); minD.setDate(minD.getDate() + 1);           // online starts tomorrow
   const maxD = new Date(today); maxD.setMonth(maxD.getMonth() + 3);          // 3 months ahead
-  // deterministic fake status per studio+date+part: 'ok' | 'prov' | 'full'
-  function hash(s) { let h = 0; for (let i = 0; i < s.length; i++) h = (h * 31 + s.charCodeAt(i)) >>> 0; return h; }
-  function partStatus(key, d, part) {
-    const r = hash(key + iso(d) + part) % 100; const wk = d.getDay() === 0 || d.getDay() === 6;
-    if (r < (wk ? 24 : 12)) return 'full';
-    if (r < (wk ? 40 : 24)) return 'prov';
-    return 'ok';
-  }
-  // status of a set of parts on a day: any full → full, any prov → prov, else ok
-  function comboStatus(key, d, parts) {
-    const ss = parts.map(p => partStatus(key, d, p));
-    return ss.includes('full') ? 'full' : ss.includes('prov') ? 'prov' : 'ok';
-  }
-
-  // ---------- state
-  const firstMonth = (() => { const m = new Date(minD.getFullYear(), minD.getMonth(), 1); const left = new Date(m.getFullYear(), m.getMonth() + 1, 0).getDate() - minD.getDate() + 1; return left >= 7 ? m : new Date(m.getFullYear(), m.getMonth() + 1, 1); })();
-  const st = { studio: 0, parts: [], purpose: 'photo', people: 10, vehicles: 1, month: firstMonth, date: null, start: 9, end: 18, items: [] };
   const $ = id => document.getElementById(id);
   const DOW = ['일', '월', '화', '수', '목', '금', '토'];
   const hm = h => pad(Math.floor(h)) + ':' + (h % 1 ? '30' : '00');
+  const esc = s => String(s).replace(/[&<>"]/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;' }[c]));
+
+  // ---------- state
+  const firstMonth = (() => { const m = new Date(minD.getFullYear(), minD.getMonth(), 1); const left = new Date(m.getFullYear(), m.getMonth() + 1, 0).getDate() - minD.getDate() + 1; return left >= 7 ? m : new Date(m.getFullYear(), m.getMonth() + 1, 1); })();
+  const st = { step: 1, studio: 0, parts: [], purpose: 'photo', people: 10, vehicles: 1, month: firstMonth, date: null, start: 9, end: 18, items: [], sending: false, results: [] };
   const S = () => STUDIOS[st.studio];
+
+  // ---------- availability: GET /api/availability?studio&y&m, one fetch per studio+month, kept for the page's lifetime
+  // block = { parts, all, start|null, end|null, kind: 'fixed' | 'prov' | 'pending' } — null time means the whole day
+  const avail = new Map();
+  const akey = (key, d) => key + ':' + d.getFullYear() + '-' + pad(d.getMonth() + 1);
+  function ensureMonth(key, d) {
+    const k = akey(key, d); if (avail.has(k)) return avail.get(k);
+    const entry = { loading: true, error: false, days: {} }; avail.set(k, entry);
+    fetch('/api/availability?studio=' + key + '&y=' + d.getFullYear() + '&m=' + (d.getMonth() + 1))
+      .then(r => r.json())
+      .then(j => { if (!j || !j.ok) throw new Error((j && j.error) || 'bad'); entry.days = j.days || {}; entry.error = !!(j.source && j.source.board === 'error'); })
+      .catch(() => { entry.error = true; })
+      .finally(() => { entry.loading = false; render(); });
+    return entry;
+  }
+  const blocksOn = d => ensureMonth(S().key, new Date(d.getFullYear(), d.getMonth(), 1)).days[iso(d)] || [];
+  // per-part status on a day: full (booked all day) > busy (booked some hours) > prov (provisional / waiting request) > ok
+  const RANK = { ok: 0, prov: 1, busy: 2, full: 3 };
+  function partStatus(d, part) {
+    let s = 'ok';
+    for (const b of blocksOn(d)) {
+      if (!b.parts.includes(part)) continue;
+      if (b.kind === 'fixed') { if (b.start === null) return 'full'; if (RANK.busy > RANK[s]) s = 'busy'; }
+      else if (s === 'ok') s = 'prov';
+    }
+    return s;
+  }
+  const comboStatus = (d, parts) => parts.map(p => partStatus(d, p)).reduce((a, b) => RANK[b] > RANK[a] ? b : a, 'ok');
+  // blocks on the chosen parts that overlap the draft time
+  function overlaps(d, parts, start, end) {
+    const out = { fixed: [], prov: [] };
+    for (const b of blocksOn(d)) {
+      if (!b.parts.some(p => parts.includes(p))) continue;
+      const bs = b.start === null ? 0 : b.start, be = b.end === null ? 24 : b.end;
+      if (bs < end && be > start) (b.kind === 'fixed' ? out.fixed : out.prov).push(b);
+    }
+    return out;
+  }
+  const blockTxt = b => (b.all ? '전체' : b.parts.join('+')) + (b.start === null ? ' 종일' : ' ' + hm(b.start) + '–' + hm(b.end));
+  const PART_TXT = { ok: '예약 가능', busy: '일부 시간 예약됨', prov: '가부킹 있음 · 문의', full: '마감' };
+  const DAY_TXT = { ok: '가능', busy: '일부', prov: '문의', full: '마감' };
 
   // ---------- studios
   const stBox = $('studios');
@@ -350,34 +446,90 @@
   $('tStart').addEventListener('change', e => { st.start = +e.target.value; if (st.end <= st.start) st.end = Math.min(24, st.start + 4); render(); });
   $('tEnd').addEventListener('change', e => { st.end = +e.target.value; render(); });
 
-  // ---------- booking items: the draft (date + parts + time) can be added to a list, then another drafted
+  // ---------- booking items: the draft (date + parts + time) is added to a list, then another can be drafted
   const fmtD = d => (d.getMonth() + 1) + '/' + d.getDate() + ' (' + DOW[d.getDay()] + ')';
-  const draftOk = () => st.date && st.parts.length > 0 && (st.end - st.start) >= S().min;
+  const draft = () => ({ date: st.date, parts: st.parts.slice(), start: st.start, end: st.end });
+  function draftCheck() { // null when the draft can be added, else why not
+    if (!st.date) return 'date'; if (!st.parts.length) return 'part';
+    if (st.end - st.start < S().min) return 'min-hours';
+    if (overlaps(st.date, st.parts, st.start, st.end).fixed.length) return 'overlap';
+    return null;
+  }
+  const draftOk = () => draftCheck() === null;
   $('addBtn').addEventListener('click', () => {
     if (!draftOk()) return;
-    st.items.push({ date: st.date, parts: st.parts.slice(), start: st.start, end: st.end });
+    st.items.push(draft());
     st.parts = []; // keep the date and time; pick the next part
     render(); $('items').scrollIntoView({ behavior: 'smooth', block: 'nearest' });
   });
   function removeItem(i) { st.items.splice(i, 1); render(); }
-  $('cta').addEventListener('click', () => { $('cta').textContent = '다음 단계: 연락처 입력 (목업에서는 생략)'; });
+  const itemRow = (it, extra) => '<div><b>' + esc(it.parts.join(' + ')) + '</b>' + fmtD(it.date) + ' <span>' + hm(it.start) + ' – ' + hm(it.end) + ' (' + (it.end - it.start) + 'h)</span>' + (extra || '') + '</div>';
+
+  // ---------- steps
+  function go(step) { st.step = step; render(); window.scrollTo({ top: 0, behavior: 'smooth' }); }
+  $('cta').addEventListener('click', () => {
+    if (draftOk()) { st.items.push(draft()); st.parts = []; }
+    if (!st.items.length) return;
+    go(2); setTimeout(() => $('cform').company.focus(), 350);
+  });
+  $('back').addEventListener('click', () => go(1));
+  $('editItems').addEventListener('click', () => go(1));
+  $('hBack').addEventListener('click', () => { if (st.step === 2) go(1); });
+  $('again').addEventListener('click', () => { st.items = []; st.results = []; st.parts = []; st.date = null; $('cform').reset(); go(1); });
+
+  // ---------- submit: one /api/reserve request per item, in order; the queue links them through the note
+  const form = $('cform');
+  form.addEventListener('submit', async (e) => {
+    e.preventDefault(); const err = $('err'); err.hidden = true;
+    const f = form.elements; const v = k => f[k].value.trim();
+    if (!v('company')) return fail('company'); if (!v('contact')) return fail('contact');
+    if (v('phone').replace(/\D/g, '').length < 7) return fail('phone');
+    if (v('email') && !/^[^@\s]+@[^@\s]+\.[^@\s]+$/.test(v('email'))) return fail('email');
+    if (!f.consent.checked) return fail('consent');
+    if (st.sending) return; st.sending = true; render();
+    const items = st.items.slice(); const n = items.length;
+    const listTxt = items.map(it => fmtD(it.date) + ' ' + it.parts.join('+') + ' ' + hm(it.start) + '–' + hm(it.end)).join(', ');
+    const results = [];
+    for (let i = 0; i < n; i++) {
+      const it = items[i];
+      const body = {
+        studio: S().key, part: it.parts.join('+'), date: iso(it.date), start: it.start, end: it.end, purpose: st.purpose, people: String(st.people), vehicles: String(st.vehicles),
+        company: v('company'), contact: v('contact'), phone: v('phone'), email: v('email'), lang: 'ko', website: f.website.value,
+        note: v('note') + (n > 1 ? (v('note') ? '\n' : '') + '[함께 신청 ' + (i + 1) + '/' + n + ': ' + listTxt + ']' : ''),
+      };
+      try {
+        const r = await fetch('/api/reserve', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(body) });
+        const j = await r.json().catch(() => null);
+        if (!j || !j.ok) throw new Error((j && j.error) || 'network');
+        results.push({ item: it, ok: true, id: j.id || null });
+      } catch (ex) { results.push({ item: it, ok: false, error: MSG[ex.message] ? ex.message : 'network' }); }
+    }
+    st.sending = false; st.results = results; go(3);
+    function fail(code) { err.textContent = MSG[code]; err.hidden = false; }
+  });
 
   // ---------- render
   function render() {
+    $('step1').hidden = st.step !== 1; $('step2').hidden = st.step !== 2; $('done').hidden = st.step !== 3;
+    $('hBack').style.visibility = st.step === 2 ? 'visible' : 'hidden';
+    if (st.step === 2) return renderStep2();
+    if (st.step === 3) return renderDone();
+
     const s = S(); const N = s.parts.length; const picked = st.parts.length > 0;
+    const mon = ensureMonth(s.key, st.month); const loading = mon.loading;
     stBox.querySelectorAll('.chip').forEach((b, i) => b.classList.toggle('is-on', i === st.studio));
     puBox.querySelectorAll('.chip').forEach(b => b.classList.toggle('is-on', b.dataset.k === st.purpose));
     $('people').textContent = st.people; $('vehicles').textContent = st.vehicles;
 
-    // part chips: when a date is picked, each chip carries that day's status and booked parts are disabled
+    // part chips: when a date is picked, each chip carries that day's status and fully booked parts are disabled
     const pBox = $('parts'); pBox.innerHTML = '';
     s.parts.forEach(p => {
       const b = document.createElement('button'); b.type = 'button'; b.className = 'chip';
-      const stt = st.date ? partStatus(s.key, st.date, p) : null;
+      const stt = st.date ? partStatus(st.date, p) : null;
       if (stt) b.classList.add('st-' + stt);
       b.classList.toggle('is-on', st.parts.includes(p));
       b.disabled = stt === 'full';
-      b.innerHTML = (stt ? '<i></i>' : '') + p;
+      b.innerHTML = (stt ? '<i></i>' : '') + esc(p);
       b.addEventListener('click', () => togglePart(p));
       pBox.appendChild(b);
     });
@@ -397,23 +549,28 @@
       const date = new Date(y, m, d); const off = date < minD || date > maxD;
       let cls, txt, disabled = off;
       if (off) { cls = 'off'; txt = ''; }
-      else if (picked) { cls = comboStatus(s.key, date, st.parts); txt = { ok: '가능', prov: '문의', full: '마감' }[cls]; disabled = cls === 'full'; }
+      else if (loading) { cls = 'loading'; txt = '…'; disabled = true; }
+      else if (picked) { cls = comboStatus(date, st.parts); txt = DAY_TXT[cls]; disabled = cls === 'full'; }
       else {
-        const free = s.parts.filter(p => partStatus(s.key, date, p) !== 'full').length;
-        const anyProv = s.parts.some(p => partStatus(s.key, date, p) === 'prov');
-        cls = free === 0 ? 'full' : free === 1 && N > 1 ? 'last' : anyProv ? 'prov' : 'ok';
+        const sts = s.parts.map(p => partStatus(date, p));
+        const free = sts.filter(x => x !== 'full').length;
+        cls = free === 0 ? 'full' : free === 1 && N > 1 ? 'last' : sts.some(x => x === 'prov' || x === 'busy') ? 'prov' : 'ok';
         txt = free === 0 ? '마감' : free + '/' + N; disabled = free === 0;
       }
       const b = document.createElement('button'); b.type = 'button';
       b.className = 'day is-' + cls + (st.date && iso(st.date) === iso(date) ? ' is-sel' : '') + (iso(date) === iso(today) ? ' is-today' : '');
       b.disabled = disabled;
       b.innerHTML = '<span class="day__n">' + d + '</span><span class="day__s">' + txt + '</span>';
-      if (!disabled) b.addEventListener('click', () => { st.date = date; st.parts = st.parts.filter(p => partStatus(s.key, date, p) !== 'full'); render(); $('detail').scrollIntoView({ behavior: 'smooth', block: 'nearest' }); });
+      if (!disabled) b.addEventListener('click', () => { st.date = date; st.parts = st.parts.filter(p => partStatus(date, p) !== 'full'); render(); $('detail').scrollIntoView({ behavior: 'smooth', block: 'nearest' }); });
       grid.appendChild(b);
     }
+    const note = $('calNote');
+    note.hidden = !(loading || mon.error);
+    note.textContent = loading ? '스케줄 현황을 불러오는 중…' : mon.error ? '스케줄 현황을 불러오지 못했습니다. 신청은 가능하며 담당자가 확인 후 안내드립니다.' : '';
+    note.classList.toggle('is-bad', !loading && mon.error);
     $('legend').innerHTML = picked
-      ? '<span class="ok"><i></i>선택한 파트 모두 가능</span><span class="prov"><i></i>가부킹 있음 · 확인 후 안내</span><span class="full"><i></i>마감</span><span class="off"><i></i>온라인 불가 (당일 · 3개월 이후)</span>'
-      : '<span class="ok"><i></i>빈 파트 수 / 전체</span><span class="prov"><i></i>가부킹 있음 또는 1개 남음</span><span class="full"><i></i>모든 파트 마감</span><span class="off"><i></i>온라인 불가 (당일 · 3개월 이후)</span>';
+      ? '<span class="ok"><i></i>선택한 파트 모두 가능</span><span class="prov"><i></i>일부 시간 예약 · 가부킹 있음</span><span class="full"><i></i>마감</span><span class="off"><i></i>온라인 불가 (당일 · 3개월 이후)</span>'
+      : '<span class="ok"><i></i>빈 파트 수 / 전체</span><span class="prov"><i></i>일부 예약 · 가부킹 있음 · 1개 남음</span><span class="full"><i></i>모든 파트 마감</span><span class="off"><i></i>온라인 불가 (당일 · 3개월 이후)</span>';
 
     // day detail: per-part status for the picked date
     const det = $('detail'); det.hidden = !st.date;
@@ -421,32 +578,35 @@
       $('dTitle').textContent = (st.date.getMonth() + 1) + '월 ' + st.date.getDate() + '일 (' + DOW[st.date.getDay()] + ')';
       const box = $('dParts'); box.innerHTML = '';
       s.parts.forEach(p => {
-        const stt = partStatus(s.key, st.date, p);
+        const stt = partStatus(st.date, p);
         const b = document.createElement('button'); b.type = 'button'; b.className = 'part st-' + stt + (st.parts.includes(p) ? ' is-on' : '');
         b.disabled = stt === 'full';
-        b.innerHTML = '<b>' + p + '</b><span>' + { ok: '예약 가능', prov: '가부킹 있음 · 문의', full: '마감' }[stt] + '</span>';
+        const timed = blocksOn(st.date).filter(x => x.parts.includes(p) && x.kind === 'fixed' && x.start !== null).map(x => hm(x.start) + '–' + hm(x.end)).join(', ');
+        b.innerHTML = '<b>' + esc(p) + '</b><span>' + PART_TXT[stt] + (stt === 'busy' && timed ? '<br>' + timed : '') + '</span>';
         b.addEventListener('click', () => togglePart(p));
         box.appendChild(b);
       });
-      $('dHint').textContent = picked ? '선택: ' + st.parts.join(' + ') + (st.parts.some(p => partStatus(s.key, st.date, p) === 'prov') ? ' · 가부킹이 있는 파트는 담당자 확인 후 확정됩니다.' : '') : '대관할 파트를 선택해 주세요. 같은 시간이면 여러 파트를 함께, 시간이 다르면 파트별로 예약을 추가하세요.';
+      $('dHint').textContent = picked ? '선택: ' + st.parts.join(' + ') + (st.parts.some(p => partStatus(st.date, p) === 'prov') ? ' · 가부킹이 있는 파트는 담당자 확인 후 확정됩니다.' : '') : '대관할 파트를 선택해 주세요. 같은 시간이면 여러 파트를 함께, 시간이 다르면 파트별로 예약을 추가하세요.';
     }
 
-    // time
+    // time: length check plus overlap with that day's bookings on the chosen parts
     $('time').hidden = !st.date;
     $('tStart').value = st.start; $('tEnd').value = st.end;
-    const hours = st.end - st.start; const bad = hours < s.min;
-    $('tHint').textContent = bad ? '최소 대관 ' + s.min + '시간입니다.' : hours + '시간 · 최소 대관 ' + s.min + '시간';
-    $('tHint').classList.toggle('is-bad', bad);
+    const hours = st.end - st.start; const why = draftCheck();
+    let hint = hours + '시간 · 최소 대관 ' + s.min + '시간';
+    if (why === 'min-hours') hint = '최소 대관 ' + s.min + '시간입니다.';
+    else if (why === 'overlap') hint = '예약과 겹칩니다: ' + overlaps(st.date, st.parts, st.start, st.end).fixed.map(blockTxt).join(', ');
+    else if (st.date && picked) { const ov = overlaps(st.date, st.parts, st.start, st.end).prov; if (ov.length) hint += ' · 같은 시간에 가부킹·대기 건이 있어 확인 후 안내드립니다'; }
+    $('tHint').textContent = hint; $('tHint').classList.toggle('is-bad', why === 'min-hours' || why === 'overlap');
 
     // add button + item list
-    const ok = !!st.date && picked && !bad;
+    const ok = why === null;
     $('add').hidden = !st.date;
     $('addBtn').disabled = !ok;
     $('addBtn').textContent = ok ? '+ 예약 추가 · ' + fmtD(st.date) + ' ' + st.parts.join('+') + ' ' + hm(st.start) + '–' + hm(st.end) : '+ 예약 추가';
     const list = $('items'); list.hidden = st.items.length === 0; list.innerHTML = '';
     st.items.forEach((it, i) => {
-      const row = document.createElement('div'); row.className = 'item';
-      row.innerHTML = '<div><b>' + it.parts.join(' + ') + '</b>' + fmtD(it.date) + ' <span>' + hm(it.start) + ' – ' + hm(it.end) + ' (' + (it.end - it.start) + 'h)</span></div>';
+      const row = document.createElement('div'); row.className = 'item'; row.innerHTML = itemRow(it);
       const x = document.createElement('button'); x.type = 'button'; x.setAttribute('aria-label', '삭제'); x.textContent = '×'; x.addEventListener('click', () => removeItem(i));
       row.appendChild(x); list.appendChild(row);
     });
@@ -454,11 +614,24 @@
     // summary + cta: added items plus the current draft (if complete)
     const all = st.items.slice(); if (ok) all.push({ date: st.date, parts: st.parts, start: st.start, end: st.end, draft: true });
     $('sStudio').textContent = s.name;
-    $('sItems').innerHTML = all.length ? all.map(it => fmtD(it.date) + ' · ' + it.parts.join('+') + ' · ' + hm(it.start) + '–' + hm(it.end) + (it.draft && st.items.length ? ' <span style="color:var(--ink-3)">(추가 전)</span>' : '')).join('<br>') : '—';
+    $('sItems').innerHTML = all.length ? all.map(it => fmtD(it.date) + ' · ' + esc(it.parts.join('+')) + ' · ' + hm(it.start) + '–' + hm(it.end) + (it.draft && st.items.length ? ' <span style="color:var(--ink-3)">(추가 전)</span>' : '')).join('<br>') : '—';
     $('sPurpose').textContent = PURPOSES.find(x => x[0] === st.purpose)[1];
     $('sPeople').textContent = st.people + '명 · ' + st.vehicles + '대';
     const cta = $('cta'); cta.disabled = all.length === 0;
-    cta.textContent = all.length ? '예약 신청하기 · ' + all.length + '건' : !st.date ? '날짜를 선택해 주세요' : !picked ? '파트를 선택해 주세요' : '최소 대관 시간을 확인해 주세요';
+    cta.textContent = all.length ? '예약 신청하기 · ' + all.length + '건' : !st.date ? '날짜를 선택해 주세요' : !picked ? '파트를 선택해 주세요' : why === 'overlap' ? '겹치지 않는 시간을 선택해 주세요' : '최소 대관 시간을 확인해 주세요';
+  }
+  function renderStep2() {
+    $('s2Items').innerHTML = st.items.map(it => '<div class="item">' + itemRow(it) + '</div>').join('');
+    $('s2Studio').textContent = S().name; $('s2Purpose').textContent = PURPOSES.find(x => x[0] === st.purpose)[1]; $('s2People').textContent = st.people + '명 · ' + st.vehicles + '대';
+    $('submit').disabled = st.sending; $('submit').textContent = st.sending ? '보내는 중…' : '예약 신청 보내기 · ' + st.items.length + '건';
+    $('back').disabled = st.sending;
+  }
+  function renderDone() {
+    const failed = st.results.filter(r => !r.ok);
+    $('doneT').textContent = failed.length === st.results.length ? '예약 신청을 보내지 못했습니다' : failed.length ? '일부 예약 신청만 접수되었습니다' : '예약 신청이 접수되었습니다';
+    $('doneItems').innerHTML = st.results.map(r => '<div class="item' + (r.ok ? '' : ' is-fail') + '">' + itemRow(r.item, r.ok ? (r.id ? ' <span>· 접수번호 ' + r.id + '</span>' : '') : ' <span style="color:var(--full)">· ' + MSG[r.error] + '</span>') + '</div>').join('');
+    const e = $('doneErr'); e.hidden = !failed.length;
+    e.textContent = failed.length ? '접수되지 않은 건은 전화(02-336-7750)로 문의해 주세요.' : '';
   }
   render();
 </script>
