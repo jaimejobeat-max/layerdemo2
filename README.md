@@ -44,6 +44,7 @@ python3 tools/build.py
 홈페이지 예약 폼(`/reservation`)의 신청은 Supabase의 `reservation_requests` 표에 **대기** 상태로 저장되고 슬랙으로 알림이 갑니다. CS가 `/admin` 승인 콘솔에서 그날 게시판 현황과 함께 보고 승인하면, 그때 레이소다(제로보드) 스케줄 게시판에 가부킹(`++`) 글이 자동으로 작성됩니다. 반려·보류·메모는 `reservation_events`에 기록됩니다. Vercel 서버리스 함수로 동작하며 별도 서버가 없습니다.
 
 - 표 생성 SQL: `supabase/schema.sql` (Supabase → SQL Editor에서 한 번 실행)
+- 상태는 대기 → 승인(게시판 `++(Wn)` 가부킹) → 확정(확정 라벨, 예 `AB 10-19 업체명`) → 취소(라벨 `-`, 본문에 취소 줄) 순으로 흐르고, 보류·반려는 게시판을 건드리지 않습니다. 2026-09-29 이전에 만든 프로젝트는 `supabase/2026-09-29-status-confirmed-cancelled.sql`을 한 번 실행해야 확정·취소가 저장됩니다.
 - `RESERVE_MODE=direct` 로 두면 예전처럼 신청 즉시 게시판에 쓰는 방식으로 돌아갑니다.
 - `/api/keepalive` 가 매일 한 번 크론으로 돌아 무료 플랜의 무활동 정지를 막습니다.
 - **달력 (`/admin` 상단 메뉴)**: 들어온 신청을 월 달력으로 봅니다. 상태(대기·보류·승인·반려)와 지점으로 거르고, 칸의 신청을 누르면 상세로 이동합니다. `GET /api/admin?action=list&status=all&from=…&to=…`로 한 달치를 읽습니다.

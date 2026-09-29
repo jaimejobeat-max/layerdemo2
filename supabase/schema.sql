@@ -25,8 +25,8 @@ create table if not exists public.reservation_requests (
   email         text,
   lang          text not null default 'ko' check (lang in ('ko', 'en')),
 
-  -- CS decision
-  status        text not null default 'pending' check (status in ('pending', 'hold', 'approved', 'rejected')),
+  -- CS decision: pending → approved (++ on the board) → confirmed (confirmed label) → cancelled (label '-'); or hold / rejected
+  status        text not null default 'pending' check (status in ('pending', 'hold', 'approved', 'confirmed', 'rejected', 'cancelled')),
   decided_by    text,
   decided_at    timestamptz,
   decision_note text,

@@ -94,17 +94,17 @@ function fromBoard(labels, studio, y, m) {
   return days;
 }
 
-/** Supabase queue → blocks (pending/hold → 'pending', approved → 'prov' since it sits on the board as ++) */
+/** Supabase queue → blocks (pending/hold → 'pending', approved → 'prov' (++ on the board), confirmed → 'fixed'; rejected/cancelled ignored) */
 async function fromQueue(studio, y, m) {
   const first = `${y}-${pad2(m)}-01`, last = `${y}-${pad2(m)}-${pad2(new Date(Date.UTC(y, m, 0)).getUTCDate())}`;
-  const rows = await supa.select('reservation_requests', { select: 'date,part,start_at,end_at,status', studio: `eq.${studio}`, and: `(date.gte.${first},date.lte.${last})`, status: 'in.(pending,hold,approved)' });
+  const rows = await supa.select('reservation_requests', { select: 'date,part,start_at,end_at,status', studio: `eq.${studio}`, and: `(date.gte.${first},date.lte.${last})`, status: 'in.(pending,hold,approved,confirmed)' });
   const parts = PARTS[studio] || []; const days = {};
   for (const r of rows) {
     const all = !r.part || r.part === '-';
     const picked = all ? parts.slice() : r.part.split('+').map((s) => s.trim()).filter((s) => parts.includes(s));
     if (!picked.length) continue;
     const start = toHours(r.start_at), end = toHours(r.end_at);
-    (days[r.date] = days[r.date] || []).push({ parts: picked, all, start, end, kind: r.status === 'approved' ? 'prov' : 'pending', label: (all ? 'ALL' : picked.join('+')) + ' ' + start + '–' + end });
+    (days[r.date] = days[r.date] || []).push({ parts: picked, all, start, end, kind: r.status === 'confirmed' ? 'fixed' : r.status === 'approved' ? 'prov' : 'pending', label: (all ? 'ALL' : picked.join('+')) + ' ' + start + '–' + end });
   }
   return days;
 }
