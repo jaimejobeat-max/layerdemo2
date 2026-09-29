@@ -1,7 +1,11 @@
 // POST /api/reserve — reservation request from the homepage form.
-// 1) validates, 2) writes a provisional (++) post to the studio's Zeroboard schedule,
-// 3) pings Slack. Env: RAYSODA_ID, RAYSODA_PW, SLACK_WEBHOOK_URL (optional), RESERVE_DRY_RUN=1 (skip the board).
+// Queue mode (default when SUPABASE_URL is set): 1) validates, 2) stores the request as 'pending' in Supabase,
+//   3) pings Slack with a link to the approval console. The board is written later, on approval (api/admin.js).
+// Direct mode (RESERVE_MODE=direct, or Supabase not configured): writes a provisional (++) post to the board right away.
+// Env: SUPABASE_URL, SUPABASE_SECRET_KEY, RAYSODA_ID, RAYSODA_PW, SLACK_WEBHOOK_URL (optional), RESERVE_DRY_RUN=1 (skip the board).
 const { login, writePost, dayLabels } = require('./_zeroboard');
+const supa = require('./_supabase');
+const SITE = process.env.SITE_URL || 'https://layerdemo2.vercel.app';
 
 const BOARDS = {
   'layer-41': 'Layer41', 'layer-20': 'Layer20', 'layer-11': 'Layer11', 'layer-26': 'Layer26', 'layer-27': 'Layer27',
@@ -91,11 +95,36 @@ async function slack(r, post, boardId, boardResult) {
   try { await fetch(url, { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ text }) }); } catch (e) { console.error('slack failed', e.message); }
 }
 
+/** Row for reservation_requests from a validated request */
+function toRow(r) {
+  const d = r.date;
+  return {
+    studio: r.studio, part: r.part, date: `${d.getUTCFullYear()}-${pad2(d.getUTCMonth() + 1)}-${pad2(d.getUTCDate())}`,
+    start_at: hm(r.start) + ':00', end_at: hm(r.end) + ':00', purpose: r.purpose || null, people: r.people || null, vehicles: r.vehicles || null, note: r.note || null,
+    company: r.company, contact: r.contact, phone: r.phone, email: r.email || null, lang: r.lang, status: 'pending',
+  };
+}
+
+async function slackQueued(r, row) {
+  const url = process.env.SLACK_WEBHOOK_URL; if (!url) return;
+  const d = r.date; const boardId = BOARDS[r.studio];
+  const text = [
+    `:inbox_tray: *홈페이지 예약 신청 · 승인 대기* — ${NAMES[r.studio]}${r.part !== '-' ? ' ' + r.part : ''}`,
+    `• ${d.getUTCFullYear()}.${pad2(d.getUTCMonth() + 1)}.${pad2(d.getUTCDate())}(${WEEKDAYS[d.getUTCDay()]}) ${hm(r.start)}–${hm(r.end)} · ${r.purpose || '-'} · ${r.people || '-'}명 · 차량 ${r.vehicles || '-'}`,
+    `• ${r.company} / ${r.contact} / ${r.phone}${r.email ? ' / ' + r.email : ''}`,
+    r.note ? `• 요청: ${r.note}` : null,
+    boardId ? '• 승인하면 스케줄표에 가부킹으로 자동 기록됩니다' : '• :warning: 이 지점은 스케줄 게시판이 없어 승인 후 수동 등록 필요',
+    `<${SITE}/admin?id=${row.id}|승인 콘솔에서 확인 →>`,
+  ].filter(Boolean).join('\n');
+  try { await fetch(url, { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ text }) }); } catch (e) { console.error('slack failed', e.message); }
+}
+
 module.exports = async (req, res) => {
   // GET /api/reserve?diag=1 — configuration self-check (no secrets returned)
   if (req.method === 'GET' && req.query && req.query.diag === '1') {
     const id = process.env.RAYSODA_ID || '', pw = process.env.RAYSODA_PW || '';
-    const out = { idSet: !!id, idLen: id.length, idTrimmedLen: id.trim().length, pwSet: !!pw, pwLen: pw.length, pwTrimmedLen: pw.trim().length, slack: !!process.env.SLACK_WEBHOOK_URL, node: process.version };
+    const out = { idSet: !!id, idLen: id.length, idTrimmedLen: id.trim().length, pwSet: !!pw, pwLen: pw.length, pwTrimmedLen: pw.trim().length, slack: !!process.env.SLACK_WEBHOOK_URL, node: process.version, supabase: supa.configured(), mode: supa.configured() && process.env.RESERVE_MODE !== 'direct' ? 'queue' : 'direct', admin: !!process.env.ADMIN_PASSWORD };
+    if (supa.configured()) { try { out.supabaseCounts = await supa.select('reservation_status_counts', { select: 'status,count' }); } catch (e) { out.supabaseError = e.message; } }
     try { const { probeLogin } = require('./_zeroboard'); out.login = await probeLogin(id, pw); } catch (e) { out.login = { error: e.message }; }
     return res.status(200).json(out);
   }
@@ -104,6 +133,15 @@ module.exports = async (req, res) => {
   if (b.website) return res.status(200).json({ ok: true }); // honeypot
   const r = validate(b);
   if (typeof r === 'string') return bad(res, r);
+  if (supa.configured() && process.env.RESERVE_MODE !== 'direct') {
+    // Queue mode: store, notify, done. CS approves in /admin and the board is written then.
+    try {
+      const row = await supa.insert('reservation_requests', toRow(r));
+      await supa.insert('reservation_events', { request_id: row.id, actor: 'homepage', action: 'submitted', detail: `${r.lang} form` }).catch((e) => console.error('event failed', e.message));
+      await slackQueued(r, row);
+      return res.status(200).json({ ok: true, recorded: false, queued: true, id: row.id, reason: 'queued' });
+    } catch (e) { console.error('queue failed', e.message); return bad(res, 'server-config', 500); }
+  }
   const boardId = BOARDS[r.studio];
   let post = buildPost(r, 1);
   let boardResult = null;
@@ -123,3 +161,4 @@ module.exports = async (req, res) => {
   res.status(200).json({ ok: true, recorded: !!(boardResult && boardResult.ok), label: post.label, reason });
 };
 module.exports.buildPost = buildPost; module.exports.validate = validate; module.exports.provisionalRank = provisionalRank;
+module.exports.BOARDS = BOARDS; module.exports.NAMES = NAMES; module.exports.hm = hm; module.exports.WEEKDAYS = WEEKDAYS;

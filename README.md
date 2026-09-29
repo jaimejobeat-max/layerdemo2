@@ -39,14 +39,23 @@ python3 tools/build.py
 
 헤더의 KO / EN 토글. 긴 본문은 `class="ko"` / `class="en"` 두 벌, 짧은 라벨은 `js/i18n.js` 사전과 `data-i18n` 속성으로 관리합니다.
 
-## 예약 API (`api/reserve.js`)
+## 예약 API (`api/reserve.js`) + 승인 콘솔 (`/admin`)
 
-홈페이지 예약 폼(`/reservation`)의 신청을 받아 레이소다(제로보드) 스케줄 게시판에 가부킹(`++`) 글을 자동으로 쓰고 슬랙에 알립니다. Vercel 서버리스 함수로 동작하며 별도 서버가 없습니다.
+홈페이지 예약 폼(`/reservation`)의 신청은 Supabase의 `reservation_requests` 표에 **대기** 상태로 저장되고 슬랙으로 알림이 갑니다. CS가 `/admin` 승인 콘솔에서 그날 게시판 현황과 함께 보고 승인하면, 그때 레이소다(제로보드) 스케줄 게시판에 가부킹(`++`) 글이 자동으로 작성됩니다. 반려·보류·메모는 `reservation_events`에 기록됩니다. Vercel 서버리스 함수로 동작하며 별도 서버가 없습니다.
+
+- 표 생성 SQL: `supabase/schema.sql` (Supabase → SQL Editor에서 한 번 실행)
+- `RESERVE_MODE=direct` 로 두면 예전처럼 신청 즉시 게시판에 쓰는 방식으로 돌아갑니다.
+- `/api/keepalive` 가 매일 한 번 크론으로 돌아 무료 플랜의 무활동 정지를 막습니다.
 
 Vercel 프로젝트 → Settings → Environment Variables 에 아래를 넣어야 동작합니다.
 
 | 변수 | 내용 |
 |---|---|
+| `SUPABASE_URL` | Supabase 프로젝트 URL |
+| `SUPABASE_SECRET_KEY` | Supabase secret key (`sb_secret_…`, 서버 전용) |
+| `ADMIN_PASSWORD` | 승인 콘솔 비밀번호 |
+| `SITE_URL` | (선택) 슬랙 알림의 승인 콘솔 링크 도메인, 기본값 `https://layerdemo2.vercel.app` |
+| `RESERVE_MODE` | (선택) `direct`면 승인 없이 바로 게시판에 기록 |
 | `RAYSODA_ID` | 레이소다 게시판 로그인 아이디 |
 | `RAYSODA_PW` | 레이소다 게시판 비밀번호 |
 | `SLACK_WEBHOOK_URL` | (선택) 예약 알림 채널의 Incoming Webhook URL |
