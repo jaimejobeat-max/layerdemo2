@@ -1,6 +1,6 @@
 // /api/admin — reservation approval console backend. Password-protected (ADMIN_PASSWORD, header x-admin-password).
 //   GET  ?action=login                         → { ok }
-//   GET  ?action=list&status=pending           → { rows, counts }
+//   GET  ?action=list&status=pending           → { rows, counts }   (+ &from=YYYY-MM-DD&to=YYYY-MM-DD for a date range, e.g. the calendar)
 //   GET  ?action=detail&id=12                  → { row, events, siblings, board: { labels | error } }
 //   POST ?action=decide  { id, decision, note, label, fixedLabel, actor }
 //        decision: approved | hold | rejected | pending.  label: 'prov' (++(Wn)) | 'fixed' (fixedLabel or company)
@@ -72,6 +72,8 @@ async function list(req, res) {
   const status = clean(req.query.status || 'pending', 20);
   const query = { select: 'id,created_at,studio,part,date,start_at,end_at,purpose,people,company,contact,status,board_label', order: 'created_at.desc', limit: '200' };
   if (status !== 'all') query.status = `eq.${status}`;
+  const from = clean(req.query.from || '', 10), to = clean(req.query.to || '', 10); // ?from=YYYY-MM-DD&to=YYYY-MM-DD → one month for the calendar view
+  if (/^\d{4}-\d{2}-\d{2}$/.test(from) && /^\d{4}-\d{2}-\d{2}$/.test(to)) { query.and = `(date.gte.${from},date.lte.${to})`; query.order = 'date.asc,start_at.asc'; query.limit = '500'; }
   const [rows, counts] = await Promise.all([supa.select(T, query), supa.select('reservation_status_counts', { select: 'status,count' })]);
   json(res, 200, { ok: true, rows, counts: Object.fromEntries(counts.map((c) => [c.status, c.count])) });
 }

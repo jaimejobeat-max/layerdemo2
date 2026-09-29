@@ -89,6 +89,31 @@
     .conf__item > .label { grid-column: 1 / -1; } .conf__item label { display: flex; gap: 8px; align-items: flex-start; cursor: pointer; } .conf__item label > span { flex: 1; min-width: 0; } .conf__item input[type=radio] { width: auto; height: auto; margin: 3px 0 0; accent-color: var(--brown); }
     .conf__item code { display: block; font-family: ui-monospace, Menlo, monospace; font-size: 12px; white-space: pre-wrap; word-break: break-all; background: #fff; padding: 6px 8px; border: 1px solid var(--line); margin-top: 4px; }
     @media (max-width: 1100px) { .edit__grid { grid-template-columns: repeat(2, 1fr); } .conf__item { grid-template-columns: 1fr; } }
+    .wrap[hidden] { display: none; }
+    /* calendar view */
+    .calview { padding: 24px var(--gutter) 64px; } .calview[hidden] { display: none; }
+    .cal__bar { display: flex; align-items: center; gap: 14px; flex-wrap: wrap; padding-bottom: 16px; border-bottom: 1px solid var(--line); }
+    .cal__title { font-family: var(--serif); font-size: 24px; line-height: 32px; color: var(--black); min-width: 150px; }
+    .cal__nav { display: flex; gap: 6px; } .cal__nav button { height: 32px; min-width: 32px; padding: 0 10px; border: 1px solid var(--line); background: #fff; font-size: 13px; } .cal__nav button:hover { background: var(--paper); }
+    .cal__filters { display: flex; gap: 8px; margin-left: auto; align-items: center; flex-wrap: wrap; }
+    .cal__filters .chip { height: 26px; gap: 6px; cursor: pointer; border: 1px solid transparent; } .cal__filters .chip input { display: none; } .cal__filters .chip.is-off { opacity: .4; }
+    .cal__filters select { height: 30px; border: 1px solid var(--line); background: #fff; padding: 0 8px; font-size: 13px; }
+    .cal__sum { font-size: 13px; color: var(--muted); }
+    .cal__dow { display: grid; grid-template-columns: repeat(7, 1fr); margin-top: 18px; } .cal__dow span { padding: 0 8px 8px; font-family: var(--label); font-size: 10px; letter-spacing: 1px; text-transform: uppercase; color: var(--muted); }
+    .cal__grid { display: grid; grid-template-columns: repeat(7, 1fr); border-top: 1px solid var(--line); border-left: 1px solid var(--line); }
+    .cal__grid.is-loading { opacity: .5; }
+    .cal__day { min-height: 118px; border-right: 1px solid var(--line); border-bottom: 1px solid var(--line); padding: 6px; background: #fff; display: flex; flex-direction: column; gap: 3px; }
+    .cal__day.is-off { background: transparent; } .cal__day.is-past { background: var(--paper); }
+    .cal__n { display: flex; justify-content: space-between; align-items: center; font-family: var(--serif); font-size: 14px; color: var(--black); margin-bottom: 2px; } .cal__day.is-past .cal__n { color: var(--muted); }
+    .cal__n b { font-weight: 400; width: 22px; height: 22px; display: inline-grid; place-items: center; border-radius: 50%; } .cal__day.is-today .cal__n b { background: var(--black); color: #fff; }
+    .cal__n small { font-family: var(--label); font-size: 9px; color: var(--muted); }
+    .ev { display: block; width: 100%; text-align: left; font-size: 11px; line-height: 16px; padding: 2px 6px 2px 5px; border-radius: 2px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; border-left: 3px solid; }
+    .ev b { font-weight: 500; } .ev:hover { filter: brightness(.96); }
+    .ev--pending { background: var(--brown-soft); color: var(--brown); border-color: var(--brown); } .ev--hold { background: var(--warn-soft); color: var(--warn); border-color: var(--warn); }
+    .ev--approved { background: var(--ok-soft); color: var(--ok); border-color: var(--ok); } .ev--rejected { background: #EFECE6; color: var(--muted); border-color: #BDB8AE; text-decoration: line-through; }
+    .ev.is-active { outline: 2px solid var(--black); outline-offset: -1px; }
+    .cal__empty { padding: 48px; text-align: center; color: var(--muted); grid-column: 1 / -1; }
+    @media (max-width: 860px) { .cal__day { min-height: 80px; padding: 4px; } .ev { font-size: 10px; padding: 1px 4px; } .cal__filters { margin-left: 0; } }
     .empty { padding: 96px var(--gutter); text-align: center; color: var(--muted); }
     .gate { position: fixed; inset: 0; z-index: 50; background: var(--cream); display: flex; align-items: center; justify-content: center; padding: 24px; } .gate[hidden] { display: none; }
     .gate__box { width: 360px; max-width: 100%; } .gate__title { font-family: var(--serif); font-size: 24px; color: var(--black); margin-top: 16px; }
@@ -112,7 +137,7 @@
 
   <header class="top">
     <div class="top__brand"><a class="top__wordmark" href="mock-c6.html">Layer Studios</a><span class="label label--muted">Reservations · CS</span></div>
-    <nav class="top__nav label"><a href="#" class="is-active">신청함</a><a href="https://schedule-nu-taupe.vercel.app/" target="_blank" rel="noopener">스케줄표 ↗</a></nav>
+    <nav class="top__nav label"><a href="#" data-view="queue" class="is-active">신청함</a><a href="#calendar" data-view="calendar">달력</a><a href="https://schedule-nu-taupe.vercel.app/" target="_blank" rel="noopener">스케줄표 ↗</a></nav>
     <div class="top__user label"><span><strong data-actor>—</strong></span><button type="button" data-signout>Sign out</button></div>
   </header>
 
@@ -132,6 +157,22 @@
     </aside>
     <main class="detail" data-detail><div class="empty">왼쪽 목록에서 신청을 선택하세요.</div></main>
   </div>
+  <main class="calview" data-cal hidden aria-label="예약 신청 달력">
+    <div class="cal__bar">
+      <h1 class="cal__title" data-cal-title>—</h1>
+      <div class="cal__nav"><button type="button" data-cal-prev aria-label="이전 달">‹</button><button type="button" data-cal-today>오늘</button><button type="button" data-cal-next aria-label="다음 달">›</button></div>
+      <span class="cal__sum" data-cal-sum></span>
+      <div class="cal__filters">
+        <label class="chip chip--pending"><input type="checkbox" data-cal-status="pending" checked>대기</label>
+        <label class="chip chip--hold"><input type="checkbox" data-cal-status="hold" checked>보류</label>
+        <label class="chip chip--approved"><input type="checkbox" data-cal-status="approved" checked>승인</label>
+        <label class="chip chip--rejected is-off"><input type="checkbox" data-cal-status="rejected">반려</label>
+        <select data-cal-studio><option value="">모든 지점</option></select>
+      </div>
+    </div>
+    <div class="cal__dow"><span>월</span><span>화</span><span>수</span><span>목</span><span>금</span><span>토</span><span>일</span></div>
+    <div class="cal__grid" data-cal-grid></div>
+  </main>
   <div class="toast" data-toast></div>
 
   <script>
@@ -350,11 +391,67 @@
     }
     function toast(msg, bad) { const t = $('[data-toast]'); t.textContent = msg; t.classList.toggle('is-bad', !!bad); t.classList.add('is-on'); clearTimeout(t._h); t._h = setTimeout(() => t.classList.remove('is-on'), bad ? 5000 : 2600); }
 
+    // ---------- calendar view: every request in a month, one chip per request, click → detail ----------
+    const SHORT = { 'layer-41': '41', 'layer-20': '20', 'layer-11': '11', 'layer-26': '26', 'layer-27': '27', 'layer-7': '7', 'layer-10': '10', 'layer-hannam': '한남', hongdae: '홍대', faust: 'Faust', 'layer-57': '57' };
+    const isoDate = d => `${d.getFullYear()}-${pad(d.getMonth() + 1)}-${pad(d.getDate())}`;
+    let view = 'queue', calRows = [], calMonth = (() => { const d = new Date(); return new Date(d.getFullYear(), d.getMonth(), 1); })();
+    const calStatus = () => new Set([...document.querySelectorAll('[data-cal-status]')].filter(i => i.checked).map(i => i.dataset.calStatus));
+    function setView(v) {
+      view = v;
+      document.querySelectorAll('[data-view]').forEach(a => a.classList.toggle('is-active', a.dataset.view === v));
+      $('.wrap').hidden = v !== 'queue'; $('[data-cal]').hidden = v !== 'calendar';
+      if (v === 'calendar') { history.replaceState(null, '', location.pathname + '#calendar'); loadCal(); }
+      else history.replaceState(null, '', location.pathname + (current ? '?id=' + current : ''));
+    }
+    document.querySelectorAll('[data-view]').forEach(a => a.addEventListener('click', e => { e.preventDefault(); setView(a.dataset.view); }));
+    async function loadCal() {
+      const y = calMonth.getFullYear(), m = calMonth.getMonth();
+      const grid = $('[data-cal-grid]'); grid.classList.add('is-loading');
+      $('[data-cal-title]').textContent = `${y}년 ${m + 1}월`;
+      try { const d = await api('list', { query: { status: 'all', from: isoDate(new Date(y, m, 1)), to: isoDate(new Date(y, m + 1, 0)) } }); calRows = d.rows; }
+      catch (e) { if (e.message !== 'unauthorized') toast('달력을 불러오지 못했습니다: ' + e.message, true); calRows = []; }
+      grid.classList.remove('is-loading'); renderCal();
+    }
+    function renderCal() {
+      const y = calMonth.getFullYear(), m = calMonth.getMonth(); const grid = $('[data-cal-grid]'); grid.innerHTML = '';
+      const sel = $('[data-cal-studio]'); const studios = [...new Set(calRows.map(r => r.studio))].sort();
+      const keep = sel.value; sel.innerHTML = '<option value="">모든 지점</option>' + studios.map(k => `<option value="${esc(k)}">${esc(NAMES[k] || k)}</option>`).join(''); if (studios.includes(keep)) sel.value = keep;
+      document.querySelectorAll('[data-cal-status]').forEach(i => i.closest('.chip').classList.toggle('is-off', !i.checked));
+      const statuses = calStatus(); const studio = sel.value;
+      const rows = calRows.filter(r => statuses.has(r.status) && (!studio || r.studio === studio));
+      const byDay = {}; rows.forEach(r => (byDay[r.date] = byDay[r.date] || []).push(r));
+      const today = isoDate(new Date());
+      const first = new Date(y, m, 1); const lead = (first.getDay() + 6) % 7; const days = new Date(y, m + 1, 0).getDate();
+      for (let i = 0; i < lead; i++) { const c = document.createElement('div'); c.className = 'cal__day is-off'; grid.appendChild(c); }
+      for (let d = 1; d <= days; d++) {
+        const key = isoDate(new Date(y, m, d)); const list = (byDay[key] || []).slice().sort((a, b) => a.start_at.localeCompare(b.start_at) || a.studio.localeCompare(b.studio));
+        const cell = document.createElement('div'); cell.className = 'cal__day' + (key === today ? ' is-today' : key < today ? ' is-past' : '');
+        cell.innerHTML = `<div class="cal__n"><b>${d}</b>${list.length ? `<small>${list.length}건</small>` : ''}</div>`;
+        list.forEach(r => {
+          const b = document.createElement('button'); b.type = 'button'; b.className = `ev ev--${r.status}` + (r.id === current ? ' is-active' : '');
+          b.title = `${NAMES[r.studio] || r.studio} · ${r.part} · ${hm(hrs(r.start_at))}–${hm(hrs(r.end_at))} · ${r.company} · ${STATUS[r.status]}${r.board_label ? ' · ' + r.board_label : ''}`;
+          b.innerHTML = `<b>${esc(SHORT[r.studio] || r.studio)}${r.part && r.part !== '-' ? ' ' + esc(r.part) : ''}</b> ${hm(hrs(r.start_at))}–${hm(hrs(r.end_at))} ${esc(r.company)}`;
+          b.addEventListener('click', async () => { current = r.id; tab = r.status; setView('queue'); await loadList(); loadDetail(); });
+          cell.appendChild(b);
+        });
+        grid.appendChild(cell);
+      }
+      const tail = (7 - (lead + days) % 7) % 7; for (let i = 0; i < tail; i++) { const c = document.createElement('div'); c.className = 'cal__day is-off'; grid.appendChild(c); }
+      const n = { pending: 0, hold: 0, approved: 0, rejected: 0 }; calRows.forEach(r => { n[r.status] = (n[r.status] || 0) + 1; });
+      $('[data-cal-sum]').textContent = calRows.length ? `이달 ${calRows.length}건 · 대기 ${n.pending} · 보류 ${n.hold} · 승인 ${n.approved} · 반려 ${n.rejected}` : '이달 신청이 없습니다.';
+    }
+    $('[data-cal-prev]').addEventListener('click', () => { calMonth = new Date(calMonth.getFullYear(), calMonth.getMonth() - 1, 1); loadCal(); });
+    $('[data-cal-next]').addEventListener('click', () => { calMonth = new Date(calMonth.getFullYear(), calMonth.getMonth() + 1, 1); loadCal(); });
+    $('[data-cal-today]').addEventListener('click', () => { const d = new Date(); calMonth = new Date(d.getFullYear(), d.getMonth(), 1); loadCal(); });
+    document.querySelectorAll('[data-cal-status]').forEach(i => i.addEventListener('change', renderCal));
+    $('[data-cal-studio]').addEventListener('change', renderCal);
+
     async function boot() {
       $('[data-actor]').textContent = ACTOR || '—';
       const id = Number(new URLSearchParams(location.search).get('id'));
       await loadList();
       if (id) { current = id; renderQueue(); loadDetail(); }
+      if (location.hash === '#calendar') setView('calendar');
     }
     (async () => {
       if (!PW || !ACTOR) return showGate('');
