@@ -70,12 +70,20 @@ async function boardLabels(studio, dateIso) {
 
 async function list(req, res) {
   const status = clean(req.query.status || 'pending', 20);
-  const query = { select: 'id,created_at,studio,part,date,start_at,end_at,purpose,people,company,contact,status,board_label', order: 'created_at.desc', limit: '200' };
+  const query = { select: 'id,created_at,studio,part,date,start_at,end_at,purpose,people,company,contact,status,board_label' };
   if (status !== 'all') query.status = `eq.${status}`;
-  const from = clean(req.query.from || '', 10), to = clean(req.query.to || '', 10); // ?from=YYYY-MM-DD&to=YYYY-MM-DD → one month for the calendar view
-  if (/^\d{4}-\d{2}-\d{2}$/.test(from) && /^\d{4}-\d{2}-\d{2}$/.test(to)) { query.and = `(date.gte.${from},date.lte.${to})`; query.order = 'date.asc,start_at.asc'; query.limit = '500'; }
-  const [rows, counts] = await Promise.all([supa.select(T, query), supa.select('reservation_status_counts', { select: 'status,count' })]);
-  json(res, 200, { ok: true, rows, counts: Object.fromEntries(counts.map((c) => [c.status, c.count])) });
+  const from = clean(req.query.from || '', 10), to = clean(req.query.to || '', 10); // ?from=YYYY-MM-DD&to=YYYY-MM-DD → one month for the calendar view (past days included)
+  const range = /^\d{4}-\d{2}-\d{2}$/.test(from) && /^\d{4}-\d{2}-\d{2}$/.test(to);
+  const today = new Date(Date.now() + 9 * 3600e3).toISOString().slice(0, 10); // KST calendar day
+  if (range) { query.and = `(date.gte.${from},date.lte.${to})`; query.order = 'date.asc,start_at.asc'; query.limit = '500'; }
+  else {
+    // the queue: past reservation days drop out; 대기·보류 oldest request first, 승인 soonest booking first, 반려 newest first
+    query.date = `gte.${today}`; query.limit = '300';
+    query.order = status === 'approved' ? 'date.asc,start_at.asc,created_at.asc' : status === 'rejected' ? 'created_at.desc' : 'created_at.asc';
+  }
+  const [rows, live] = await Promise.all([supa.select(T, query), supa.select(T, { select: 'status', date: `gte.${today}` })]);
+  const counts = {}; for (const r of live) counts[r.status] = (counts[r.status] || 0) + 1;
+  json(res, 200, { ok: true, rows, counts, today });
 }
 
 async function detail(req, res) {
