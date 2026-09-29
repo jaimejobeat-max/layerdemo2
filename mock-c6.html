@@ -95,6 +95,7 @@
     .link:hover { border-color: currentColor; }
     .container { padding-left: var(--gutter); padding-right: var(--gutter); }
     .hr { height: 1px; background: var(--line); border: 0; margin: 0; }
+    .nowrap { white-space: nowrap; }
 
     /* ---- Header ---- */
     .header {
@@ -144,9 +145,7 @@
     }
     .intro__strip::-webkit-scrollbar { display: none; }
     .arc { flex: 0 0 300px; scroll-snap-align: start; }
-    .arc:nth-child(3n+2) { flex-basis: 420px; }
     .arc__img { aspect-ratio: 4/5; overflow: hidden; background: var(--line); }
-    .arc:nth-child(3n+2) .arc__img { aspect-ratio: 4/3; }
     .arc__img img { width: 100%; height: 100%; object-fit: cover; transition: transform .8s var(--ease); }
     .arc:hover .arc__img img { transform: scale(1.03); }
     .arc__title { margin-top: 14px; color: var(--black); }
@@ -162,14 +161,14 @@
     .rooms__next { justify-self: end; display: inline-flex; align-items: center; gap: 10px; color: var(--muted); }
     .rooms__track {
       display: flex; overflow-x: auto; scroll-snap-type: x mandatory; scrollbar-width: none;
-      margin: 24px calc(-1 * var(--gutter)) 0; padding: 0 var(--gutter); scroll-padding-left: var(--gutter);
+      margin: 24px calc(-1 * var(--gutter)) 0; padding: 0 var(--gutter) 0 calc(var(--gutter) - 40px); scroll-padding-left: calc(var(--gutter) - 40px);
     }
     .rooms__track::-webkit-scrollbar { display: none; }
     .room {
       flex: 0 0 33.333%; min-width: 420px; scroll-snap-align: start;
-      padding: 0 40px 56px 40px; border-left: 1px solid var(--line);
+      padding: 0 40px 56px 40px; border-left: 1px solid transparent;
     }
-    .room:first-child { border-left: 0; padding-left: 0; }
+    .room:not([hidden]) ~ .room { border-left-color: var(--line); }   /* no rule on the first visible card, even after filtering */
     .room__img { display: block; aspect-ratio: 4/5; overflow: hidden; background: var(--line); }
     .room__img img { width: 100%; height: 100%; object-fit: cover; transition: transform .8s var(--ease); }
     .room:hover .room__img img { transform: scale(1.03); }
@@ -188,10 +187,9 @@
     .split__text .body { max-width: 440px; margin: 24px auto 0; }
     .split__hours { margin-top: 6px; }
     .split__actions { display: flex; flex-direction: column; align-items: center; gap: 20px; margin-top: 36px; }
-    .split__img { height: 620px; overflow: hidden; }
+    .split__img { height: 640px; overflow: hidden; }
     .split__img img { width: 100%; height: 100%; object-fit: cover; }
     .split--img-left { margin-top: 96px; }
-    .split--img-left .split__img { height: 700px; }
     .split--img-left .split__text { text-align: left; }
     .split--img-left .split__text .body { margin-left: 0; }
     .split--img-left .split__actions { align-items: flex-start; }
@@ -282,12 +280,12 @@
       .intro { padding-top: 64px; }
       .intro__strip-head { margin-top: 48px; }
       .intro__strip { gap: 12px; }
-      .arc, .arc:nth-child(3n+2) { flex-basis: 72%; }
-      .arc:nth-child(3n+2) .arc__img { aspect-ratio: 4/5; }
+      .arc { flex-basis: 72%; }
       .rooms { margin-top: 72px; }
       .rooms__head { grid-template-columns: 1fr auto; }
       .rooms__tabs { grid-column: 1 / -1; grid-row: 2; justify-self: start; gap: 20px; }
       .rooms__head { height: auto; row-gap: 12px; }
+      .rooms__track { padding-left: 0; scroll-padding-left: 0; }
       .room { flex-basis: 84%; min-width: 0; padding: 0 20px 40px 20px; }
       .split { grid-template-columns: 1fr; }
       .split__img, .split--img-left .split__img { height: 420px; }
@@ -320,7 +318,7 @@
       <button class="header__lang" type="button" aria-label="Language">EN
         <svg width="8" height="5" viewBox="0 0 8 5" fill="none" stroke="currentColor" stroke-width="1.1"><path d="M1 1l3 3 3-3"/></svg>
       </button>
-      <a class="btn" href="reservation.html">Reservation</a>
+      <a class="btn" href="reserve-mock.html">Reservation</a>
     </div>
   </header>
 
@@ -332,7 +330,7 @@
         <span>Close</span>
       </button>
       <a class="header__wordmark" href="#" data-menu-close>Layer Studios</a>
-      <div class="header__right"><a class="btn" href="reservation.html">Reservation</a></div>
+      <div class="header__right"><a class="btn" href="reserve-mock.html">Reservation</a></div>
     </div>
     <div class="menu__body">
       <div class="menu__col">
@@ -354,7 +352,7 @@
       <div class="menu__col">
         <h2 class="label">Menu</h2>
         <ul class="menu__pages">
-          <li><a href="reservation.html">Reservation<small>Book a studio</small></a></li>
+          <li><a href="reserve-mock.html">Reservation<small>Book a studio</small></a></li>
           <li><a href="archives.html">Archives<small>Shot at Layer</small></a></li>
           <li><a href="journal.html">Journal<small>News &amp; events</small></a></li>
         </ul>
@@ -426,7 +424,7 @@
             <span class="room__spec"><svg viewBox="0 0 12 12"><path d="M1 3h10M1 6h10M1 9h10"/></svg>A · B · C</span>
           </p>
           <p class="room__excerpt">A large multi-purpose studio converted from a 1,500m² steel factory in Seongsu-dong. Part A has a 9m ceiling, Part B is split-level, and Part C on the third floor opens onto the roof.</p>
-          <div class="room__actions"><a class="btn" href="reservation.html">Book</a><a class="link" href="studios/layer-41.html">Learn more +</a></div>
+          <div class="room__actions"><a class="btn" href="reserve-mock.html">Book</a><a class="link" href="studios/layer-41.html">Learn more +</a></div>
         </article>
 
         <article class="room" data-area="yongsan">
@@ -438,7 +436,7 @@
             <span class="room__spec"><svg viewBox="0 0 12 12"><path d="M1 3h10M1 6h10M1 9h10"/></svg>1F · 2F · 3F</span>
           </p>
           <p class="room__excerpt">A reinterpreted electrical substation completed in 1939. Old concrete and solid columns set the mood, and the third floor connects to an outdoor terrace.</p>
-          <div class="room__actions"><a class="btn" href="reservation.html">Book</a><a class="link" href="studios/layer-20.html">Learn more +</a></div>
+          <div class="room__actions"><a class="btn" href="reserve-mock.html">Book</a><a class="link" href="studios/layer-20.html">Learn more +</a></div>
         </article>
 
         <article class="room" data-area="mapo">
@@ -450,7 +448,7 @@
             <span class="room__spec"><svg viewBox="0 0 12 12"><path d="M1 3h10M1 6h10M1 9h10"/></svg>A · B · Cafe</span>
           </p>
           <p class="room__excerpt">An open steel-truss hall up to 60m long near the Gyeongui Line Forest Park. Daylight through the high windows gives the space its particular feel.</p>
-          <div class="room__actions"><a class="btn" href="reservation.html">Book</a><a class="link" href="studios/layer-11.html">Learn more +</a></div>
+          <div class="room__actions"><a class="btn" href="reserve-mock.html">Book</a><a class="link" href="studios/layer-11.html">Learn more +</a></div>
         </article>
 
         <article class="room" data-area="seongsu">
@@ -462,7 +460,19 @@
             <span class="room__spec"><svg viewBox="0 0 12 12"><path d="M1 3h10M1 6h10M1 9h10"/></svg>A · B</span>
           </p>
           <p class="room__excerpt">A converted 330m² steel factory. An awning covering half the studio opens and closes, so it suits daylight shoots and exhibitions alike.</p>
-          <div class="room__actions"><a class="btn" href="reservation.html">Book</a><a class="link" href="studios/layer-26.html">Learn more +</a></div>
+          <div class="room__actions"><a class="btn" href="reserve-mock.html">Book</a><a class="link" href="studios/layer-26.html">Learn more +</a></div>
+        </article>
+
+        <article class="room" data-area="seongsu">
+          <a class="room__img" href="studios/layer-27.html"><img src="assets/img/60e5ef6234-960.webp" alt="Layer 27" loading="lazy"></a>
+          <h3 class="room__cat label">Layer 27 · Seongsu-dong</h3>
+          <p class="room__specs">
+            <span class="room__spec"><svg viewBox="0 0 12 12"><rect x="1" y="1" width="10" height="10"/></svg>400m²</span>
+            <span class="room__spec"><svg viewBox="0 0 12 12"><path d="M6 1v10M3 4l3-3 3 3M3 8l3 3 3-3"/></svg>6m ceiling</span>
+            <span class="room__spec"><svg viewBox="0 0 12 12"><path d="M1 3h10M1 6h10M1 9h10"/></svg>A · Office</span>
+          </p>
+          <p class="room__excerpt">A 400m² studio in Seongsu-dong. Part A is split-level under a daylit ceiling, joined by a spiral staircase, and the second-floor Office part has wide windows.</p>
+          <div class="room__actions"><a class="btn" href="reserve-mock.html">Book</a><a class="link" href="studios/layer-27.html">Learn more +</a></div>
         </article>
 
         <article class="room" data-area="yongsan">
@@ -474,7 +484,7 @@
             <span class="room__spec"><svg viewBox="0 0 12 12"><path d="M1 3h10M1 6h10M1 9h10"/></svg>A · B · C</span>
           </p>
           <p class="room__excerpt">A sixty-year-old church where the light falls beautifully. Part A with an 8m ceiling, Parts B and C, and an outdoor terrace have hosted events and exhibitions of every kind.</p>
-          <div class="room__actions"><a class="btn" href="reservation.html">Book</a><a class="link" href="studios/layer-7.html">Learn more +</a></div>
+          <div class="room__actions"><a class="btn" href="reserve-mock.html">Book</a><a class="link" href="studios/layer-7.html">Learn more +</a></div>
         </article>
 
         <article class="room" data-area="yongsan">
@@ -486,7 +496,19 @@
             <span class="room__spec"><svg viewBox="0 0 12 12"><path d="M1 3h10M1 6h10M1 9h10"/></svg>1F · 2F</span>
           </p>
           <p class="room__excerpt">A detached house right next to the Leeum Museum, five minutes on foot from Hangangjin Station. A 500m² plot over two floors, suited to shoots and exhibitions.</p>
-          <div class="room__actions"><a class="btn" href="reservation.html">Book</a><a class="link" href="studios/layer-hannam.html">Learn more +</a></div>
+          <div class="room__actions"><a class="btn" href="reserve-mock.html">Book</a><a class="link" href="studios/layer-hannam.html">Learn more +</a></div>
+        </article>
+
+        <article class="room" data-area="yongsan">
+          <a class="room__img" href="studios/faust.html"><img src="assets/img/e78cbbfcc5-960.webp" alt="Faust" loading="lazy"></a>
+          <h3 class="room__cat label">Faust · Itaewon</h3>
+          <p class="room__specs">
+            <span class="room__spec"><svg viewBox="0 0 12 12"><rect x="1" y="1" width="10" height="10"/></svg>Techno club</span>
+            <span class="room__spec"><svg viewBox="0 0 12 12"><path d="M6 1v10M3 4l3-3 3 3M3 8l3 3 3-3"/></svg>Spatial sound</span>
+            <span class="room__spec"><svg viewBox="0 0 12 12"><path d="M1 3h10M1 6h10M1 9h10"/></svg>M · L</span>
+          </p>
+          <p class="room__excerpt">Korea's first techno club designed around spatial sound, two minutes from Itaewon Station. Beyond photo and video shoots, it hosts brand parties and performances.</p>
+          <div class="room__actions"><a class="btn" href="reserve-mock.html">Book</a><a class="link" href="studios/faust.html">Learn more +</a></div>
         </article>
 
         <article class="room" data-area="mapo">
@@ -498,7 +520,7 @@
             <span class="room__spec"><svg viewBox="0 0 12 12"><path d="M1 3h10M1 6h10M1 9h10"/></svg>A · B · D</span>
           </p>
           <p class="room__excerpt">A studio converted from a 1,000m² detached house. Three rooms of different concepts, a 660m² garden and a greenhouse, used for outdoor weddings and events.</p>
-          <div class="room__actions"><a class="btn" href="reservation.html">Book</a><a class="link" href="studios/hongdae.html">Learn more +</a></div>
+          <div class="room__actions"><a class="btn" href="reserve-mock.html">Book</a><a class="link" href="studios/hongdae.html">Learn more +</a></div>
         </article>
 
         <article class="room" data-area="seongsu">
@@ -510,7 +532,7 @@
             <span class="room__spec"><svg viewBox="0 0 12 12"><path d="M1 3h10M1 6h10M1 9h10"/></svg>Studio · Cafe</span>
           </p>
           <p class="room__excerpt">A 1,300m² textile factory in front of Ttukseom Station. A studio and a cafe run side by side, and pop-ups have followed since the day it opened.</p>
-          <div class="room__actions"><a class="btn" href="reservation.html">Book</a><a class="link" href="studios/layer-10.html">Learn more +</a></div>
+          <div class="room__actions"><a class="btn" href="reserve-mock.html">Book</a><a class="link" href="studios/layer-10.html">Learn more +</a></div>
         </article>
 
       </div>
@@ -526,7 +548,7 @@
           <p>Exhibitions, pop-ups and events are quoted separately. See the guide for parking, load-in and equipment.</p>
         </div>
         <div class="split__actions">
-          <a class="btn" href="reservation.html">Request a booking</a>
+          <a class="btn" href="reserve-mock.html">Request a booking</a>
           <a class="link" href="guide.html">Read the guide</a>
         </div>
       </div>
@@ -539,12 +561,12 @@
       <div class="split__text">
         <div class="split__inner">
           <h2 class="title">Layer 57</h2>
-          <p class="sub-italic split__hours">Opening 1 November 2026 · 19 Seongsui-ro 26-gil</p>
+          <p class="sub-italic split__hours">Opening 1 November 2026 · <span class="nowrap">19 Seongsui-ro 26-gil</span></p>
           <div class="body">
             <p>A new cultural space by Layer Studios in Seongsu-dong. Shoots, exhibitions, performances and talks on a single floor, with an open programme in the making. Enquiries are welcome ahead of the opening.</p>
           </div>
           <div class="split__actions">
-            <a class="btn" href="reservation.html">Enquire</a>
+            <a class="btn" href="reserve-mock.html">Enquire</a>
             <a class="link" href="studios/layer-57.html">Learn more</a>
           </div>
         </div>
@@ -596,7 +618,7 @@
     <div class="footer__nav">
       <ul class="footer__list label">
         <li><a href="#studios">Studios</a><span>+</span></li>
-        <li><a href="reservation.html">Reservation</a><span>+</span></li>
+        <li><a href="reserve-mock.html">Reservation</a><span>+</span></li>
         <li><a href="archives.html">Archives</a><span>+</span></li>
       </ul>
       <div class="footer__logo">
@@ -628,7 +650,7 @@
         <li><a href="#">Naver</a></li>
       </ul>
     </div>
-    <p class="footer__copy">Layer Studios · Founder Heo Jun-sung · Business No. 837-87-01038 · Mail-order License 2018-서울성동-0310 · © 2009 — 2026 Layer Studios</p>
+    <p class="footer__copy">Layer Studios · Founder Heo Jun-sung · Business No. <span class="nowrap">837-87-01038</span> · Mail-order License <span class="nowrap">2018-서울성동-0310</span> · © 2009 — 2026 Layer Studios</p>
   </footer>
 
   <script src="js/archive-data.js"></script>
@@ -649,7 +671,7 @@
       el.className = 'arc';
       el.href = 'archives.html#' + a.id;
       el.innerHTML = '<div class="arc__img"><img loading="lazy" alt=""></div><p class="arc__title label"></p><p class="arc__meta"></p>';
-      const img = el.querySelector('img'); img.src = a.thumb; if (a.thumbSet) img.srcset = a.thumbSet; img.sizes = '420px';
+      const img = el.querySelector('img'); img.src = a.thumb; if (a.thumbSet) img.srcset = a.thumbSet; img.sizes = '300px';
       el.querySelector('.arc__title').textContent = a.title;
       el.querySelector('.arc__meta').textContent = [(a.studios || []).join(', '), a.date].filter(Boolean).join(' · ');
       strip.appendChild(el);
