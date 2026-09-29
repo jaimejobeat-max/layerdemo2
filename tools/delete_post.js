@@ -3,7 +3,7 @@
 // Usage: RAYSODA_ID=… RAYSODA_PW=… node tools/delete_post.js <boardId> <YYYY-MM-DD> [--yes]
 //   e.g. RAYSODA_ID=… RAYSODA_PW=… node tools/delete_post.js Layer41 2026-09-24 --yes
 // Without --yes it only lists the candidate posts for that day.
-// Only posts whose body says "홈페이지 예약 신청" are ever touched.
+// Only posts the homepage/console wrote are ever touched (body says "홈페이지 예약" or carries a "접수번호 #" marker).
 const iconv = require('iconv-lite');
 const { login, rawRequest, BASE } = require('../api/_zeroboard');
 
@@ -30,7 +30,7 @@ function text(html) { return html.replace(/<[^>]+>/g, ' ').replace(/\s+/g, ' ').
   for (const no of nos) {
     const view = iconv.decode((await rawRequest('GET', `${BASE}/view.php?id=${boardId}&no=${no}`, { cookie })).body, 'EUC-KR');
     const t = text(view);
-    const mine = t.includes('홈페이지 예약 신청');
+    const mine = /홈페이지 예약|접수번호 #\d+/.test(t); // provisional, confirmed and cancelled posts alike
     console.log(`- no=${no} ${mine ? '[homepage]' : '[other]'} ${t.slice(t.indexOf('====') > -1 ? t.indexOf('====') : 0, 160)}`);
     if (mine) targets.push(no);
   }
