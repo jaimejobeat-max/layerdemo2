@@ -207,33 +207,31 @@
       let d; try { d = await api('detail', { query: { id: current } }); } catch (e) { root.innerHTML = `<div class="empty">불러오지 못했습니다: ${esc(e.message)}</div>`; return; }
       renderDetail(d);
     }
-    function parseLabel(l) { // "A 09-18 브랜드" → { parts:[A], start:9, end:18 } when the staff wrote times into the label
-      const m = l.match(/(\d{1,2})(?::(\d{2}))?\s*[-~–]\s*(\d{1,2})(?::(\d{2}))?/); if (!m) return null;
-      const start = +m[1] + (m[2] ? +m[2] / 60 : 0), end = +m[3] + (m[4] ? +m[4] / 60 : 0); if (!(end > start)) return null;
-      const ps = (STUDIOS[currentStudio] || []).filter(p => new RegExp('(^|[^A-Za-z0-9])' + p.replace(/[.*+?^${}()|[\]\\]/g, '\\$&') + '([^A-Za-z0-9]|$)', 'i').test(l));
-      return { start, end, parts: ps };
-    }
     let currentStudio = null;
     function renderDetail({ row: r, events, siblings, board, studioName }) {
       currentStudio = r.studio;
       const root = $('[data-detail]'); const mine = { start: hrs(r.start_at), end: hrs(r.end_at), parts: parts(r) };
       const sibs = siblings.map(s => ({ ...s, start: hrs(s.start_at), end: hrs(s.end_at), parts: parts(s), kind: s.status === 'approved' ? 'other-approved' : 'other' }));
-      const labels = board.labels.map(l => ({ label: l, prov: l.includes('++'), t: parseLabel(l) }));
-      const conflicts = [...sibs.filter(s => overlap(mine, s)).map(s => `${s.part} ${hm(s.start)}–${hm(s.end)} ${s.company} (${STATUS[s.status]})`), ...labels.filter(l => l.t && l.t.parts.length && overlap(mine, l.t)).map(l => `게시판 "${l.label}"`)];
+      const labels = board.labels.map(l => ({ label: l, prov: l.includes('++') }));
+      // board blocks come pre-parsed from the server (same parser as the customer calendar): a block without a time covers the whole day
+      const blocks = (board.blocks || []).map(b => ({ ...b, allDay: b.start === null, start: b.start === null ? 0 : b.start, end: b.end === null ? 24 : b.end, text: b.raw || b.label }));
+      const conflicts = [...sibs.filter(s => overlap(mine, s)).map(s => `${s.part} ${hm(s.start)}–${hm(s.end)} ${s.company} (${STATUS[s.status]})`), ...blocks.filter(b => b.kind === 'fixed' && overlap(mine, b)).map(b => `게시판 "${b.text}"${b.allDay ? ' (종일로 해석)' : ''}`)];
+      const provHere = blocks.filter(b => b.kind !== 'fixed' && overlap(mine, b));
       const done = r.status === 'approved' || r.status === 'rejected';
       const rank = labels.filter(l => l.prov).length + 1;
       const alert = board.error ? `<div class="alert alert--warn">${icon()}<div><strong>게시판을 읽지 못했습니다</strong> (${esc(board.error)}). 스케줄표를 직접 확인한 뒤 승인해 주세요.</div></div>`
         : conflicts.length ? `<div class="alert alert--bad">${icon()}<div><strong>같은 파트에 시간이 겹치는 건이 있습니다.</strong> ${esc(conflicts.join(', '))}. 승인 전에 고객과 시간 조정이 필요합니다.</div></div>`
         : !board.boardId ? `<div class="alert alert--warn">${icon()}<div><strong>${esc(studioName)}은 스케줄 게시판이 없는 지점입니다.</strong> 승인해도 자동으로 올라가지 않으니 수기로 처리하고 여기서 상태만 바꿔 주세요.</div></div>`
-        : labels.length ? `<div class="alert alert--ok">${icon()}<div><strong>이날 게시판에 ${labels.length}건이 있습니다.</strong> 라벨에 시간이 없어 겹침은 자동 판단하지 못했습니다. 아래 목록을 확인하세요. 승인하면 <b>++(W${rank})</b>로 올라갑니다.</div></div>`
+        : provHere.length ? `<div class="alert alert--warn">${icon()}<div><strong>같은 파트·시간에 가부킹이 ${provHere.length}건 있습니다.</strong> 확정 예약과는 겹치지 않습니다. 순서를 확인한 뒤 승인하면 <b>++(W${rank})</b>로 올라갑니다.</div></div>`
+        : blocks.length || labels.length ? `<div class="alert alert--ok">${icon()}<div><strong>이날 게시판에 ${blocks.length || labels.length}건이 있지만 선택한 파트·시간과 겹치지 않습니다.</strong> 승인하면 <b>++(W${rank})</b>로 올라갑니다.</div></div>`
         : `<div class="alert alert--ok">${icon()}<div><strong>이날 게시판이 비어 있습니다.</strong> 승인하면 <b>++(W${rank})</b> 가부킹 글이 올라갑니다.</div></div>`;
       const lanes = (STUDIOS[r.studio] || parts(r)).map(p => {
-        const blocks = [
-          ...labels.filter(l => l.t && l.t.parts.includes(p)).map(l => `<div class="blk ${l.prov ? 'blk--prov' : 'blk--fixed'}" style="left:${pct(l.t.start)}%;width:${pct(l.t.end) - pct(l.t.start)}%" title="${esc(l.label)}">${esc(l.label)}</div>`),
+        const lane = [
+          ...blocks.filter(b => b.parts.includes(p)).map(b => `<div class="blk ${b.kind === 'fixed' ? 'blk--fixed' : 'blk--prov'}" style="left:${pct(b.start)}%;width:${pct(b.end) - pct(b.start)}%" title="${esc(b.text)}">${esc(b.text)}${b.allDay ? ' · 종일' : ''}</div>`),
           ...sibs.filter(s => s.parts.includes(p)).map(s => `<div class="blk blk--other" style="left:${pct(s.start)}%;width:${pct(s.end) - pct(s.start)}%" title="${esc(s.company)}">${esc(s.company)} ${hm(s.start)}–${hm(s.end)} · ${STATUS[s.status]}</div>`),
           mine.parts.includes(p) ? `<div class="blk blk--this ${conflicts.length ? 'is-conflict' : ''}" style="left:${pct(mine.start)}%;width:${pct(mine.end) - pct(mine.start)}%">이 신청 ${hm(mine.start)}–${hm(mine.end)}</div>` : '',
         ].join('');
-        return `<div class="tl__row"><div class="tl__part">${esc(p)}</div><div class="tl__lane">${blocks}</div></div>`;
+        return `<div class="tl__row"><div class="tl__part">${esc(p)}</div><div class="tl__lane">${lane}</div></div>`;
       }).join('');
       const scale = []; for (let h = HOURS[0]; h <= HOURS[1]; h += 2) scale.push(`<span style="left:${pct(h)}%">${pad(h)}</span>`);
       root.innerHTML = `

@@ -13,7 +13,8 @@
 //        Every board write stores a 'board_snapshot' event (label + body) — the base for the next merge.
 const crypto = require('crypto');
 const supa = require('./_supabase');
-const { login, writePost, modifyPost, deletePost, readPost, findPost, dayLabels } = require('./_zeroboard');
+const { login, writePost, modifyPost, deletePost, readPost, findPost, dayLabels, monthLabels } = require('./_zeroboard');
+const { fromBoard } = require('./availability');
 const { buildPost, provisionalRank, marker, BOARDS, NAMES, hm, WEEKDAYS } = require('./reserve');
 const { merge } = require('./_merge');
 
@@ -58,9 +59,12 @@ async function boardLabels(studio, dateIso) {
   if (!process.env.RAYSODA_ID || !process.env.RAYSODA_PW) return { boardId, labels: [], error: 'board-credentials' };
   try {
     const cookie = await login(process.env.RAYSODA_ID, process.env.RAYSODA_PW);
-    const d = toDate(dateIso);
-    const labels = await dayLabels({ cookie, boardId, y: d.getUTCFullYear(), m: d.getUTCMonth() + 1, d: d.getUTCDate() });
-    return { boardId, labels, cookie };
+    const d = toDate(dateIso); const y = d.getUTCFullYear(), m = d.getUTCMonth() + 1;
+    const month = await monthLabels({ cookie, boardId, y, m });
+    const labels = month[d.getUTCDate()] || [];
+    // blocks: multi-day ranges expanded, "ALL"/aliases resolved, names kept in `raw` (staff only) — same parser as the customer calendar
+    const blocks = (fromBoard(month, studio, y, m)[dateIso] || []);
+    return { boardId, labels, blocks, cookie };
   } catch (e) { return { boardId, labels: [], error: e.message }; }
 }
 
@@ -81,7 +85,7 @@ async function detail(req, res) {
     supa.select(T, { select: 'id,part,start_at,end_at,company,status,board_label', studio: `eq.${row.studio}`, date: `eq.${row.date}`, id: `neq.${id}`, status: 'neq.rejected' }),
     boardLabels(row.studio, row.date),
   ]);
-  json(res, 200, { ok: true, row, events, siblings, board: { boardId: board.boardId, labels: board.labels, error: board.error || null }, studioName: NAMES[row.studio] || row.studio });
+  json(res, 200, { ok: true, row, events, siblings, board: { boardId: board.boardId, labels: board.labels, blocks: board.blocks || [], error: board.error || null }, studioName: NAMES[row.studio] || row.studio });
 }
 
 async function decide(req, res) {

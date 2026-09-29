@@ -66,7 +66,7 @@ function parseLabel(raw, studio) {
     else all = true; // a name or something we don't recognise → whole studio
   }
   if (bare && picked && !range) return null; // "A" alone = placeholder, not a booking
-  return { block: { parts: all ? parts.slice() : picked, all, start, end, kind, label: (all ? 'ALL' : picked.join('+')) + (start !== null ? ' ' + start + '–' + end : '') }, range };
+  return { block: { parts: all ? parts.slice() : picked, all, start, end, kind, label: (all ? 'ALL' : picked.join('+')) + (start !== null ? ' ' + start + '–' + end : ''), raw: decode(raw).trim() }, range };
 }
 
 /** Board month → { 'YYYY-MM-DD': [block…] } */
@@ -132,7 +132,7 @@ async function build(studio, y, m) {
     try { merge(await fromQueue(studio, y, m)); out.source.queue = 'ok'; }
     catch (e) { console.error('availability queue', e.message); out.source.queue = 'error'; }
   }
-  for (const k of Object.keys(out.days)) out.days[k].sort((a, b) => (a.start ?? -1) - (b.start ?? -1));
+  for (const k of Object.keys(out.days)) out.days[k] = out.days[k].map(({ raw, ...b }) => b).sort((a, b) => (a.start ?? -1) - (b.start ?? -1)); // customers never see staff labels
   return out;
 }
 
