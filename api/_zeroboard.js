@@ -1,6 +1,6 @@
 // Zeroboard (raysoda.cafe24.com) client: login + write a schedule post.
 // The board sends malformed headers that crash Node's HTTP parser, so we speak
-// HTTP/1.1 over a raw TLS socket (same approach as the schedule dashboard).
+// HTTP/1.1 over a raw TLS socket (same approach and the same safeguards as the schedule dashboard's lib/raysoda-http.ts).
 // Posts are EUC-KR; the calendar label lives in `sitelink1`, `subject` is the date.
 const tls = require('tls');
 const iconv = require('iconv-lite');
@@ -8,10 +8,19 @@ const iconv = require('iconv-lite');
 const HOST = 'raysoda.cafe24.com';
 const BASE = '/zeroboard';
 
-function rawRequest(method, path, { body = null, cookie = null, contentType = 'application/x-www-form-urlencoded', headers: extra = {} } = {}) {
+/**
+ * One HTTP/1.1 exchange with the board over a raw TLS socket.
+ * - servername (SNI) makes cafe24 present its real certificate, so the connection is verified.
+ * - keep-alive on purpose: asked to close, the board's nginx cuts large pages short (about one logged-in hongdae
+ *   month in four). We hang up ourselves once the response is complete.
+ * - An incomplete body is never returned: a cut-off month page still parses, just with its last days missing.
+ */
+function rawOnce(method, path, { body = null, cookie = null, contentType = 'application/x-www-form-urlencoded', headers: extra = {} } = {}) {
   return new Promise((resolve, reject) => {
-    const socket = tls.connect(443, HOST, { rejectUnauthorized: false }, () => {
-      const lines = [`${method} ${path} HTTP/1.1`, `Host: ${HOST}`, 'Connection: close',
+    let settled = false;
+    const done = (fn, v) => { if (settled) return; settled = true; socket.destroy(); fn(v); };
+    const socket = tls.connect(443, HOST, { servername: HOST }, () => {
+      const lines = [`${method} ${path} HTTP/1.1`, `Host: ${HOST}`, 'Connection: keep-alive',
         'User-Agent: Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 Chrome/120 Safari/537.36',
         `Content-Type: ${contentType}`];
       if (cookie) lines.push(`Cookie: ${cookie}`);
@@ -22,30 +31,41 @@ function rawRequest(method, path, { body = null, cookie = null, contentType = 'a
       if (body) socket.write(body);
     });
     const chunks = [];
-    socket.setTimeout(20000, () => { socket.destroy(); reject(new Error('timeout')); });
-    socket.on('data', (d) => chunks.push(d));
-    socket.on('end', () => {
+    // the response once all of it has arrived; null while incomplete
+    const parse = (closed) => {
       const full = Buffer.concat(chunks);
-      const i = full.indexOf('\r\n\r\n');
-      if (i === -1) return reject(new Error('invalid response'));
-      const headers = full.subarray(0, i).toString();
-      let body = full.subarray(i + 4);
-      if (/transfer-encoding:\s*chunked/i.test(headers)) body = dechunk(body);
-      resolve({ headers, body });
-    });
-    socket.on('error', reject);
+      const i = full.indexOf('\r\n\r\n'); if (i === -1) return null;
+      const headers = full.subarray(0, i).toString(); const rest = full.subarray(i + 4);
+      if (/^transfer-encoding:\s*chunked/im.test(headers)) { const decoded = dechunk(rest); return decoded && { headers, body: decoded }; }
+      const len = headers.match(/^content-length:\s*(\d+)/im);
+      if (len) return rest.length >= Number(len[1]) ? { headers, body: rest.subarray(0, Number(len[1])) } : null;
+      return closed ? { headers, body: rest } : null; // no framing: the body runs until the server closes
+    };
+    socket.setTimeout(20000, () => done(reject, new Error('timeout')));
+    socket.on('data', (d) => { chunks.push(d); const r = parse(false); if (r) done(resolve, r); });
+    socket.on('end', () => { const r = parse(true); r ? done(resolve, r) : done(reject, new Error('truncated response')); });
+    socket.on('error', (e) => done(reject, e));
   });
 }
 
+/** GETs are retried once when the board cuts the response or times out; POSTs never are (a write must not repeat). */
+async function rawRequest(method, path, opts = {}) {
+  try { return await rawOnce(method, path, opts); }
+  catch (e) { if (method !== 'GET' || !/truncated|timeout|ECONNRESET/i.test(e.message)) throw e; return rawOnce(method, path, opts); }
+}
+
+/** Chunked body → bytes; null unless it runs all the way to the terminating chunk. */
 function dechunk(buf) {
   const out = []; let p = 0;
   while (p < buf.length) {
-    const nl = buf.indexOf('\r\n', p); if (nl === -1) break;
-    const size = parseInt(buf.subarray(p, nl).toString(), 16);
-    if (!size) break;
+    const nl = buf.indexOf('\r\n', p); if (nl === -1) return null;
+    const size = parseInt(buf.subarray(p, nl).toString('latin1'), 16);
+    if (!Number.isFinite(size) || size < 0) return null;
+    if (size === 0) return Buffer.concat(out);
+    if (nl + 2 + size > buf.length) return null;
     out.push(buf.subarray(nl + 2, nl + 2 + size)); p = nl + 2 + size + 2;
   }
-  return Buffer.concat(out);
+  return null;
 }
 
 async function login(userId, password) {
