@@ -324,7 +324,7 @@ async function addNote(req, res) {
 
 module.exports = async (req, res) => {
   if (!process.env.ADMIN_PASSWORD) return json(res, 500, { ok: false, error: 'admin-not-configured' });
-  if (!authed(req)) return json(res, 401, { ok: false, error: 'unauthorized' });
+  if (!authed(req)) { await new Promise((r) => setTimeout(r, 1200)); return json(res, 401, { ok: false, error: 'unauthorized' }); } // wrong password: answer slowly to blunt guessing
   if (!supa.configured()) return json(res, 500, { ok: false, error: 'supabase-not-configured' });
   const action = clean((req.query && req.query.action) || '', 20);
   try {

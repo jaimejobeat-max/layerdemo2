@@ -6,21 +6,17 @@
 //   block = { parts: ['A'] | all parts, all: bool, start: 9 | null, end: 18 | null, kind: 'fixed' | 'prov' | 'pending', label }
 //   start/end are hours (13.5 = 13:30); null means the label had no time, i.e. treat as the whole day.
 // The customer never sees staff names: labels are reduced to part + time before they leave the server.
-// Results are cached in the function instance for 60 s and at the CDN for 60 s.
+// The board part is cached in the function instance for 60 s; the whole response at the CDN for 20 s (+20 s stale).
 const { login, monthLabels } = require('./_zeroboard');
 const supa = require('./_supabase');
-const { BOARDS } = require('./reserve');
+const { BOARDS, PARTS } = require('./reserve');
 
-const PARTS = {
-  'layer-41': ['A', 'B', 'C'], 'layer-20': ['1F', '2F', '3F', 'Caravan'], 'layer-11': ['A', 'B', 'Cafe'], 'layer-26': ['A', 'B'],
-  'layer-27': ['A', 'Office'], 'layer-7': ['A', 'B', 'C'], 'layer-hannam': ['1F', '2F'], hongdae: ['A', 'B', 'D', 'Back Garden', 'Greenhouse', 'Garden'],
-};
 // staff shorthand for multi-word parts
 const ALIAS = { hongdae: { BG: 'Back Garden', GH: 'Greenhouse', GARDEN: 'Garden', G: 'Garden' } };
 // labels that are not bookings: cancelled ('-'), notes ('**'), empty-room placeholders (a bare part name)
 const SKIP = new Set(['-', '--', '**', '*']);
 const TTL = 60e3;
-const cache = new Map(); // key → { at, data }
+const cache = new Map(); // key → { at, days } (board part only)
 let cookieCache = null;  // { at, cookie }
 
 const pad2 = (n) => String(n).padStart(2, '0');
@@ -130,22 +126,31 @@ async function boardCookie() {
   return cookie;
 }
 
-async function build(studio, y, m) {
+/** Board part of the month, cached per function instance (the board is slow: login + a 60–130 KB page) */
+async function boardDays(studio, y, m) {
   const boardId = BOARDS[studio];
+  if (!boardId) return { state: 'none', days: {} };
+  if (!process.env.RAYSODA_ID || !process.env.RAYSODA_PW) return { state: 'unconfigured', days: {} };
+  const key = `${studio}:${y}-${m}`; const hit = cache.get(key);
+  if (hit && Date.now() - hit.at < TTL) return { state: 'ok', days: hit.days };
+  try {
+    let labels;
+    try { labels = await monthLabels({ cookie: await boardCookie(), boardId, y, m }); }
+    catch (e) { if (!/session/.test(e.message)) throw e; cookieCache = null; labels = await monthLabels({ cookie: await boardCookie(), boardId, y, m }); }
+    const days = fromBoard(labels, studio, y, m); cache.set(key, { at: Date.now(), days });
+    return { state: 'ok', days };
+  } catch (e) { console.error('availability board', studio, y, m, e.message); return hit ? { state: 'ok', days: hit.days } : { state: 'error', days: {} }; } // fall back to the last good copy
+}
+
+async function build(studio, y, m) {
   const out = { ok: true, studio, y, m, parts: PARTS[studio], days: {}, source: { board: 'none', queue: 'none' }, fetchedAt: new Date().toISOString() };
   const merge = (src) => { for (const [k, v] of Object.entries(src)) out.days[k] = (out.days[k] || []).concat(v); };
-  if (boardId && process.env.RAYSODA_ID && process.env.RAYSODA_PW) {
-    try {
-      let labels;
-      try { labels = await monthLabels({ cookie: await boardCookie(), boardId, y, m }); }
-      catch (e) { if (!/session/.test(e.message)) throw e; cookieCache = null; labels = await monthLabels({ cookie: await boardCookie(), boardId, y, m }); }
-      merge(fromBoard(labels, studio, y, m)); out.source.board = 'ok';
-    } catch (e) { console.error('availability board', studio, y, m, e.message); out.source.board = 'error'; }
-  } else if (boardId) out.source.board = 'unconfigured';
-  if (supa.configured()) {
-    try { merge(await fromQueue(studio, y, m)); out.source.queue = 'ok'; }
-    catch (e) { console.error('availability queue', e.message); out.source.queue = 'error'; }
-  }
+  // the queue is always read fresh (one fast query) so a new request shows up right away; only the board is cached
+  const [board, queue] = await Promise.all([
+    boardDays(studio, y, m),
+    supa.configured() ? fromQueue(studio, y, m).then((days) => ({ state: 'ok', days }), (e) => { console.error('availability queue', e.message); return { state: 'error', days: {} }; }) : Promise.resolve({ state: 'none', days: {} }),
+  ]);
+  merge(board.days); merge(queue.days); out.source = { board: board.state, queue: queue.state };
   for (const k of Object.keys(out.days)) out.days[k] = out.days[k].map(({ raw, ...b }) => b).sort((a, b) => (a.start ?? -1) - (b.start ?? -1)); // customers never see staff labels
   return out;
 }
@@ -156,12 +161,9 @@ module.exports = async (req, res) => {
   const studio = String(q.studio || ''); const y = Number(q.y), m = Number(q.m);
   if (!(studio in PARTS) || !(studio in BOARDS)) return res.status(400).json({ ok: false, error: 'studio' });
   if (!Number.isInteger(y) || !Number.isInteger(m) || y < 2024 || y > 2100 || m < 1 || m > 12) return res.status(400).json({ ok: false, error: 'month' });
-  const key = `${studio}:${y}-${m}`;
-  const hit = cache.get(key);
-  let data;
-  if (hit && Date.now() - hit.at < TTL) data = hit.data;
-  else { data = await build(studio, y, m); if (data.source.board !== 'error') cache.set(key, { at: Date.now(), data }); }
-  res.setHeader('Cache-Control', data.source.board === 'error' ? 'no-store' : 'public, s-maxage=60, stale-while-revalidate=300');
+  const data = await build(studio, y, m);
+  // short CDN cache: repeat views are instant, a new request is visible to everyone within about half a minute
+  res.setHeader('Cache-Control', data.source.board === 'error' ? 'no-store' : 'public, s-maxage=20, stale-while-revalidate=20');
   res.status(200).json(data);
 };
 module.exports.parseLabel = parseLabel; module.exports.fromBoard = fromBoard; module.exports.PARTS = PARTS;

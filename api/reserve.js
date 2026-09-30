@@ -15,6 +15,11 @@ const NAMES = {
   'layer-41': 'LAYER 41', 'layer-20': 'LAYER 20', 'layer-11': 'LAYER 11', 'layer-26': 'LAYER 26', 'layer-27': 'LAYER 27',
   'layer-7': 'LAYER 7', 'layer-10': 'LAYER 10', 'layer-hannam': 'LAYER HANNAM', 'hongdae': 'HONGDAE', 'faust': 'FAUST', 'layer-57': 'LAYER 57',
 };
+// bookable parts per studio (same list the pages use); a request may only name these
+const PARTS = {
+  'layer-41': ['A', 'B', 'C'], 'layer-20': ['1F', '2F', '3F', 'Caravan'], 'layer-11': ['A', 'B', 'Cafe'], 'layer-26': ['A', 'B'],
+  'layer-27': ['A', 'Office'], 'layer-7': ['A', 'B', 'C'], 'layer-hannam': ['1F', '2F'], hongdae: ['A', 'B', 'D', 'Back Garden', 'Greenhouse', 'Garden'],
+};
 const MIN_HOURS = { hongdae: 2 };
 const PURPOSE = { photo: '사진 촬영', video: '영상 촬영', event: '행사' };
 const NO_ONLINE = { faust: true, 'layer-10': true, 'layer-57': true }; // faust: phone only · layer-10: long-term rental · layer-57: opening soon
@@ -32,6 +37,7 @@ function validate(b) {
   if (NO_ONLINE[studio]) return 'studio-offline';
   const part = clean(b.part, 40).replace(/\s*\+\s*/g, '+') || '-';
   if (!/^[A-Za-z0-9가-힣][A-Za-z0-9가-힣 \-]{0,18}(\+[A-Za-z0-9가-힣][A-Za-z0-9가-힣 \-]{0,18}){0,7}$|^-$/.test(part)) return 'part';
+  if (part !== '-' && PARTS[studio]) { const ps = part.split('+'); if (new Set(ps).size !== ps.length || !ps.every((x) => PARTS[studio].includes(x))) return 'part'; }
   if (!/^\d{4}-\d{2}-\d{2}$/.test(b.date || '')) return 'date';
   const [yy, mm, dd] = b.date.split('-').map(Number);
   const date = new Date(Date.UTC(yy, mm - 1, dd)); // calendar day, timezone-independent (use getUTC* only)
@@ -163,4 +169,4 @@ module.exports = async (req, res) => {
   res.status(200).json({ ok: true, recorded: !!(boardResult && boardResult.ok), label: post.label, reason });
 };
 module.exports.buildPost = buildPost; module.exports.validate = validate; module.exports.provisionalRank = provisionalRank; module.exports.marker = marker;
-module.exports.BOARDS = BOARDS; module.exports.NAMES = NAMES; module.exports.hm = hm; module.exports.WEEKDAYS = WEEKDAYS;
+module.exports.BOARDS = BOARDS; module.exports.PARTS = PARTS; module.exports.NAMES = NAMES; module.exports.hm = hm; module.exports.WEEKDAYS = WEEKDAYS;

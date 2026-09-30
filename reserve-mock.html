@@ -323,6 +323,7 @@
       <div class="items" id="doneItems"></div>
       <p class="done__p">담당자가 스케줄을 확인한 뒤 전화 또는 메일로 안내드립니다. 가부킹·문의 상태의 날짜는 확인 후 확정됩니다.</p>
       <p class="err" id="doneErr" hidden></p>
+      <button type="button" class="btn-ghost" id="retry" hidden>접수되지 않은 건 다시 보내기</button>
       <button type="button" class="cta" id="again">새 예약 신청</button>
     </div>
 
@@ -376,11 +377,12 @@
   // ---------- availability: GET /api/availability?studio&y&m, one fetch per studio+month, kept for the page's lifetime
   // block = { parts, all, start|null, end|null, kind: 'fixed' | 'prov' | 'pending' } — null time means the whole day
   const avail = new Map();
+  let bust = 0; // set after this visitor submits: refetch past the CDN so their own request shows on the calendar
   const akey = (key, d) => key + ':' + d.getFullYear() + '-' + pad(d.getMonth() + 1);
   function ensureMonth(key, d) {
     const k = akey(key, d); if (avail.has(k)) return avail.get(k);
     const entry = { loading: true, error: false, days: {} }; avail.set(k, entry);
-    fetch('/api/availability?studio=' + key + '&y=' + d.getFullYear() + '&m=' + (d.getMonth() + 1))
+    fetch('/api/availability?studio=' + key + '&y=' + d.getFullYear() + '&m=' + (d.getMonth() + 1) + (bust ? '&t=' + bust : ''))
       .then(r => r.json())
       .then(j => { if (!j || !j.ok) throw new Error((j && j.error) || 'bad'); entry.days = j.days || {}; entry.error = !!(j.source && j.source.board === 'error'); })
       .catch(() => { entry.error = true; })
@@ -501,6 +503,7 @@
   $('back').addEventListener('click', () => go(1));
   $('editItems').addEventListener('click', () => go(1));
   $('hBack').addEventListener('click', () => { if (st.step === 2) go(1); });
+  $('retry').addEventListener('click', () => { st.items = st.results.filter(r => !r.ok).map(r => r.item); st.results = []; go(2); }); // contact fields are still filled in
   $('again').addEventListener('click', () => { st.items = []; st.results = []; st.parts = []; st.date = null; $('cform').reset(); go(1); });
 
   // ---------- submit: one /api/reserve request per item, in order; the queue links them through the note
@@ -530,7 +533,9 @@
         results.push({ item: it, ok: true, id: j.id || null });
       } catch (ex) { results.push({ item: it, ok: false, error: MSG[ex.message] ? ex.message : 'network' }); }
     }
-    st.sending = false; st.results = results; go(3);
+    st.sending = false; st.results = results;
+    if (results.some(r => r.ok)) { bust = Date.now(); avail.clear(); }
+    go(3);
     function fail(code) { err.textContent = MSG[code]; err.hidden = false; }
   });
 
@@ -658,7 +663,8 @@
     $('doneT').textContent = failed.length === st.results.length ? '예약 신청을 보내지 못했습니다' : failed.length ? '일부 예약 신청만 접수되었습니다' : '예약 신청이 접수되었습니다';
     $('doneItems').innerHTML = st.results.map(r => '<div class="item' + (r.ok ? '' : ' is-fail') + '">' + itemRow(r.item, r.ok ? (r.id ? ' <span>· 접수번호 ' + r.id + '</span>' : '') : ' <span style="color:var(--full)">· ' + MSG[r.error] + '</span>') + '</div>').join('');
     const e = $('doneErr'); e.hidden = !failed.length;
-    e.textContent = failed.length ? '접수되지 않은 건은 전화(02-336-7750)로 문의해 주세요.' : '';
+    e.textContent = failed.length ? '접수되지 않은 건은 다시 보내거나 전화(02-336-7750)로 문의해 주세요.' : '';
+    $('retry').hidden = !failed.length; $('retry').textContent = '접수되지 않은 ' + failed.length + '건 다시 보내기';
   }
   render();
 </script>
