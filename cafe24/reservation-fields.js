@@ -642,15 +642,9 @@
     var p = problem();
     if (p) warn(p); else openConfirm();
   }, true);
-  var guardedSubmit = form.submit;
-  if (typeof guardedSubmit === 'function') {
-    form.submit = function () {
-      var p = problem();
-      if (p) { warn(p); return false; }
-      sync();
-      return guardedSubmit.apply(form, arguments);
-    };
-  }
+  // Never wrap form.submit: Cafe24 sends 예약자/이메일/비밀번호 to its encryption server, empties those
+  // inputs and only then calls form.submit, so checking the fields there blocks every post and leaves
+  // Cafe24 stuck at "처리중입니다".
 
   renderParts();
   fillGuide($('lr-guide'));
