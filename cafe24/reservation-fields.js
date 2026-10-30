@@ -4,7 +4,8 @@
  * Pasted into the Cafe24 skin board/reservation/write.html, right after the branch guard script.
  * The form is regrouped into four numbered sections (일정 / 대관 정보 / 예약자 정보 / 요청 사항):
  * Cafe24's own 스튜디오 예약, 예약자/업체명, 이메일 and 비밀번호 inputs are moved into them (still
- * inside the form, so Cafe24 posts them as before), and every "* 항목 :" line of the branch template
+ * inside the form, so Cafe24 posts them as before; a logged-in member has no 예약자/업체명 or 이메일
+ * input, so the form adds its own, which only fill the body lines), and every "* 항목 :" line of the branch template
  * gets a field, plus a free "하고 싶은 말" box written after 입금자명. The Froala editor stays in the
  * page but hidden: the fields write into it, and on 예약하기 the customer reviews a summary in a
  * confirm dialog before Cafe24 posts it. Cafe24 still stores one ordinary post (title = branch,
@@ -67,9 +68,12 @@
       .replace(/&nbsp;/g, ' ').replace(/&lt;/g, '<').replace(/&gt;/g, '>').replace(/&amp;/g, '&');
   }
 
-  // Cafe24's own inputs that move into the new sections; only if all of them are where we expect
+  // Cafe24's own inputs that move into the new sections. A logged-in member gets no 예약자/업체명, 이메일
+  // or consent inputs (Cafe24 posts under the member's name), so the form shows its own name and email
+  // inputs instead; those only fill the body lines and are never posted as fields.
   var cafe = { writer: $('writer'), email1: $('email1'), email2: $('email2'), email3: $('email3'), password: $('password') };
-  var regroup = !!(cafe.writer && cafe.email1 && cafe.email2 && cafe.email3 && cafe.password && boxOf(select) && boxOf(cafe.writer) && boxOf(cafe.password));
+  var ownWriter = !cafe.writer, ownEmail = !(cafe.email1 && cafe.email2 && cafe.email3);
+  var regroup = !!boxOf(select);
 
   /* ---------- markup ---------- */
 
@@ -218,12 +222,12 @@
         '<span class="lr-unit lr-unit--pre" style="margin-left:18px">차량</span><input type="number" class="lr-w-num" id="lr-cars" min="0" max="99" inputmode="numeric" aria-label="방문 차량수"><span class="lr-unit">대</span>' +
         '<span class="lr-park" id="lr-park" aria-live="polite"></span>')) +
     section('03', '예약자 정보',
-      (regroup ? row('예약자/업체명<em>*</em>', '', 'lr-slot-writer') : '') +
+      (regroup || ownWriter ? row('예약자/업체명<em>*</em>', ownWriter ? '<input type="text" class="lr-w-full" id="lr-writer" maxlength="50" placeholder="예약자 성함 또는 업체명" aria-label="예약자/업체명">' : '', 'lr-slot-writer') : '') +
       row('담당자명', '<input type="text" class="lr-w-full" id="lr-manager" maxlength="30" autocomplete="name" aria-label="담당자명">') +
       row('연락처<em>*</em>', '<input type="tel" class="lr-w-full" id="lr-phone" maxlength="30" inputmode="tel" autocomplete="tel" placeholder="010-0000-0000" aria-label="연락처">') +
-      (regroup ? row('이메일', '', 'lr-slot-email') : '') +
+      (regroup || ownEmail ? row('이메일', ownEmail ? '<input type="text" class="lr-w-full" id="lr-email" maxlength="100" inputmode="email" autocomplete="email" aria-label="이메일">' : '', 'lr-slot-email') : '') +
       row('입금자명', '<input type="text" class="lr-w-full" id="lr-payer" maxlength="30" placeholder="예약자와 다를 때만 적어 주세요" aria-label="입금자명">') +
-      (regroup ? row('글 비밀번호<em>*</em>', '<p class="lr-hint">신청 글을 다시 확인할 때 필요해요.</p>', 'lr-slot-password') : '')) +
+      (regroup && cafe.password ? row('글 비밀번호<em>*</em>', '<p class="lr-hint">신청 글을 다시 확인할 때 필요해요.</p>', 'lr-slot-password') : '')) +
     section('04', '요청 사항',
       row(NOTE_LABEL, '<textarea id="lr-note" maxlength="1000" rows="4" placeholder="요청 사항, 파트별 시간, 궁금한 점 등을 자유롭게 적어 주세요." aria-label="' + NOTE_LABEL + '"></textarea>') +
       '<div class="lr-guide" id="lr-guide" hidden></div>');
@@ -364,7 +368,10 @@
     return n === 0 && zero ? zero : n + unit;
   }
 
+  function writerText() { return ownWriter ? val('lr-writer') : val('writer'); }
+
   function emailText() {
+    if (ownEmail) return val('lr-email');
     var a = val('email1'), b = val('email2');
     if (a.indexOf('@') > 0) return a;
     return a && b ? a + '@' + b : '';
@@ -383,7 +390,7 @@
     [/(\*\s*대관\s*내용\s*:)([^<\n]*)/, '대관 내용', purposeText],
     [/(\*\s*이용\s*인원수\s*:)([^<\n]*)/, '이용 인원수', function () { return count('lr-people', '명'); }],
     [/(\*\s*방문\s*차량수\s*:)([^<\n]*)/, '방문 차량수', function () { return count('lr-cars', '대', '없음'); }],
-    [/(\*\s*업체명\s*:)([^<\n]*)/, '업체명', function () { return val('writer'); }],
+    [/(\*\s*업체명\s*:)([^<\n]*)/, '업체명', writerText],
     [/(\*\s*담당자명\s*:)([^<\n]*)/, '담당자명', function () { return val('lr-manager'); }],
     [/(\*\s*연락처\s*:)([^<\n]*)/, '연락처', function () { return val('lr-phone'); }],
     [/(\*\s*이메일\s*:)([^<\n]*)/, '이메일', emailText],
@@ -526,7 +533,7 @@
       if (isNaN(t.s) || isNaN(t.e)) return { el: $('lr-start'), msg: '시작 시간과 종료 시간을 선택해 주세요.\n아직 정하지 않았다면 \'시간 미정·협의\'에 체크해 주세요.' };
       if (t.e <= t.s) return { el: $('lr-end'), msg: '종료 시간은 시작 시간보다 늦어야 해요.' };
     }
-    if (!val('writer')) return { el: $('writer'), msg: '예약자명 또는 업체명을 적어 주세요.' };
+    if (!writerText()) return { el: $('writer') || $('lr-writer'), msg: '예약자명 또는 업체명을 적어 주세요.' };
     if ((val('lr-phone') || bodyLine('연락처')).replace(/\D/g, '').length < 9) return { el: $('lr-phone'), msg: '예약 안내를 받으실 연락처를 적어 주세요.' };
     if ($('password') && !$('password').value) return { el: $('password'), msg: '글 비밀번호를 적어 주세요.\n나중에 신청 글을 확인할 때 필요해요.' };
     var consent = $('privacy_agreement_radio0');
@@ -597,7 +604,7 @@
     if ($('lr-preview')) return;
     try {
       var body = JSON.stringify({
-        branch: select.value, writer: val('writer'), note: noteText(),
+        branch: select.value, writer: writerText(), note: noteText(),
         date: bodyLine('대관 날짜'), part: bodyLine('대관 파트'), time: bodyLine('대관 시간'), purpose: bodyLine('대관 내용'),
         people: bodyLine('이용 인원수'), cars: bodyLine('방문 차량수'), manager: bodyLine('담당자명'), payer: bodyLine('입금자명')
       });
@@ -652,24 +659,33 @@
   /* ---------- last step: regroup Cafe24's inputs and hide the editor ---------- */
 
   if (regroup) {
-    var oldBoxes = [boxOf(select), boxOf(cafe.writer), boxOf(cafe.password)];
+    var oldBoxes = [boxOf(select)];
     select.className += ' lr-w-select';
-    cafe.writer.className += ' lr-w-full';
-    cafe.writer.placeholder = '예약자 성함 또는 업체명';
-    cafe.email1.className += ' lr-w-mail';
-    cafe.email2.className += ' lr-w-mail';
-    cafe.password.className += ' lr-w-full';
     $('lr-slot-branch').appendChild(select);
-    $('lr-slot-writer').appendChild(cafe.writer);
-    var at = document.createElement('span');
-    at.className = 'lr-dash';
-    at.textContent = '@';
-    $('lr-slot-email').appendChild(cafe.email1);
-    $('lr-slot-email').appendChild(at);
-    $('lr-slot-email').appendChild(cafe.email2);
-    $('lr-slot-email').appendChild(cafe.email3);
-    $('lr-slot-password').insertBefore(cafe.password, $('lr-slot-password').firstChild);
-    for (var ob = 0; ob < oldBoxes.length; ob++) oldBoxes[ob].style.display = 'none';
+    if (!ownWriter) {
+      oldBoxes.push(boxOf(cafe.writer));
+      cafe.writer.className += ' lr-w-full';
+      cafe.writer.placeholder = '예약자 성함 또는 업체명';
+      $('lr-slot-writer').appendChild(cafe.writer);
+    }
+    if (!ownEmail) {
+      oldBoxes.push(boxOf(cafe.email1));
+      cafe.email1.className += ' lr-w-mail';
+      cafe.email2.className += ' lr-w-mail';
+      var at = document.createElement('span');
+      at.className = 'lr-dash';
+      at.textContent = '@';
+      $('lr-slot-email').appendChild(cafe.email1);
+      $('lr-slot-email').appendChild(at);
+      $('lr-slot-email').appendChild(cafe.email2);
+      $('lr-slot-email').appendChild(cafe.email3);
+    }
+    if (cafe.password) {
+      oldBoxes.push(boxOf(cafe.password));
+      cafe.password.className += ' lr-w-full';
+      $('lr-slot-password').insertBefore(cafe.password, $('lr-slot-password').firstChild);
+    }
+    for (var ob = 0; ob < oldBoxes.length; ob++) if (oldBoxes[ob]) oldBoxes[ob].style.display = 'none';
   }
   if (editorBox && editorBox.style) editorBox.style.display = 'none';
 })();
