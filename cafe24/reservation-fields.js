@@ -36,6 +36,8 @@
   var PART_TBD = '미정 (상담 후 결정)';
   var TBD = '미정 (협의)';
   var NOTE_LABEL = '하고 싶은 말';
+  // #예약-알림으로 보내는 곳 (schedule 앱, cal/schedule/app/api/reservation-alert)
+  var ALERT_URL = 'https://schedule-nu-taupe.vercel.app/api/reservation-alert';
   var WEEKDAYS = ['일', '월', '화', '수', '목', '금', '토'];
   var FIRST_MIN = 6 * 60, LAST_MIN = 24 * 60, STEP = 30;
 
@@ -588,8 +590,25 @@
   $('lr-confirm-back').addEventListener('click', closeConfirm);
   dialog.addEventListener('click', function (e) { if (e.target === dialog) closeConfirm(); });
   document.addEventListener('keydown', function (e) { if (!dialog.hidden && (e.key === 'Escape' || e.keyCode === 27)) closeConfirm(); });
+  // Tells #예약-알림 what was requested; the server finds the post on the board before pinging the channel.
+  // text/plain so the beacon needs no preflight; never awaited and never allowed to block the real submit.
+  // Contact details are not sent. Skipped on the preview harness, where nothing is actually posted.
+  function notifyStaff() {
+    if ($('lr-preview')) return;
+    try {
+      var body = JSON.stringify({
+        branch: select.value, writer: val('writer'), note: noteText(),
+        date: bodyLine('대관 날짜'), part: bodyLine('대관 파트'), time: bodyLine('대관 시간'), purpose: bodyLine('대관 내용'),
+        people: bodyLine('이용 인원수'), cars: bodyLine('방문 차량수'), manager: bodyLine('담당자명'), payer: bodyLine('입금자명')
+      });
+      if (navigator.sendBeacon && navigator.sendBeacon(ALERT_URL, new Blob([body], { type: 'text/plain;charset=UTF-8' }))) return;
+      if (window.fetch) window.fetch(ALERT_URL, { method: 'POST', body: body, keepalive: true, mode: 'no-cors', headers: { 'Content-Type': 'text/plain;charset=UTF-8' } });
+    } catch (err) { /* the post still goes through; staff just miss the detailed alert */ }
+  }
+
   $('lr-confirm-ok').addEventListener('click', function () {
     dialog.hidden = true;
+    notifyStaff();
     confirmed = true;
     try { $('reserv-button').click(); } finally { confirmed = false; }
   });
