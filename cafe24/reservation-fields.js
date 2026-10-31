@@ -6,7 +6,7 @@
  * Cafe24's own 스튜디오 예약, 예약자/업체명, 이메일 and 비밀번호 inputs are moved into them (still
  * inside the form, so Cafe24 posts them as before; a logged-in member has no 예약자/업체명 or 이메일
  * input, so the form adds its own, which only fill the body lines), and every "* 항목 :" line of the branch template
- * gets a field, plus a free "하고 싶은 말" box written after 입금자명. The Froala editor stays in the
+ * gets a field, plus a free "요청 사항" box written after 입금자명. The Froala editor stays in the
  * page but hidden: the fields write into it, and on 예약하기 the customer reviews a summary in a
  * confirm dialog before Cafe24 posts it. Cafe24 still stores one ordinary post (title = branch,
  * body = template), so notifications and staff reading are unchanged. The branch's notice lines
@@ -36,7 +36,8 @@
   var PART_ALL = '전체 대관';
   var PART_TBD = '미정 (상담 후 결정)';
   var TBD = '미정 (협의)';
-  var NOTE_LABEL = '하고 싶은 말';
+  // the free-text line's name in the body, the confirm dialog and the #예약-알림 alert ("* 요청 사항 :")
+  var NOTE_LABEL = '요청 사항';
   // #예약-알림으로 보내는 곳 (schedule 앱, cal/schedule/app/api/reservation-alert)
   var ALERT_URL = 'https://schedule-nu-taupe.vercel.app/api/reservation-alert';
   var WEEKDAYS = ['일', '월', '화', '수', '목', '금', '토'];
@@ -149,7 +150,12 @@
     C + '.lr-summary small{display:block;font-size:11px;letter-spacing:.06em;color:#666}' +
     C + '.lr-summary b{display:block;margin-top:2px;font-size:15px;font-weight:500}' +
     C + '.lr-summary.is-empty b{font-weight:400;font-size:13px;color:#999}' +
-    C + '.lr-guide{margin:14px 0 0 140px;padding:16px 18px;background:#f7f7f7}' +
+    // 04 asks a question over a full-width box instead of a label column
+    C + '.lr-ask-q{display:block;margin:0;font-size:15px;font-weight:500;line-height:1.5;color:#111;cursor:pointer}' +
+    C + '.lr-ask-q span{margin-left:4px;font-size:13px;font-weight:400;color:#999}' +
+    C + '.lr-ask-help{margin:4px 0 12px;font-size:13px;line-height:1.6;color:#888}' +
+    C + '.lr-ask textarea{display:block;width:100%}' +
+    C + '.lr-guide{margin:20px 0 0;padding:16px 18px;background:#f7f7f7}' +
     C + '.lr-guide strong,#lr-confirm .lr-guide strong{display:block;margin-bottom:6px;font-size:13px;font-weight:500}' +
     // the skin removes list bullets, so draw our own
     '#lr-fields .lr-guide ul,#lr-confirm .lr-guide ul{margin:0;padding:0;list-style:none}' +
@@ -229,7 +235,9 @@
       row('입금자명', '<input type="text" class="lr-w-full" id="lr-payer" maxlength="30" placeholder="예약자와 다를 때만 적어 주세요" aria-label="입금자명">') +
       (regroup && cafe.password ? row('글 비밀번호<em>*</em>', '<p class="lr-hint">신청 글을 다시 확인할 때 필요해요.</p>', 'lr-slot-password') : '')) +
     section('04', '요청 사항',
-      row(NOTE_LABEL, '<textarea id="lr-note" maxlength="1000" rows="4" placeholder="요청 사항, 파트별 시간, 궁금한 점 등을 자유롭게 적어 주세요." aria-label="' + NOTE_LABEL + '"></textarea>') +
+      '<div class="lr-ask"><label class="lr-ask-q" for="lr-note">더 알려 주실 내용이 있나요?<span>(선택)</span></label>' +
+        '<p class="lr-ask-help" id="lr-note-help">파트별 시간이 다르거나 주차·장비 문의가 있다면 적어 주세요.</p>' +
+        '<textarea id="lr-note" maxlength="1000" rows="4" aria-describedby="lr-note-help"></textarea></div>' +
       '<div class="lr-guide" id="lr-guide" hidden></div>');
 
   var editorBox = document.querySelector('.reserv_content') || (document.getElementById('content') || {}).parentNode;
@@ -412,7 +420,7 @@
 
   function lineValue(raw) { return raw.replace(/&nbsp;/g, ' ').replace(/^\s+|\s+$/g, ''); }
 
-  // 하고 싶은 말 is several lines, so it lives in its own marked span right after the 입금자명 line
+  // 요청 사항 is several lines, so it lives in its own marked span right after the 입금자명 line
   var NOTE_RE = /<span class="lr-note">[\s\S]*?<\/span>/;
   function noteHtml() {
     var text = noteText();
