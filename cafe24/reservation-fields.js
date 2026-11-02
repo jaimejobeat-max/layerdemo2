@@ -30,7 +30,7 @@
     'LAYER 27': { parts: ['A', 'Office'], min: 4, park: { text: '주차 2대 (지점 앞 전용 라인)', max: 2 } },
     'LAYER 20': { parts: ['1F', '2F', '3F', 'Caravan'], min: 4, park: { text: '주차 5~8대 (스튜디오 차고지)', max: 8 } },
     'LAYER HANNAM': { parts: ['1F', '2F'], min: 4, park: { text: '주차 2~3대 (스튜디오 차고지)', max: 3 } },
-    '홍대': { parts: ['A', 'B', 'D', 'Back Garden', 'Greenhouse', 'Garden'], min: 2, park: { text: '주차 팀당 1대 · 추가 차량은 유료주차장 이용', max: 1 } }
+    '홍대': { parts: ['A+Back Garden', 'B', 'D', 'Greenhouse'], min: 2, park: { text: '주차 팀당 1대 · 추가 차량은 유료주차장 이용', max: 1 } }
   };
   var PURPOSES = ['사진 촬영', '영상 촬영', '행사'];
   var PART_ALL = '전체 대관';
