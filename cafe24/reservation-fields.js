@@ -38,6 +38,8 @@
   var TBD = '미정 (협의)';
   // the free-text line's name in the body, the confirm dialog and the #예약-알림 alert ("* 요청 사항 :")
   var NOTE_LABEL = '요청 사항';
+  // with 2+ parts: one start–end per part (B 9–12시, then A 13–15시) instead of one range for all
+  var SPLIT_LABEL = '파트마다 시간이 달라요';
   // #예약-알림으로 보내는 곳 (schedule 앱, cal/schedule/app/api/reservation-alert)
   var ALERT_URL = 'https://schedule-nu-taupe.vercel.app/api/reservation-alert';
   var WEEKDAYS = ['일', '월', '화', '수', '목', '금', '토'];
@@ -146,6 +148,12 @@
     C + '.lr-hint,' + C + '.lr-warn{flex-basis:100%;margin:2px 0 0;font-size:12px;line-height:1.6}' +
     C + '.lr-hint{color:#999}' +
     C + '.lr-warn{color:#000;font-weight:500}' +
+    // with the single range hidden, the two switches take its 40px line so they sit level with the label
+    C + '#lr-time-main[hidden]+#lr-split-wrap{margin-left:0}' +
+    C + '#lr-time-main[hidden]~.lr-check{height:40px}' +
+    C + '.lr-split-rows{flex-basis:100%;display:flex;flex-direction:column;gap:10px;margin:4px 0 2px}' +
+    C + '.lr-split-row{display:flex;flex-wrap:wrap;align-items:center;gap:8px}' +
+    C + '.lr-split-name{flex:0 0 auto;min-width:120px;font-size:14px;font-weight:500}' +
     C + '.lr-summary{margin:6px 0 0 140px;padding:12px 16px;border-left:3px solid #000;background:#f5f5f5}' +
     C + '.lr-summary small{display:block;font-size:11px;letter-spacing:.06em;color:#666}' +
     C + '.lr-summary b{display:block;margin-top:2px;font-size:15px;font-weight:500}' +
@@ -173,6 +181,8 @@
       C + '#email3{flex:1 1 100%}' +
       C + '.lr-check{margin-left:0;margin-right:10px}' +
       C + '.lr-park{flex-basis:100%;margin-left:0}' +
+      C + '.lr-split-name{flex-basis:100%}' +
+      C + '#lr-time-main[hidden]~.lr-check{height:auto}' +
       C + '.lr-summary,' + C + '.lr-guide{margin-left:0}' +
     '}' +
     '#lr-confirm{position:fixed;top:0;right:0;bottom:0;left:0;z-index:2147483000;display:flex;align-items:center;justify-content:center;padding:16px;background:rgba(0,0,0,.5)}' +
@@ -210,13 +220,16 @@
         '<label class="lr-check"><input type="checkbox" id="lr-date-tbd">날짜 미정</label>') +
       row('대관 파트<em>*</em>', '', 'lr-parts') +
       row('대관 시간<em>*</em>',
-        '<select class="lr-w-time" id="lr-start" aria-label="시작 시간">' + timeOptions('시작', FIRST_MIN, LAST_MIN - STEP) + '</select>' +
-        '<span class="lr-dash">~</span>' +
-        '<select class="lr-w-time" id="lr-end" aria-label="종료 시간">' + timeOptions('종료', FIRST_MIN + STEP, LAST_MIN) + '</select>' +
-        '<span class="lr-hours" id="lr-hours"></span>' +
+        '<span id="lr-time-main" style="display:contents">' +
+          '<select class="lr-w-time" id="lr-start" aria-label="시작 시간">' + timeOptions('시작', FIRST_MIN, LAST_MIN - STEP) + '</select>' +
+          '<span class="lr-dash">~</span>' +
+          '<select class="lr-w-time" id="lr-end" aria-label="종료 시간">' + timeOptions('종료', FIRST_MIN + STEP, LAST_MIN) + '</select>' +
+          '<span class="lr-hours" id="lr-hours"></span></span>' +
+        '<label class="lr-check" id="lr-split-wrap" hidden><input type="checkbox" id="lr-split">' + SPLIT_LABEL + '</label>' +
         '<label class="lr-check"><input type="checkbox" id="lr-time-tbd">시간 미정·협의</label>' +
+        '<div class="lr-split-rows" id="lr-split-rows" hidden></div>' +
         '<p class="lr-warn" id="lr-min-warn" hidden></p>' +
-        '<p class="lr-hint">세팅·철수를 포함한 입실~퇴실 시간이에요. 파트마다 시간이 다르면 \'' + NOTE_LABEL + '\'에 적어 주세요.</p>') +
+        '<p class="lr-hint">세팅·철수를 포함한 입실~퇴실 시간이에요. 파트를 시간 나눠 쓰시면, 쓰실 파트를 모두 고른 뒤 \'' + SPLIT_LABEL + '\'에 체크해 주세요.</p>') +
       '<div class="lr-summary is-empty" id="lr-summary"><small>선택한 일정</small><b id="lr-summary-text"></b></div>',
       '<em style="font-style:normal;color:#000">*</em> 필수') +
     section('02', '대관 정보',
@@ -236,7 +249,7 @@
       (regroup && cafe.password ? row('글 비밀번호<em>*</em>', '<p class="lr-hint">신청 글을 다시 확인할 때 필요해요.</p>', 'lr-slot-password') : '')) +
     section('04', '요청 사항',
       '<div class="lr-ask"><label class="lr-ask-q" for="lr-note">더 알려 주실 내용이 있나요?<span>(선택)</span></label>' +
-        '<p class="lr-ask-help" id="lr-note-help">파트별 시간이 다르거나 주차·장비 문의가 있다면 적어 주세요.</p>' +
+        '<p class="lr-ask-help" id="lr-note-help">주차·장비 문의나 미리 알려 주실 내용이 있다면 적어 주세요.</p>' +
         '<textarea id="lr-note" maxlength="1000" rows="4" aria-describedby="lr-note-help"></textarea></div>' +
       '<div class="lr-guide" id="lr-guide" hidden></div>');
 
@@ -329,6 +342,33 @@
     }
   });
 
+  // rows only change when the checked parts or the split switch do, so a picked select keeps focus
+  var splitKey = '';
+  function renderSplit() {
+    var parts = splitOn() ? checked('lr-parts') : [], key = parts.join('|');
+    if (key === splitKey) return;
+    splitKey = key;
+    var html = '';
+    for (var i = 0; i < parts.length; i++) {
+      // a new row starts empty: copying the one range into every part would read as using them all at once
+      if (!splitTimes[parts[i]]) splitTimes[parts[i]] = { s: '', e: '' };
+      html += '<div class="lr-split-row"><span class="lr-split-name">' + esc(parts[i]) + '</span>' +
+        '<select class="lr-w-time" data-i="' + i + '" data-k="s" aria-label="' + esc(parts[i]) + ' 시작 시간">' + timeOptions('시작', FIRST_MIN, LAST_MIN - STEP) + '</select>' +
+        '<span class="lr-dash">~</span>' +
+        '<select class="lr-w-time" data-i="' + i + '" data-k="e" aria-label="' + esc(parts[i]) + ' 종료 시간">' + timeOptions('종료', FIRST_MIN + STEP, LAST_MIN) + '</select>' +
+        '<span class="lr-hours"></span></div>';
+    }
+    $('lr-split-rows').innerHTML = html;
+    var sels = $('lr-split-rows').getElementsByTagName('select');
+    for (var j = 0; j < sels.length; j++) sels[j].value = splitTimes[parts[+sels[j].getAttribute('data-i')]][sels[j].getAttribute('data-k')];
+  }
+
+  // runs before the box-wide refresh (the event reaches this element first)
+  $('lr-split-rows').addEventListener('change', function (e) {
+    var el = e.target, part = checked('lr-parts')[+el.getAttribute('data-i')];
+    if (part && splitTimes[part]) splitTimes[part][el.getAttribute('data-k')] = el.value;
+  });
+
   /* ---------- values ---------- */
 
   function dateLabel(iso) {
@@ -358,8 +398,35 @@
 
   function times() { return { s: parseInt($('lr-start').value, 10), e: parseInt($('lr-end').value, 10) }; }
 
+  // 2+ parts can only be real parts (전체 대관 / 미정 exclude the rest)
+  function splitOn() { return $('lr-split').checked && !$('lr-time-tbd').checked && checked('lr-parts').length > 1; }
+
+  // picked start/end per part name, kept while parts are toggled so a re-render doesn't lose them
+  var splitTimes = {};
+
+  // one entry per checked part, in chip order (= the order of the rows under 대관 시간)
+  function slots() {
+    var parts = checked('lr-parts'), out = [];
+    for (var i = 0; i < parts.length; i++) {
+      var t = splitTimes[parts[i]] || {};
+      out.push({ part: parts[i], s: parseInt(t.s, 10), e: parseInt(t.e, 10) });
+    }
+    return out;
+  }
+
   function timeText() {
     if ($('lr-time-tbd').checked) return TBD;
+    if (splitOn()) {
+      // "B 09:00 - 12:00 / A+Back Garden 13:00 - 15:00 (총 5시간)", in the order the parts are used
+      var list = slots(), total = 0;
+      for (var i = 0; i < list.length; i++) {
+        if (isNaN(list[i].s) || isNaN(list[i].e) || list[i].e <= list[i].s) return '';
+        total += list[i].e - list[i].s;
+      }
+      list.sort(function (a, b) { return a.s - b.s || a.e - b.e; });
+      for (var j = 0; j < list.length; j++) list[j] = list[j].part + ' ' + hm(list[j].s) + ' - ' + hm(list[j].e);
+      return list.join(' / ') + ' (총 ' + duration(total) + ')';
+    }
     var t = times();
     if (isNaN(t.s) || isNaN(t.e) || t.e <= t.s) return '';
     return hm(t.s) + ' - ' + hm(t.e) + ' (' + duration(t.e - t.s) + ')';
@@ -479,12 +546,26 @@
     $('lr-end-wrap').hidden = !multi();
     if ($('lr-date').value) $('lr-date-end').min = $('lr-date').value;
     $('lr-start').disabled = $('lr-end').disabled = timeTbd;
+    $('lr-split-wrap').hidden = timeTbd || checked('lr-parts').length < 2;
+    renderSplit();
+    var split = splitOn();
+    $('lr-time-main').hidden = split;
+    $('lr-split-rows').hidden = !split;
 
     var t = times(), b = branch(), span = !timeTbd && !isNaN(t.s) && !isNaN(t.e) && t.e > t.s ? t.e - t.s : 0;
     $('lr-hours').textContent = span ? duration(span) : '';
-    var short = span && b && span < b.min * 60;
+    var short = !split && span && b && span < b.min * 60;
+    if (split) {
+      // the minimum applies to each space ("홍대점의 모든 공간은 최소 2시간부터")
+      var list = slots(), rows = $('lr-split-rows').children;
+      for (var i = 0; i < list.length; i++) {
+        var len = !isNaN(list[i].s) && !isNaN(list[i].e) && list[i].e > list[i].s ? list[i].e - list[i].s : 0;
+        if (rows[i]) rows[i].lastChild.textContent = len ? duration(len) : '';
+        if (len && b && len < b.min * 60) short = true;
+      }
+    }
     $('lr-min-warn').hidden = !short;
-    if (short) $('lr-min-warn').textContent = select.value + ' 최소 대관 시간은 ' + b.min + '시간이에요. 짧게 이용하실 경우 \'' + NOTE_LABEL + '\'에 적어 주시면 확인해 드릴게요.';
+    if (short) $('lr-min-warn').textContent = select.value + ' 최소 대관 시간은 ' + (split ? '파트마다 ' : '') + b.min + '시간이에요. 짧게 이용하실 경우 \'' + NOTE_LABEL + '\'에 적어 주시면 확인해 드릴게요.';
 
     // parking hint for this branch; over the limit (per weekday where it differs) it becomes the warning
     var park = b && b.park, cars = parseInt(val('lr-cars'), 10), limit = park ? park.max : 0, dayName = '';
@@ -518,6 +599,8 @@
 
   // Cafe24 swaps the whole template on branch change (after this listener), so re-fill once it has run
   select.addEventListener('change', function () {
+    $('lr-split').checked = false;
+    splitTimes = {};
     renderParts();
     fillGuide($('lr-guide'));
     written = {};
@@ -536,7 +619,13 @@
       if (multi() && $('lr-date-end').value <= $('lr-date').value) return { el: $('lr-date-end'), msg: '마지막 날짜는 첫 날짜보다 뒤여야 해요.' };
     }
     if (!checked('lr-parts').length) return { el: $('lr-parts'), msg: '대관 파트를 선택해 주세요.\n아직 정하지 않았다면 \'미정\'을 선택해 주세요.' };
-    if (!$('lr-time-tbd').checked) {
+    if (splitOn()) {
+      var list = slots(), sels = $('lr-split-rows').getElementsByTagName('select');
+      for (var i = 0; i < list.length; i++) {
+        if (isNaN(list[i].s) || isNaN(list[i].e)) return { el: sels[2 * i + (isNaN(list[i].s) ? 0 : 1)], msg: '\'' + list[i].part + '\' 파트의 시작 시간과 종료 시간을 선택해 주세요.' };
+        if (list[i].e <= list[i].s) return { el: sels[2 * i + 1], msg: '\'' + list[i].part + '\' 파트의 종료 시간은 시작 시간보다 늦어야 해요.' };
+      }
+    } else if (!$('lr-time-tbd').checked) {
       var t = times();
       if (isNaN(t.s) || isNaN(t.e)) return { el: $('lr-start'), msg: '시작 시간과 종료 시간을 선택해 주세요.\n아직 정하지 않았다면 \'시간 미정·협의\'에 체크해 주세요.' };
       if (t.e <= t.s) return { el: $('lr-end'), msg: '종료 시간은 시작 시간보다 늦어야 해요.' };
