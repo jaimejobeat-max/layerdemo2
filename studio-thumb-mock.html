@@ -1,0 +1,517 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="robots" content="noindex, nofollow">
+  <title>Layer41 — 썸네일 시안 비교 (1안 / 2안)</title>
+  <link rel="icon" type="image/svg+xml" href="assets/favicon.svg">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=DM+Sans:opsz,wght@9..40,300;9..40,400&display=swap">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/static/pretendard.min.css">
+  <style>
+    /* =============================================================
+       Layer41 스튜디오 페이지 — "작은 썸네일 → 글 → 큰 사진" 시안 비교
+       1안(?v=a, 파트별 전체 사진)·2안(?v=b, 파트별 대표 사진)은
+       사진(작게) → 설명 글 → 사진(크게) 순서. 현재 구성(?v=now)은 라이브 그대로
+       글 → 큰 상자 → 큰 사진. 주소에 &clean=1 을 붙이면 위 비교 막대를 숨김(캡처용).
+       plusjun.com/product/studio-41.html 의 PC 화면(1440px)을 기준으로
+       색·크기·간격을 맞춘 검토용 페이지. 라이브 스킨과는 무관.
+       라이브 글꼴(Circular)은 plusjun.com 밖에서 불러올 수 없어
+       비슷한 DM Sans 로 대신함.
+       ============================================================= */
+    :root {
+      --beige: #E9DBC8;
+      --grey: #999;
+      --tile: #DCCDB7;
+      --muted: #6F6455;
+      --latin: "DM Sans", "Helvetica Neue", Arial, "Pretendard", "Noto Sans KR", sans-serif;
+      --ko: "Pretendard", "Noto Sans KR", sans-serif;
+      --bar-h: 48px;
+    }
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    html { scroll-behavior: smooth; }
+    body {
+      background: var(--grey); color: #000;
+      font-family: var(--latin); font-weight: 300; font-size: 18px;
+      -webkit-font-smoothing: antialiased;
+    }
+    a { color: inherit; text-decoration: none; }
+    button { font: inherit; color: inherit; background: none; border: 0; cursor: pointer; }
+    img { display: block; }
+
+    /* ---- 비교 막대 (시안 도구, 실제 디자인 아님) ---- */
+    .bar {
+      position: sticky; top: 0; z-index: 50; height: var(--bar-h);
+      display: flex; align-items: center; gap: 16px;
+      padding: 0 20px; background: #111; color: #fff;
+      font-family: var(--ko); font-size: 13px; font-weight: 400;
+    }
+    .bar__name { opacity: .6; white-space: nowrap; }
+    .bar__seg { display: flex; gap: 4px; }
+    .bar__seg button {
+      height: 30px; padding: 0 14px; border-radius: 15px;
+      color: #fff; opacity: .6; white-space: nowrap;
+    }
+    .bar__seg button:hover { opacity: 1; }
+    .bar__seg button[aria-pressed="true"] { background: #fff; color: #111; opacity: 1; }
+    .bar__desc { opacity: .75; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+    .bar__key { margin-left: auto; opacity: .45; white-space: nowrap; }
+    body.clean .bar { display: none; }
+
+    /* ---- 본문 패널 ---- */
+    .panel { max-width: 1200px; margin: 0 auto; background: var(--beige); padding: 45px 40px 140px; }
+    .ptitle {
+      display: grid; grid-template-columns: 1fr auto 1fr; align-items: end;
+      padding-bottom: 20px; margin-bottom: 25px; border-bottom: 3px solid #000;
+      font-size: 20px;
+    }
+    .ptitle h1 { font-size: 30px; font-weight: 400; line-height: 1; }
+    .ptitle a { justify-self: end; }
+    .inform { display: grid; grid-template-columns: 40% 40%; justify-content: space-between; }
+    .inform__desc {
+      font-family: var(--ko); font-size: 18px; font-weight: 400;
+      line-height: 1.8; letter-spacing: -0.02em; word-break: keep-all;
+    }
+    .add h3 { font-size: 18px; font-weight: 400; margin-bottom: 6px; }
+    .add p { font-size: 14px; line-height: 1.5; font-weight: 400; }
+    .add .ko { font-family: var(--ko); color: var(--muted); }
+    .add__block { margin-bottom: 26px; }
+    .add__links a { display: block; font-size: 15px; font-weight: 400; margin-bottom: 10px; }
+    .add a:hover { text-decoration: underline; }
+
+    /* ---- 시안 영역 전환 ---- */
+    .v { display: none; }
+    body[data-v="a"] .v-a { display: block; }
+    body[data-v="b"] .v-b { display: grid; }
+    body[data-v="now"] .v-now { display: grid; }
+    body[data-v="now"] .only-ab { display: none; }
+    #overview { scroll-margin-top: calc(var(--bar-h) + 24px); }
+    /* A·B안: 작은 사진이 설명 글보다 위 (사진 → 글 → 사진) */
+    .top { display: flex; flex-direction: column; }
+    body[data-v="a"] #overview, body[data-v="b"] #overview { order: -1; }
+    /* 사진 영역과 글 사이의 가는 선 */
+    body[data-v="a"] .inform, body[data-v="b"] .inform { border-top: 1px solid #000; padding-top: 28px; }
+
+    /* ---- A안: 콘택트 시트 — 파트마다 한 줄짜리 사진 띠(12칸) ---- */
+    .sheet { margin-bottom: 40px; }
+    .sheet__hint { font-family: var(--ko); font-size: 13px; font-weight: 400; color: var(--muted); text-align: right; }
+    .strip { margin-bottom: 24px; }
+    .strip:last-child { margin-bottom: 14px; }
+    .strip__head {
+      display: grid; grid-template-columns: auto 1fr auto; column-gap: 12px;
+      align-items: baseline; margin-bottom: 9px;
+    }
+    .strip__name { font-size: 20px; font-weight: 400; line-height: 1; text-align: left; }
+    .strip__name:hover { text-decoration: underline; text-underline-offset: 4px; text-decoration-thickness: 1px; }
+    .strip__spec {
+      min-width: 0; overflow: hidden; text-overflow: ellipsis; white-space: nowrap;
+      font-family: var(--ko); font-size: 13px; font-weight: 400; color: var(--muted);
+    }
+    .strip__meta { display: flex; align-items: baseline; gap: 16px; font-size: 13px; font-weight: 400; color: var(--muted); }
+    .strip__count { font-variant-numeric: tabular-nums; }
+    .strip__plan { font-size: 13px; font-weight: 400; color: #000; line-height: 1.25; border-bottom: 1px solid currentColor; }
+    .strip__plan:hover { color: var(--muted); }
+    .strip__grid { display: grid; grid-template-columns: repeat(12, 1fr); gap: 6px; }
+    .thumb { position: relative; display: block; aspect-ratio: 3 / 2; overflow: hidden; background: var(--tile); transition: opacity .2s ease; }
+    .thumb img { width: 100%; height: 100%; object-fit: cover; transition: transform .35s ease; }
+    .thumb:hover img, .thumb:focus-visible img { transform: scale(1.07); }
+    .thumb:focus-visible, .card:focus-visible { outline: 2px solid #000; outline-offset: 2px; }
+    .thumb.is-current::after { content: ""; position: absolute; inset: 0; border: 2px solid #000; }
+    /* 마우스를 올린 사진만 또렷하게, 나머지는 흐리게 */
+    @media (hover: hover) {
+      .sheet:has(.thumb:hover) .thumb:not(:hover),
+      .cards:has(.card:hover) .card:not(:hover) { opacity: .45; }
+    }
+
+    /* ---- B안: 파트 대표컷 ---- */
+    .cards { margin-bottom: 40px; grid-template-columns: repeat(4, 1fr); gap: 20px; }
+    .card { display: block; text-align: left; transition: opacity .2s ease; }
+    .card__img { aspect-ratio: 3 / 2; overflow: hidden; background: var(--tile); }
+    .card__img img { width: 100%; height: 100%; object-fit: cover; transition: transform .35s ease; }
+    .card:hover .card__img img { transform: scale(1.04); }
+    .card__cap { display: flex; justify-content: space-between; align-items: baseline; padding-top: 12px; font-size: 18px; font-weight: 400; }
+    .card__cap small { font-size: 13px; color: var(--muted); }
+    .card:hover .card__name { text-decoration: underline; text-underline-offset: 4px; text-decoration-thickness: 1px; }
+    .card__spec { margin-top: 5px; font-family: var(--ko); font-size: 13px; font-weight: 400; line-height: 1.45; color: var(--muted); word-break: keep-all; }
+
+    /* ---- 현재 구성: 2×2 큰 상자 ---- */
+    .now { margin-top: 25px; padding: 0 20px; grid-template-columns: repeat(2, 1fr); }
+    .now__box { padding: 20px; }
+    .now__box img { width: 100%; aspect-ratio: 3 / 2; object-fit: cover; background: var(--tile); }
+    .now__box p { padding-top: 20px; font-size: 16px; }
+
+    /* ---- 큰 사진 영역 (세 시안 공통, 라이브와 같은 구성) ---- */
+    .part { scroll-margin-top: var(--bar-h); }
+    .part__title { font-size: 38px; font-weight: 400; text-align: center; padding: 50px 20px 0; margin-bottom: 15px; }
+    .part__plan { margin: 0 auto; max-width: 90%; height: auto; }
+    .slider { padding: 70px 0; }
+    .slider__frame { position: relative; padding: 0 60px; }
+    .slider__img { width: 100%; aspect-ratio: 3 / 2; object-fit: cover; background: var(--tile); transition: opacity .2s ease; }
+    .slider__img.is-loading { opacity: .35; }
+    .slider__btn { position: absolute; top: 0; bottom: 0; width: 50%; }
+    .slider__btn--prev { left: 0; }
+    .slider__btn--next { right: 0; }
+    .slider__btn svg { position: absolute; top: 50%; width: 32px; height: 25px; margin-top: -12px; }
+    .slider__btn--prev svg { left: 14px; }
+    .slider__btn--next svg { right: 14px; }
+    .slider__cap { margin-top: 25px; text-align: center; font-size: 23px; }
+
+    /* ---- 오른쪽 파트 이동 ---- */
+    .roomnav {
+      position: fixed; right: 0; top: 50%; transform: translateY(-50%); z-index: 20;
+      width: 50px; padding: 12px 0; background: #fff; text-align: center; font-size: 15px; font-weight: 400;
+      transition: opacity .25s ease;
+    }
+    /* 맨 위(작은 사진·글)에서는 숨기고, 큰 사진 영역으로 내려오면 보이게 */
+    body:not(.nav-on) .roomnav { opacity: 0; pointer-events: none; }
+    .roomnav a { display: block; padding: 5px 0; }
+    .roomnav a:hover { color: var(--grey); }
+
+    /* ---- 휴대폰 ---- */
+    @media (max-width: 820px) {
+      .bar { gap: 10px; padding: 0 12px; }
+      .bar__name, .bar__desc, .bar__key, .bar__long { display: none; }
+      .bar__seg { flex: 1; justify-content: center; }
+      .panel { padding: 24px 20px 90px; }
+      .ptitle { font-size: 14px; padding-bottom: 14px; margin-bottom: 20px; }
+      .ptitle h1 { font-size: 22px; }
+      .inform { grid-template-columns: 1fr; row-gap: 28px; }
+      .inform__desc { font-size: 15px; line-height: 1.75; }
+      .add h3 { font-size: 17px; }
+      .add__block { margin-bottom: 22px; }
+
+      /* 휴대폰 비율: 작은 사진은 화면 폭의 약 1/5, 큰 사진은 화면 폭 전체 */
+      body[data-v="a"] .inform, body[data-v="b"] .inform { padding-top: 22px; }
+      .sheet { margin-bottom: 26px; }
+      .sheet__hint { font-size: 12px; }
+      .strip { margin-bottom: 18px; }
+      .strip__head { column-gap: 8px; margin-bottom: 7px; }
+      .strip__name { font-size: 16px; }
+      .strip__spec, .strip__plan { font-size: 12px; }
+      .strip__count { display: none; }
+      .strip__grid {
+        display: flex; gap: 6px; overflow-x: auto;
+        margin: 0 -20px; padding: 0 20px; scrollbar-width: none;
+      }
+      .strip__grid::-webkit-scrollbar { display: none; }
+      /* 한 화면에 4장 반: 다섯째 사진이 반쯤 보여 옆으로 더 있다는 표시가 됨 */
+      .strip__grid .thumb { flex: none; width: calc((100vw - 44px) / 4.5); }
+
+      /* B안: 대표 사진 4장을 한 줄로 (A안의 작은 사진과 비슷한 크기) */
+      .cards { margin-bottom: 26px; grid-template-columns: repeat(4, 1fr); gap: 0 8px; }
+      .card__cap { display: block; padding-top: 7px; font-size: 13px; }
+      .card__cap small { display: block; margin-top: 2px; font-size: 11px; }
+      .card__spec { display: none; }
+      .now { grid-template-columns: 1fr; padding: 0; }
+      .now__box { padding: 10px 0; }
+      .now__box p { padding-top: 10px; font-size: 14px; }
+
+      .part__title { font-size: 28px; padding-top: 44px; }
+      .part__plan { max-width: 100%; }
+      .slider { padding: 28px 0 38px; }
+      .slider__frame { padding: 0; }
+      .slider__btn svg { display: none; }
+      .slider__cap { margin-top: 13px; font-size: 15px; }
+      .roomnav { display: none; }
+
+      /* A·B안의 큰 사진 영역: 제목은 페이지 제목(22px)보다 크지 않게,
+         평면도는 여백을 잘라 도면을 키우고, 사진은 화면 폭 전체로 */
+      body:not([data-v="now"]) .part__title { font-size: 22px; padding-top: 48px; margin-bottom: 6px; }
+      body:not([data-v="now"]) .part__plan { width: 100%; aspect-ratio: 4 / 3; object-fit: cover; }
+      body:not([data-v="now"]) .slider { padding: 18px 0 0; }
+      body:not([data-v="now"]) .slider__frame { margin: 0 -20px; }
+      body:not([data-v="now"]) .slider__cap { margin-top: 12px; font-size: 14px; }
+    }
+  </style>
+</head>
+<body data-v="a">
+
+  <div class="bar" role="toolbar" aria-label="시안 전환">
+    <span class="bar__name">Layer41 시안 비교</span>
+    <div class="bar__seg">
+      <button type="button" data-set="a" aria-pressed="true">1안<span class="bar__long"> · 파트별 전체 사진</span></button>
+      <button type="button" data-set="b" aria-pressed="false">2안<span class="bar__long"> · 파트별 대표 사진</span></button>
+      <button type="button" data-set="now" aria-pressed="false">현재<span class="bar__long"> 구성</span></button>
+    </div>
+    <span class="bar__desc" id="bar-desc"></span>
+    <span class="bar__key">키보드 1 · 2 · 3</span>
+  </div>
+
+  <main class="panel">
+    <div class="ptitle">
+      <span>Studio Preview</span>
+      <h1>Layer41</h1>
+      <a href="http://naver.me/xhHVxnku" target="_blank" rel="noopener">View Map</a>
+    </div>
+
+    <div class="top">
+    <section class="inform">
+      <p class="inform__desc">레이어41은 성수동의 450평 규모 철강 공장을 리모델링한 대형 복합 스튜디오입니다. 공장 건축 특유의 높은 층고와 구조미를 살린 공간으로, A·B·C 세 개의 파트로 구성되어 있습니다. 메인 공간인 A파트는 층고 9m, 약 250평 규모 이며, 복층 구조의 B파트와 입체적으로 연결됩니다. 3층의 C파트는 층고 4m, 약 150평 규모의 독립적인 공간으로 옥상까지 연계해 활용할 수 있습니다. 모든 공간은 내부 계단을 통해 유기적으로 이어지며, 촬영은 물론 전시, 팝업, 공연 및 다양한 형태의 이벤트에 맞춰 폭넓게 구성할 수 있습니다.</p>
+      <aside class="add">
+        <div class="add__block">
+          <h3>Location</h3>
+          <p class="ko">서울 성동구 성수동2가 277-4 (아차산로9길 41)</p>
+          <p>41, Achasan-ro 9-gil, Seongdong-gu, Seoul</p>
+        </div>
+        <div class="add__block">
+          <h3>Rental Fee</h3>
+          <p class="ko"><a href="https://rentalfee.vercel.app/layer41" target="_blank" rel="noopener">견적표 확인하기</a></p>
+          <p class="ko">추가 문의는 아래 채널 이용 부탁드립니다.</p>
+          <p>02-462-7727 / contact@plusjun.com</p>
+        </div>
+        <div class="add__links">
+          <a href="https://drive.google.com/file/d/1T4C38E1e2JJD7oLHgj_PlI38gS9noQns/view?usp=sharing" target="_blank" rel="noopener">Layer41 Main Information</a>
+          <a href="https://rentalfee.vercel.app/layer41/info" target="_blank" rel="noopener">Parking &amp; More Information</a>
+        </div>
+      </aside>
+    </section>
+
+    <div id="overview">
+      <section class="v v-a sheet" aria-label="전체 사진">
+        <div id="sheet-rows"></div>
+        <p class="sheet__hint">사진을 누르면 크게 볼 수 있습니다.</p>
+      </section>
+      <section class="v v-b cards" id="cards" aria-label="파트 대표 사진"></section>
+      <section class="v v-now now" id="now" aria-label="현재 구성"></section>
+    </div>
+    </div>
+
+    <div id="parts"></div>
+  </main>
+
+  <nav class="roomnav" aria-label="파트 이동">
+    <a href="#overview" aria-label="맨 위 사진 목록으로">↑</a>
+    <a href="#part-A">A</a>
+    <a href="#part-B">B</a>
+    <a href="#part-C">C</a>
+  </nav>
+
+  <script>
+  (function () {
+    'use strict';
+
+    /* 사진: A·B·C 는 저장소의 assets/img, 외관과 평면도는 라이브(plusjun.com) 주소 */
+    var IMG = 'assets/img/';
+    var L41 = 'https://plusjun.com/images/studios/layer41/';
+    function local(ids) { return ids.map(function (id) { return IMG + id + '-960.webp'; }); }
+
+    var GROUPS = [
+      {
+        id: 'EX', title: 'Exterior', label: 'Exterior', spec: '건물 외관', cover: 0, plan: null, onlyAB: true,
+        photos: [
+          L41 + 'layer41_01_250124.jpg',
+          L41 + 'layer41_03_250124.jpg',
+          'https://plusjun1.cafe24.com/%EC%A0%80%EC%9A%A9%EB%9F%89/41/layer41_02_250124.jpeg',
+          L41 + 'gm1.jpg',
+          L41 + 'gm2.jpg'
+        ]
+      },
+      {
+        id: 'A', title: 'A', label: 'A Part', spec: '메인 공간 · 층고 9m · 약 250평', cover: 1,
+        plan: 'https://plusjun.com/web/upload/category/editor/2023/02/24/70095906b58420fcec831bb5187149be.jpg',
+        photos: local(['8cb3617915', '4cc6eb8298', 'fdf103447b', '6dda68911d', 'a9bcb36b82', '3c617f6ee0',
+                       '8ccd3816f8', '279b5ea81b', '7cf537588a', '49e2dd0d8d', '41d5e31635', 'c120555069'])
+      },
+      {
+        id: 'B', title: 'B', label: 'B Part', spec: '복층 구조 · A파트와 연결', cover: 0,
+        plan: L41 + 'layer41_floormaps_b_20211029-2.jpg',
+        photos: local(['8d61de167c', 'dafa3e0cbc', '5cdda5650a', 'a4547d419b', '4a84d26533', '667cec674f'])
+      },
+      {
+        id: 'C', title: 'C', label: 'C Part', spec: '3층 · 층고 4m · 약 150평', cover: 2,
+        plan: L41 + 'layer41_floormaps_c_20211029-1.jpg',
+        photos: local(['c26cb91d07', 'aad7329cef', '787b3d6619', '0f6695daf7', 'a7629090ae', '8a99da7f3d',
+                       'edeb649dcb', 'db2e0fd037', '9cabff0f77', '9b795aac31', 'e53108a785', '84c62591e3'])
+      }
+    ];
+
+    var ARROW_NEXT = '<svg viewBox="0 0 62.398 49.054" aria-hidden="true"><polyline fill="none" stroke="#000" stroke-width="4" stroke-miterlimit="10" points="37,1.398 59.602,24.527 37,47.656"/><line fill="none" stroke="#000" stroke-width="4" stroke-miterlimit="10" x1="59.615" y1="24.527" x2="0" y2="24.527"/></svg>';
+    var ARROW_PREV = '<svg viewBox="0 0 62.398 49.054" aria-hidden="true"><polyline fill="none" stroke="#000" stroke-width="4" stroke-miterlimit="10" points="25.398,47.656 2.796,24.527 25.398,1.398"/><line fill="none" stroke="#000" stroke-width="4" stroke-miterlimit="10" x1="2.783" y1="24.527" x2="62.398" y2="24.527"/></svg>';
+
+    function el(tag, cls, html) {
+      var e = document.createElement(tag);
+      if (cls) e.className = cls;
+      if (html != null) e.innerHTML = html;
+      return e;
+    }
+    function image(src, alt, lazy) {
+      var i = new Image();
+      i.alt = alt; i.decoding = 'async';
+      if (lazy) i.loading = 'lazy';
+      i.src = src;
+      return i;
+    }
+    function reveal(node, block) { node.scrollIntoView({ behavior: 'smooth', block: block || 'center' }); }
+
+    /* ---- 큰 사진 영역 ---- */
+    var partsRoot = document.getElementById('parts');
+    GROUPS.forEach(function (g) {
+      var part = el('section', 'part' + (g.onlyAB ? ' only-ab' : ''));
+      part.id = 'part-' + g.id;
+      part.appendChild(el('h2', 'part__title', g.title));
+      if (g.plan) {
+        g.planEl = image(g.plan, g.label + ' 평면도', true);
+        g.planEl.className = 'part__plan';
+        part.appendChild(g.planEl);
+      }
+      var slider = el('div', 'slider');
+      var frame = el('div', 'slider__frame');
+      g.img = el('img', 'slider__img');
+      g.img.decoding = 'async';
+      g.img.addEventListener('load', function () { g.img.classList.remove('is-loading'); });
+      var prev = el('button', 'slider__btn slider__btn--prev', ARROW_PREV);
+      var next = el('button', 'slider__btn slider__btn--next', ARROW_NEXT);
+      prev.type = next.type = 'button';
+      prev.setAttribute('aria-label', g.label + ' 이전 사진');
+      next.setAttribute('aria-label', g.label + ' 다음 사진');
+      prev.addEventListener('click', function () { show(g, g.cur - 1, true); });
+      next.addEventListener('click', function () { show(g, g.cur + 1, true); });
+      /* 휴대폰: 좌우로 밀어 넘기기 */
+      var x0 = null;
+      frame.addEventListener('touchstart', function (e) { x0 = e.touches[0].clientX; }, { passive: true });
+      frame.addEventListener('touchend', function (e) {
+        if (x0 == null) return;
+        var dx = e.changedTouches[0].clientX - x0; x0 = null;
+        if (Math.abs(dx) > 40) { e.preventDefault(); show(g, g.cur + (dx < 0 ? 1 : -1), true); }
+      });
+      frame.appendChild(g.img); frame.appendChild(prev); frame.appendChild(next);
+      g.cap = el('p', 'slider__cap');
+      slider.appendChild(frame); slider.appendChild(g.cap);
+      part.appendChild(slider);
+      partsRoot.appendChild(part);
+      g.part = part; g.frame = frame; g.thumbs = [];
+    });
+
+    function show(g, i, mark) {
+      var n = g.photos.length;
+      i = (i + n) % n;
+      if (g.cur !== i || !g.img.getAttribute('src')) {
+        g.img.classList.add('is-loading');
+        g.img.src = g.photos[i];
+        g.img.alt = g.label + ' ' + (i + 1);
+      }
+      g.cur = i;
+      g.cap.textContent = '( ' + (i + 1) + ' / ' + n + ' )';
+      if (mark) {
+        g.marked = true;
+        g.thumbs.forEach(function (t, k) { t.classList.toggle('is-current', k === i); });
+      }
+      if (g.count) setCount(g, null);
+      new Image().src = g.photos[(i + 1) % n];
+    }
+    /* 사진 띠 오른쪽 숫자: 평소 "12 photos", 사진에 올리거나 고른 뒤에는 "05 / 12" */
+    function pad(n) { return (n < 10 ? '0' : '') + n; }
+    function setCount(g, i) {
+      var n = g.photos.length;
+      if (i == null && g.marked) i = g.cur;
+      g.count.textContent = i == null ? n + ' photos' : pad(i + 1) + ' / ' + pad(n);
+    }
+
+    /* ---- A안: 콘택트 시트 ---- */
+    var rows = document.getElementById('sheet-rows');
+    GROUPS.forEach(function (g) {
+      var strip = el('div', 'strip');
+      var head = el('div', 'strip__head');
+      var name = el('button', 'strip__name', g.title);
+      name.type = 'button';
+      name.setAttribute('aria-label', g.label + ' 큰 사진으로 이동');
+      name.addEventListener('click', function () { reveal(g.part, 'start'); });
+      head.appendChild(name);
+      head.appendChild(el('span', 'strip__spec', g.spec));
+      var meta = el('span', 'strip__meta');
+      g.count = el('span', 'strip__count');
+      meta.appendChild(g.count);
+      if (g.plan) {
+        var p = el('button', 'strip__plan', 'Floor Map');
+        p.type = 'button';
+        p.setAttribute('aria-label', g.label + ' 평면도 보기');
+        p.addEventListener('click', function () { reveal(g.planEl); });
+        meta.appendChild(p);
+      }
+      head.appendChild(meta);
+      var grid = el('div', 'strip__grid');
+      g.photos.forEach(function (src, i) {
+        var t = el('button', 'thumb');
+        t.type = 'button';
+        t.setAttribute('aria-label', g.label + ' ' + (i + 1) + '번 사진 크게 보기');
+        t.appendChild(image(src, '', true));
+        t.addEventListener('click', function () { show(g, i, true); reveal(g.frame); });
+        t.addEventListener('mouseenter', function () { setCount(g, i); });
+        t.addEventListener('mouseleave', function () { setCount(g, null); });
+        t.addEventListener('focus', function () { setCount(g, i); });
+        t.addEventListener('blur', function () { setCount(g, null); });
+        grid.appendChild(t);
+        g.thumbs.push(t);
+      });
+      strip.appendChild(head);
+      strip.appendChild(grid);
+      rows.appendChild(strip);
+    });
+
+    /* ---- B안: 파트 대표컷 / 현재 구성 ---- */
+    var cards = document.getElementById('cards');
+    var now = document.getElementById('now');
+    GROUPS.forEach(function (g) {
+      var c = el('button', 'card');
+      c.type = 'button';
+      c.setAttribute('aria-label', g.label + ' 사진 보러 가기');
+      var ci = el('div', 'card__img');
+      ci.appendChild(image(g.photos[g.cover], '', true));
+      c.appendChild(ci);
+      c.appendChild(el('div', 'card__cap', '<span class="card__name">' + g.label + '</span><small>' + g.photos.length + ' photos</small>'));
+      c.appendChild(el('div', 'card__spec', g.spec));
+      c.addEventListener('click', function () { reveal(g.part, 'start'); });
+      cards.appendChild(c);
+
+      var box = el('div', 'now__box');
+      box.appendChild(image(g.photos[g.cover], g.label, true));
+      box.appendChild(el('p', '', g.label));
+      now.appendChild(box);
+    });
+
+    GROUPS.forEach(function (g) { show(g, 0, false); });
+
+    /* ---- 시안 전환 ---- */
+    var DESC = {
+      now: '지금 라이브 페이지 구성 — 글 → 큰 상자 4개(2×2) → 파트별 큰 사진',
+      a: '파트별 작은 사진 띠 → 글 → 큰 사진 — 누르면 그 사진의 큰 화면으로 이동',
+      b: '대표 사진 4장 → 글 → 큰 사진 — 누르면 그 파트로 이동'
+    };
+    var ORDER = ['a', 'b', 'now'];   /* 키보드 1 = 1안, 2 = 2안, 3 = 현재 구성 */
+    var buttons = Array.prototype.slice.call(document.querySelectorAll('[data-set]'));
+    var overview = document.getElementById('overview');
+    function setV(v, keepScroll) {
+      if (ORDER.indexOf(v) < 0) v = 'a';
+      document.body.setAttribute('data-v', v);
+      buttons.forEach(function (b) { b.setAttribute('aria-pressed', String(b.getAttribute('data-set') === v)); });
+      document.getElementById('bar-desc').textContent = DESC[v];
+      try { history.replaceState(null, '', '?v=' + v + (document.body.classList.contains('clean') ? '&clean=1' : '')); } catch (e) {}
+      /* 아래쪽을 보다가 바꾸면 바뀐 부분(목록)이 보이도록 올려 줌 */
+      if (!keepScroll && overview.getBoundingClientRect().bottom < 120) {
+        window.scrollTo({ top: Math.max(0, overview.getBoundingClientRect().top + window.scrollY - 120), behavior: 'instant' });
+      }
+      navToggle();
+    }
+    buttons.forEach(function (b) { b.addEventListener('click', function () { setV(b.getAttribute('data-set')); }); });
+    document.addEventListener('keydown', function (e) {
+      if (e.metaKey || e.ctrlKey || e.altKey) return;
+      var k = ['1', '2', '3'].indexOf(e.key);
+      if (k >= 0) setV(ORDER[k]);
+    });
+    /* ---- 오른쪽 파트 이동: 큰 사진 영역에서만 보임 ---- */
+    var topEl = document.querySelector('.top');
+    function navToggle() {
+      document.body.classList.toggle('nav-on', topEl.getBoundingClientRect().bottom < window.innerHeight * 0.5);
+    }
+    window.addEventListener('scroll', navToggle, { passive: true });
+    window.addEventListener('resize', navToggle);
+
+    if (/[?&]clean=1\b/.test(location.search)) document.body.classList.add('clean');
+    var q = /[?&]v=(now|a|b)\b/.exec(location.search);
+    setV(q ? q[1] : 'a', true);
+  })();
+  </script>
+</body>
+</html>
